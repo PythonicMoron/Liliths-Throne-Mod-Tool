@@ -1,0 +1,16 @@
+{
+	"default": {
+		"effect type": "CLOTHING",
+		"limit range": [0, 0],
+		"potency options": ["MAJOR_DRAIN", "DRAIN", "MINOR_DRAIN", "MINOR_BOOST", "BOOST", "MAJOR_BOOST"],
+		"timer range": [0, 0]
+	},
+	"enchantments": [
+		{"primary mod": "CLOTHING_MAJOR_ATTRIBUTE", "secondary options": ["HEALTH_MAXIMUM", "MANA_MAXIMUM", "STRENGTH", "INTELLIGENCE", "CORRUPTION"]},
+		{
+			"primary mod": "CLOTHING_ATTRIBUTE",
+			"secondary options":
+				["FERTILITY", "VIRILITY", "DAMAGE_UNARMED", "DAMAGE_MELEE_WEAPON", "DAMAGE_RANGED_WEAPON", "DAMAGE_PHYSICAL", "DAMAGE_LUST", "DAMAGE_FIRE", "DAMAGE_ICE", "DAMAGE_POISON", "DAMAGE_SPELLS", "RESISTANCE_FIRE", "RESISTANCE_ICE", "RESISTANCE_LUST", "RESISTANCE_PHYSICAL", "RESISTANCE_POISON", "SPELL_COST_MODIFIER", "CRITICAL_CHANCE", "CRITICAL_DAMAGE"]
+		}
+	]
+}

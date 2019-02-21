@@ -1,0 +1,41 @@
+<weapon>
+ <coreAttributes>
+  <value>1</value>
+  <melee>true</melee>
+  <twoHanded>false</twoHanded>
+  <determiner><![CDATA[a]]></determiner>
+  <name><![CDATA[Stick]]></name>
+  <namePlural pluralByDefault="false"><![CDATA[Sticks]]></namePlural>
+  <description><![CDATA[A literal stick.]]></description>
+  <attackDescriptor>poke</attackDescriptor>
+  <attackTooltipDescription>Poke your stick at [npc2.name].</attackTooltipDescription>
+  <rarity>COMMON</rarity>
+  <equipText><![CDATA[[npc.Name] [npc.verb(unsheathe)] a stick.]]></equipText>
+  <unequipText><![CDATA[[npc.Name] [npc.verb(sheathe)] the stick.]]></unequipText>
+  <imageName>image.svg</imageName>
+  <imageEquippedName/>
+  <damage>2</damage>
+  <arcaneCost>0</arcaneCost>
+  <damageVariance>NONE</damageVariance>
+  <availableDamageTypes>
+   <damageType>PHYSICAL</damageType>
+   <damageType>POISON</damageType>
+  </availableDamageTypes>
+  <spells/>
+  <enchantmentLimit>0</enchantmentLimit>
+  <effects>
+   <effect limit="0" secondaryModifier="CRITICAL_CHANCE" timer="0" primaryModifier="CLOTHING_ATTRIBUTE" itemEffectType="CLOTHING" potency="MAJOR_DRAIN"/>
+  </effects>
+  <primaryColours values="ALL"/>
+  <primaryColoursDye values="ALL"/>
+  <secondaryColours values="ALL"/>
+  <secondaryColoursDye values="ALL"/>
+  <itemTags/>
+ </coreAttributes>
+ <hitDescriptions>
+  <hitText><![CDATA[Thrusting out with [npc.her] stick, [npc.name] [npc.verb(manage)] to jab [npc2.name] in the chest!]]></hitText>
+ </hitDescriptions>
+ <missDescriptions>
+  <missText><![CDATA[Thrusting out with [npc.her] stick, [npc.name] [npc.verb(attempt)] to jab [npc2.name] in the chest, but [npc.verb(end)] up missing [npc2.herHim]!]]></missText>
+ </missDescriptions>
+</weapon>

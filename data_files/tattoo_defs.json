@@ -1,0 +1,38 @@
+{
+	"tattoo_data": {
+		"ranges": {
+			"value": [0, 2147483647],
+			"enchantment_limit": [-1, 100]
+		},
+		"field_data": {
+            "slot": [
+                "HEAD",
+                "EYES",
+                "HAIR",
+                "MOUTH",
+                "NECK",
+                "TORSO_OVER",
+                "TORSO_UNDER",
+                "CHEST",
+                "NIPPLE",
+                "STOMACH",
+                "HAND",
+                "WRIST",
+                "FINGER",
+                "HIPS",
+                "HIPS_UNDER",
+                "ANUS",
+                "LEG",
+                "GROIN",
+                "FOOT",
+                "SOCK",
+                "ANKLE",
+                "HORNS",
+                "WINGS",
+                "TAIL",
+                "PENIS",
+                "VAGINA"
+			]
+		}
+	}
+}

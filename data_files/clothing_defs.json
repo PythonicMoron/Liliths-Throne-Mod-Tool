@@ -1,0 +1,141 @@
+{
+    "clothing_data": {
+        "ranges": {
+            "value": [0, 2147483647],
+            "physical_resistance": [0, 100],
+            "enchantment_limit": [-1, 100]
+        },
+        "field_data": {
+            "slot": [
+                "HEAD",
+                "EYES",
+                "HAIR",
+                "MOUTH",
+                "NECK",
+                "TORSO_OVER",
+                "TORSO_UNDER",
+                "CHEST",
+                "NIPPLE",
+                "STOMACH",
+                "HAND",
+                "WRIST",
+                "FINGER",
+                "HIPS",
+                "HIPS_UNDER",
+                "ANUS",
+                "LEG",
+                "GROIN",
+                "FOOT",
+                "SOCK",
+                "ANKLE",
+                "HORNS",
+                "WINGS",
+                "TAIL",
+                "PENIS",
+                "VAGINA",
+                "PIERCING_EAR",
+                "PIERCING_NOSE",
+                "PIERCING_TONGUE",
+                "PIERCING_LIP",
+                "PIERCING_STOMACH",
+                "PIERCING_NIPPLE",
+                "PIERCING_VAGINA",
+                "PIERCING_PENIS"
+            ],
+            "femininity": [
+                "ANDROGYNOUS",
+                "MASCULINE",
+                "FEMININE"
+            ],
+            "rarity": [
+                "COMMON",
+                "UNCOMMON",
+                "RARE",
+                "EPIC",
+                "LEGENDARY",
+                "QUEST",
+                "JINXED"
+            ],
+            "clothing_set": [
+                "ENFORCER",
+                "MAID",
+                "BUTLER",
+                "WITCH",
+                "SCIENTIST",
+                "MILK_MAID",
+                "BDSM",
+                "CATTLE",
+                "GEISHA",
+                "RONIN",
+                "WEAPON_DAISHO",
+                "JOLNIR",
+                "SUN",
+                "SNOWFLAKE",
+                "RAINBOW",
+                "DARK_SIREN",
+                "LYSSIETH_GUARD"
+            ],
+            "access": {
+                "type": [
+                    "REMOVE_OR_EQUIP",
+                    "OPEN",
+                    "PULLS_UP",
+                    "PULLS_DOWN",
+                    "PULLS_OUT",
+                    "PULLS_OFF",
+                    "SHIFTS_ASIDE",
+                    "UNZIPS",
+                    "UNTIE",
+                    "UNBUCKLE",
+                    "UNBUTTONS"
+                ],
+                "clothing_access": [
+                    "EYES",
+                    "MOUTH",
+                    "HEAD",
+                    "ARMS_UP_TO_SHOULDER",
+                    "WRISTS",
+                    "FINGERS",
+                    "CHEST",
+                    "WAIST",
+                    "LEGS_UP_TO_GROIN_LOW_LEVEL",
+                    "LEGS_UP_TO_GROIN",
+                    "GROIN",
+                    "ANUS",
+                    "CALVES",
+                    "FEET"
+                ],
+                "blocked_bodyparts": [
+                    "HANDS",
+                    "ASS",
+                    "ANUS",
+                    "STOMACH",
+                    "LEGS",
+                    "FEET",
+                    "BACK",
+                    "THIGHS",
+                    "VAGINA",
+                    "MOUND",
+                    "PENIS",
+                    "TESTICLES",
+                    "BREASTS",
+                    "NIPPLES",
+                    "HAIR",
+                    "MOUTH"
+                ],
+                "concealed_presets": [
+                    "CONCEALED_PARTIAL_TORSO",
+                    "CONCEALED_PARTIAL_TORSO_STOMACH_VISIBLE",
+                    "CONCEALED_STOMACH",
+                    "CONCEALED_BREASTS",
+                    "CONCEALED_FULL_TORSO",
+                    "CONCEALED_GENITALS",
+                    "CONCEALED_GROIN",
+                    "CONCEALED_DRESS_FRONT_FULL",
+                    "CONCEALED_UNZIPS_GROIN",
+                    "CONCEALED_ANKLES_FROM_TROUSERS"
+                ]
+            }
+        }
+    }
+}

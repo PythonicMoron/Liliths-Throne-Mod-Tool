@@ -1,0 +1,42 @@
+<clothing>
+ <coreAttributes>
+  <value>1</value>
+  <determiner><![CDATA[a]]></determiner>
+  <name><![CDATA[Name]]></name>
+  <namePlural pluralByDefault="false"><![CDATA[Names]]></namePlural>
+  <description><![CDATA[A Description.]]></description>
+  <physicalResistance>0</physicalResistance>
+  <femininity>ANDROGYNOUS</femininity>
+  <slot>HEAD</slot>
+  <rarity>COMMON</rarity>
+  <clothingSet/>
+  <imageName>image.svg</imageName>
+  <imageEquippedName/>
+  <enchantmentLimit>1</enchantmentLimit>
+  <effects>
+   <effect limit="0" potency="BOOST" secondaryModifier="DAMAGE_UNARMED" primaryModifier="CLOTHING_ATTRIBUTE" itemEffectType="CLOTHING" timer="0"/>
+  </effects>
+  <blockedPartsList>
+   <blockedParts>
+    <displacementType>REMOVE_OR_EQUIP</displacementType>
+    <clothingAccessRequired>
+     <clothingAccess>HEAD</clothingAccess>
+    </clothingAccessRequired>
+    <blockedBodyParts/>
+    <clothingAccessBlocked/>
+    <concealedSlots/>
+   </blockedParts>
+  </blockedPartsList>
+  <incompatibleSlots>
+   <slot>EYES</slot>
+   <slot>MOUTH</slot>
+  </incompatibleSlots>
+  <primaryColours values="NONE"/>
+  <primaryColoursDye values="NONE"/>
+  <secondaryColours values="NONE"/>
+  <secondaryColoursDye values="NONE"/>
+  <tertiaryColours values="NONE"/>
+  <tertiaryColoursDye values="NONE"/>
+  <itemTags/>
+ </coreAttributes>
+</clothing>

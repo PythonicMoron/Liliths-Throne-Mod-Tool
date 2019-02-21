@@ -1,0 +1,63 @@
+{
+	"weapon_data": {
+		"ranges": {
+			"value": [0, 2147483647],
+			"damage": [0, 2147483647],
+			"arcane_cost": [0, 2147483647],
+			"enchantment_limit": [-1, 100]
+		},
+		"field_data": {
+			"rarity": [
+				"COMMON",
+				"UNCOMMON",
+				"RARE",
+				"EPIC",
+				"LEGENDARY",
+				"QUEST",
+				"JINXED"
+			],
+			"damage_variance": [
+				"NONE",
+				"LOW",
+				"MEDIUM",
+				"HIGH"
+			],
+			"damage_types": [
+				"PHYSICAL",
+				"ICE",
+				"FIRE",
+				"POISON",
+				"LUST"
+			],
+			"spells": [
+				"FIREBALL",
+				"FLASH",
+				"CLOAK_OF_FLAMES",
+				"ELEMENTAL_FIRE",
+				"ICE_SHARD",
+				"RAIN_CLOUD",
+				"SOOTHING_WATERS",
+				"ELEMENTAL_WATER",
+				"POISON_VAPOURS",
+				"VACUUM",
+				"PROTECTIVE_GUSTS",
+				"ELEMENTAL_AIR",
+				"SLAM",
+				"TELEKENETIC_SHOWER",
+				"STONE_SHELL",
+				"ELEMENTAL_EARTH",
+				"ARCANE_AROUSAL",
+				"TELEPATHIC_COMMUNICATION",
+				"ARCANE_CLOUD",
+				"CLEANSE",
+				"STEAL",
+				"TELEPORT",
+				"LILITHS_COMMAND",
+				"ELEMENTAL_ARCANE",
+				"WITCH_SEAL",
+				"WITCH_CHARM",
+				"DARK_SIREN_SIRENS_CALL"
+			]
+		}
+	}
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogueWidget</class>
+ <widget class="QWidget" name="DialogueWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>650</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="13" column="2">
+    <widget class="QLabel" name="npc_player_rough_label">
+     <property name="text">
+      <string>Rough NPC to Player</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="npcPlayerEdit"/>
+   </item>
+   <item row="6" column="2">
+    <widget class="QPlainTextEdit" name="npcSelfEdit"/>
+   </item>
+   <item row="2" column="0">
+    <layout class="QFormLayout" name="formLayout">
+     <item row="1" column="1">
+      <widget class="QComboBox" name="selctionComboBox"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="flagComboBox"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="flag_label">
+       <property name="text">
+        <string>Flag</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="type_label">
+       <property name="text">
+        <string>Type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="typeComboBox"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="selection_label">
+       <property name="text">
+        <string>Section</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="18" column="2">
+    <widget class="QPlainTextEdit" name="npcNpcRoughEdit"/>
+   </item>
+   <item row="10" column="2">
+    <widget class="QLabel" name="player_npc_rough_label">
+     <property name="text">
+      <string>Rough Player to NPC</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="player_self_label">
+     <property name="text">
+      <string>Player to Self</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="player_npc_label">
+     <property name="text">
+      <string>Player to NPC</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="17" column="2">
+    <widget class="QLabel" name="npc_npc_rough_label">
+     <property name="text">
+      <string>Rough NPC to NPC</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="npc_player_label">
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="text">
+      <string>NPC to Player</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="17" column="0">
+    <widget class="QLabel" name="npc_npc_label">
+     <property name="text">
+      <string>NPC to NPC</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0">
+    <widget class="QPlainTextEdit" name="playerNpcEdit"/>
+   </item>
+   <item row="18" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="npcNpcEdit"/>
+   </item>
+   <item row="2" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="removeButton">
+       <property name="text">
+        <string>Remove current</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addButton">
+       <property name="text">
+        <string>Add new</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="closeButton">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="11" column="2">
+    <widget class="QPlainTextEdit" name="playerNpcRoughEdit"/>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="playerSelfEdit"/>
+   </item>
+   <item row="14" column="2">
+    <widget class="QPlainTextEdit" name="npcPlayerRoughEdit"/>
+   </item>
+   <item row="5" column="2">
+    <widget class="QLabel" name="npc_self_label">
+     <property name="text">
+      <string>NPC to Self</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="19" column="0" colspan="3">
+    <widget class="QLabel" name="note_label">
+     <property name="text">
+      <string>Note: Changes made in this window are automatically applied to internal data. Hence the lack of a save button.</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

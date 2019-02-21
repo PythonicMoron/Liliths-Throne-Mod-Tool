@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>data_files/clothing_defs.json</file>
+        <file>data_files/tattoo_defs.json</file>
+        <file>data_files/weapon_defs.json</file>
+        <file>data_files/clothing_enchantments.json</file>
+        <file>data_files/weapon_enchantments.json</file>
+        <file>data_files/clothing_default.xml</file>
+        <file>data_files/colours.json</file>
+        <file>data_files/item_tags.json</file>
+        <file>data_files/weapon_default.xml</file>
+        <file>data_files/tattoo_default.xml</file>
+    </qresource>
+</RCC>
