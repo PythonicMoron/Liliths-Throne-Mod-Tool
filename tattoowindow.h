@@ -17,7 +17,7 @@ class TattooWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TattooWindow(bool open, QWidget *parent = nullptr);
+    explicit TattooWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent = nullptr);
     ~TattooWindow();
 
     // Functions

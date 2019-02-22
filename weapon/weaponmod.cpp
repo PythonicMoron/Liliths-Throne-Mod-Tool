@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QDomDocument>
 
-bool WeaponMod::read_file(const QString &path, QString &error)
+bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
 {
     // This Function utilizes the QtXml library to read existing mod xml files.
     // Note: I used a lot of 'this->' for readability. Helps get an idea of scope since a lot of different scopes are used here.
@@ -11,29 +11,8 @@ bool WeaponMod::read_file(const QString &path, QString &error)
     // This is nightmare fuel.
     // A simple mistake here can either cause fatal problems during runtime or trickle all the way down into the xml save and possibly cause trouble outside of this tool.
 
-    QFile file(path);
-    if (!file.exists()) {
-        error = "File not found!";
-        return false;
-    }
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        error = "Could not open file!";
-        return false;
-    }
-
-    QDomDocument doc(file.fileName());
-    if (!doc.setContent(&file)) {
-        error = "Could not open xml file!";
-        file.close();
-        return false;
-    }
-
-    QDomElement root = doc.documentElement();
-    if (root.tagName() != "weapon") {
-        error = "Not a valid weapon mod xml file!";
-        file.close();
-        return false;
-    }
+    // Get root element from document
+    QDomElement root = xml_doc.documentElement();
 
     // This clusterfuck is volatile. Be ready for a world of pain if you change anything.
     QDomElement child = root.firstChildElement();
@@ -190,7 +169,6 @@ bool WeaponMod::read_file(const QString &path, QString &error)
 
     } // End "weapon"
 
-    file.close();
     return true;
 }
 

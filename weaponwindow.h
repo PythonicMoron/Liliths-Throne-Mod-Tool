@@ -20,7 +20,7 @@ class WeaponWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WeaponWindow(bool open, QWidget *parent = nullptr);
+    explicit WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent = nullptr);
     ~WeaponWindow();
 
     // Functions

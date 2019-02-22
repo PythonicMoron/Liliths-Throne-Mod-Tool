@@ -14,7 +14,7 @@ public:
     // This class is pretty easily understood.
 
     // Functions
-    bool read_file(const QString &path, QString &error) override;
+    bool read_file(const QDomDocument &xml_doc, QString &error) override;
     bool save_file(const QString &path, QString &error) override;
 
     // Data

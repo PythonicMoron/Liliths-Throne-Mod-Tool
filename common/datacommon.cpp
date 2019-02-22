@@ -2,7 +2,7 @@
 
 #include "utility.h"
 
-bool DataCommon::read_file(const QString& UNUSED(path), QString& UNUSED(error))
+bool DataCommon::read_file(const QDomDocument& UNUSED(xml_doc), QString& UNUSED(error))
 {
     // This function MUST be overridden!
     // This is supposed to use QtXml to handle the hard part of reading xml files.
@@ -99,7 +99,7 @@ DataCommon::~DataCommon() = default;
 
 DataCommon::Effect::Effect()
 {
-    effect_type + QString();
+    effect_type = QString();
     potency = QString();
     primary_modifier = QString();
     secondary_modifier = QString();

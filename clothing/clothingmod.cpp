@@ -86,7 +86,7 @@ void ClothingMod::BlockedParts::ConcealedSlots::setPreset(const QString &value)
 
 // Functions
 
-bool ClothingMod::read_file(const QString &path, QString &error)
+bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
 {
     // This Function utilizes the QtXml library to read existing mod xml files.
     // Note: I used a lot of 'this->' for readability. Helps get an idea of scope since a lot of different scopes are used here.
@@ -94,29 +94,8 @@ bool ClothingMod::read_file(const QString &path, QString &error)
     // This is nightmare fuel.
     // A simple mistake here can either cause fatal problems during runtime or trickle all the way down into the xml save and possibly cause trouble outside of this tool.
 
-    QFile file(path);
-    if (!file.exists()) {
-        error = "File not found!";
-        return false;
-    }
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        error = "Could not open file!";
-        return false;
-    }
-
-    QDomDocument doc(file.fileName());
-    if (!doc.setContent(&file)) {
-        error = "Could not open xml file!";
-        file.close();
-        return false;
-    }
-
-    QDomElement root = doc.documentElement();
-    if (root.tagName() != "clothing") {
-        error = "Not a valid clothing mod xml file!";
-        file.close();
-        return false;
-    }
+    // Get root element from document
+    QDomElement root = xml_doc.documentElement();
 
     // Initialize some variables. Most are already initialized by operations below.
     this->dialogue = QList<XPlacementText>();
@@ -372,7 +351,6 @@ bool ClothingMod::read_file(const QString &path, QString &error)
 
     } // End "clothing"
 
-    file.close();
     return true;
 }
 

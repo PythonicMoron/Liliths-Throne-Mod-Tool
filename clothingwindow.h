@@ -19,7 +19,7 @@ class ClothingWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ClothingWindow(bool open, QWidget *parent = nullptr);
+    explicit ClothingWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent = nullptr);
     ~ClothingWindow();
 
     // Functions

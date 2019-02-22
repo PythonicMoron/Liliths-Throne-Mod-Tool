@@ -13,16 +13,16 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    enum Mod { // These are used as array indexes. Don't break them.
+        clothing, tattoo, weapon,
+        somebody_fucked_up // Also used as a size variable
+    };
+
 public slots:
     // Simple slot functions
-    void openClothing();
-    void newClothing();
-
-    void openTattoo();
-    void newTattoo();
-
-    void openWeapon();
-    void newWeapon();
+    void openMod();
+    void newMod();
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
@@ -34,6 +34,9 @@ protected:
 
 private:
     Ui::MainWindow *ui; // Ui
+    QVector<bool> enabled; // List of enabled widgets. In case somebody fucked up a def file and the widget fails to load.
+
+    Mod get_mode();
 };
 
 #endif // MAINWINDOW_H

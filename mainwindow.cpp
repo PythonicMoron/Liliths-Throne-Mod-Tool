@@ -2,58 +2,209 @@
 #include "ui_mainwindow.h"
 
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "clothingwindow.h"
 #include "weaponwindow.h"
 #include "tattoowindow.h"
 #include "utility.h"
 
-void MainWindow::openClothing() {
-    // Open an existing clothing mod
-    statusBar()->clearMessage();
-    statusBar()->showMessage("Opening clothing item...");
-    auto *cw = new ClothingWindow(true, this);
-    cw->show();
+void MainWindow::openMod()
+{
+    // Load a mod file. Opens a file dialogue and once a file is selected, tries to detect mod type and handles it accordingly.
+
+    // Open file dialogue and get path of selected file.
+    QString location = QFileDialog::getOpenFileName(this, "Open existing mod", "./", "(*.xml)");
+
+    // Should trigger on cancel or failure
+    if (location.isNull() || location.isEmpty())
+        return;
+
+    // Create our file object.
+    QFile file(location);
+
+    // If you manage to trigger this, please tell me how the flying fuck you did that.
+    if (!file.exists()) {
+        Utility::error("File not found.");
+        return;
+    }
+
+    // There are a few things that could cause us to not be able to open the file.
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Utility::error("Could not open file!");
+        return;
+    }
+
+    // We need to create a document and make sure we can parse it.
+    QDomDocument doc(file.fileName());
+    QString err = QString();
+    if (!doc.setContent(&file, &err)) {
+        Utility::error("Could not parse xml file!\n" + err);
+        file.close();
+        return;
+    }
+    file.close(); // We don't need this anymore.
+
+    // Now we just need to check the mod type and create the mod object as the mod class itself will handle the rest.
+
+    if (doc.documentElement().tagName() == "clothing") { // Is clothing mod?
+
+        // Check if window was disabled.
+        if (!enabled[MainWindow::Mod::clothing]) {
+            Utility::error("The clothing mod tool has been disabled because something went wrong.");
+            return;
+        }
+
+        // Update statuse message.
+        statusBar()->clearMessage();
+        statusBar()->showMessage("Opened a clothing mod.");
+
+        // Create window object and show it.
+        auto *cw = new ClothingWindow(doc, location, this);
+        cw->show();
+    }
+    else if (doc.documentElement().tagName() == "tattoo") { // Is tattoo mod?
+
+        // Check if window was disabled.
+        if (!enabled[MainWindow::Mod::tattoo]) {
+            Utility::error("The tattoo mod tool has been disabled because something went wrong.");
+            return;
+        }
+
+        // Update statuse message.
+        statusBar()->clearMessage();
+        statusBar()->showMessage("Opened a tattoo mod.");
+
+        // Create window object and show it.
+        auto *tw = new TattooWindow(doc, location, this);
+        tw->show();
+    }
+    else if (doc.documentElement().tagName() == "weapon") { // Is weapon mod?
+
+        // Check if window was disabled.
+        if (!enabled[MainWindow::Mod::weapon]) {
+            Utility::error("The weapon mod tool has been disabled because something went wrong.");
+            return;
+        }
+
+        // Update statuse message.
+        statusBar()->clearMessage();
+        statusBar()->showMessage("Opened a weapon mod.");
+
+        // Create window object and show it.
+        auto *ww = new WeaponWindow(doc, location, this);
+        ww->show();
+    }
+    else Utility::error("Not a valid mod file!"); // Bad. I only accept mod xml files.
 }
 
-void MainWindow::newClothing() {
-    // Create a new clothing mod (using default data)
-    statusBar()->clearMessage();
-    statusBar()->showMessage("Creating clothing item...");
-    auto *cw = new ClothingWindow(false, this);
-    cw->show();
-}
+void MainWindow::newMod()
+{
+    // Create a new mod. Utilizes default files to open a new editor for selected mod type.
 
-void MainWindow::openTattoo() {
-    // Open an existing tattoo mod
-    statusBar()->clearMessage();
-    statusBar()->showMessage("Opening tattoo...");
-    auto *tw = new TattooWindow(true, this);
-    tw->show();
-}
+    // Our file object
+    QFile file;
 
-void MainWindow::newTattoo() {
-    // Create a new tattoo mod (using default data)
-    statusBar()->clearMessage();
-    statusBar()->showMessage("Creating tattoo...");
-    auto *tw = new TattooWindow(false, this);
-    tw->show();
-}
+    // Mod flag
+    MainWindow::Mod flag = MainWindow::Mod::somebody_fucked_up;
 
-void MainWindow::openWeapon() {
-    // Open an existing weapon mod
-    statusBar()->clearMessage();
-    statusBar()->showMessage("Opening weapon...");
-    auto *ww = new WeaponWindow(true, this);
-    ww->show();
-}
+    // Determine which default file we will be loading.
+    switch (get_mode()) {
+        case MainWindow::Mod::clothing: {
+            file.setFileName(":/res/data_files/clothing_default.xml");
+            flag = MainWindow::Mod::clothing;
+            break;
+        }
+        case MainWindow::Mod::tattoo: {
+            file.setFileName(":/res/data_files/tattoo_default.xml");
+            flag = MainWindow::Mod::tattoo;
+            break;
+        }
+        case MainWindow::Mod::weapon: {
+            file.setFileName(":/res/data_files/weapon_default.xml");
+            flag = MainWindow::Mod::weapon;
+            break;
+        }
+        case MainWindow::Mod::somebody_fucked_up:
+            Utility::error("Critical problem: Somebody doesn't know what the fuck they're doing.");
+            return;
+    }
 
-void MainWindow::newWeapon() {
-    // Create a new weapon mod (using default data)
-    statusBar()->clearMessage();
-    statusBar()->showMessage("Creating weapon...");
-    auto *ww = new WeaponWindow(false, this);
-    ww->show();
+    // An impressive feat if you trip this.
+    if (!file.exists()) {
+        Utility::error("Failed to create file!");
+        return;
+    }
+
+    // This... shouldn't ever trigger... Right?
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Utility::error("Could not open default file!");
+        return;
+    }
+
+    // We need to create a document and make sure we can parse it.
+    QDomDocument doc(file.fileName());
+    QString err = QString();
+    if (!doc.setContent(&file, &err)) {
+        Utility::error("Could not parse xml file!\n" + err);
+        file.close();
+        return;
+    }
+    file.close(); // We don't need this anymore.
+
+    // Yet another switch to create the window object
+    switch (flag) {
+        case MainWindow::Mod::clothing: {
+            // Check if window was disabled.
+            if (!enabled[MainWindow::Mod::clothing]) {
+                Utility::error("The clothing mod tool has been disabled because something went wrong.");
+                return;
+            }
+
+            // Update statuse message.
+            statusBar()->clearMessage();
+            statusBar()->showMessage("Created a clothing mod.");
+
+            // Create window object and show it.
+            auto *cw = new ClothingWindow(doc, QString(), this);
+            cw->show();
+            break;
+        }
+        case MainWindow::Mod::tattoo: {
+            // Check if window was disabled.
+            if (!enabled[MainWindow::Mod::tattoo]) {
+                Utility::error("The tattoo mod tool has been disabled because something went wrong.");
+                return;
+            }
+
+            // Update statuse message.
+            statusBar()->clearMessage();
+            statusBar()->showMessage("Created a tattoo mod.");
+
+            // Create window object and show it.
+            auto *tw = new TattooWindow(doc, QString(), this);
+            tw->show();
+            break;
+        }
+        case MainWindow::Mod::weapon: {
+            // Check if window was disabled.
+            if (!enabled[MainWindow::Mod::weapon]) {
+                Utility::error("The weapon mod tool has been disabled because something went wrong.");
+                return;
+            }
+
+            // Update statuse message.
+            statusBar()->clearMessage();
+            statusBar()->showMessage("Created a weapon mod.");
+
+            // Create window object and show it.
+            auto *ww = new WeaponWindow(doc, QString(), this);
+            ww->show();
+            break;
+        }
+        case MainWindow::Mod::somebody_fucked_up:
+            Utility::error("Seriously?"); // It would be against everything I know to be real if this was in any way reachable.
+    }
 }
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -65,17 +216,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     statusBar()->showMessage("Do NOT close this window or it will close all windows.");
 
 
-    // Connect buttons for clothing widget
-    connect(ui->openClothingButton, SIGNAL(pressed()), SLOT(openClothing()));
-    connect(ui->newClothingButton, SIGNAL(released()), SLOT(newClothing()));
-
-    // Connect buttons for tattoo widget
-    connect(ui->openTattooButton, SIGNAL(pressed()), SLOT(openTattoo()));
-    connect(ui->newTattooButton, SIGNAL(pressed()), SLOT(newTattoo()));
-
-    // Connect buttons for weapon widget
-    connect(ui->openWeaponButton, SIGNAL(pressed()), SLOT(openWeapon()));
-    connect(ui->newWeaponButton, SIGNAL(pressed()), SLOT(newWeapon()));
+    // Connections
+    connect(ui->newButton, SIGNAL(released()), SLOT(newMod()));
+    connect(ui->loadButton, SIGNAL(released()), SLOT(openMod()));
 
 
     // Initialize internal resources
@@ -86,8 +229,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QDomImplementation::setInvalidDataPolicy(QDomImplementation::DropInvalidChars);
 
 
-    // Initial setup for widgets
+    // Some vars
     QString err = QString();
+    enabled = QVector<bool>(MainWindow::Mod::somebody_fucked_up, true); // Creates a vector with a size equal to the count of values in MainWindow::Mod.
 
     // Enchantment widget check
     if (!EnchantmentWidget::load_effects())
@@ -109,28 +253,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     }
 
     // Clothing defs check
-    if (!ClothingWindow::load_defs()) {
-        ui->openClothingButton->setEnabled(false);
-        ui->newClothingButton->setEnabled(false);
-    }
+    if (!ClothingWindow::load_defs())
+        enabled[MainWindow::Mod::clothing] = false;
 
     // Weapon defs check
-    if (!WeaponWindow::load_defs()) {
-        ui->openWeaponButton->setEnabled(false);
-        ui->newWeaponButton->setEnabled(false);
-    }
+    if (!WeaponWindow::load_defs())
+        enabled[MainWindow::Mod::weapon] = false;
 
     // Tattoo defs check
-    if (!TattooWindow::load_defs()) {
-        ui->openTattooButton->setEnabled(false);
-        ui->newTattooButton->setEnabled(false);
-    }
+    if (!TattooWindow::load_defs())
+        enabled[MainWindow::Mod::tattoo] = false;
 }
 
 MainWindow::~MainWindow()
 {
-    // Ui
-    delete ui;
+    delete ui; // Ui
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -144,4 +281,26 @@ void MainWindow::closeEvent(QCloseEvent *event)
     } else {
         event->ignore();
     }
+}
+
+MainWindow::Mod MainWindow::get_mode()
+{
+    // Returns enum value related to the current mod type selected in the modComboBox
+
+    // Current text of combo box.
+    QString text = ui->modComboBox->currentText();
+
+    // Clothing mod
+    if (text == "Clothing mod")
+        return MainWindow::Mod::clothing;
+
+    // Tattoo mod
+    if (text == "Tattoo mod")
+        return MainWindow::Mod::tattoo;
+
+    // Weapon mod
+    if (text == "Weapon mod")
+        return MainWindow::Mod::weapon;
+
+    return MainWindow::Mod::somebody_fucked_up; // Seriously.
 }

@@ -21,7 +21,7 @@ public:
     virtual ~DataCommon();
 
     // Common functions
-    virtual bool read_file(const QString &path, QString &error);
+    virtual bool read_file(const QDomDocument &xml_doc, QString &error);
     virtual bool save_file(const QString &path, QString &error);
 
     // Common data

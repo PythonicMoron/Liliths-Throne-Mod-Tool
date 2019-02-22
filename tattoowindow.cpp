@@ -8,7 +8,7 @@
 #include "utility.h"
 #include "tattoo/availabilitycomboboxdelegate.h"
 
-TattooWindow::TattooWindow(bool open, QWidget *parent) : QWidget(parent), ui(new Ui::TattooWindow)
+TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent) : QWidget(parent), ui(new Ui::TattooWindow)
 {
     // Setup
     ui->setupUi(this);
@@ -48,50 +48,33 @@ TattooWindow::TattooWindow(bool open, QWidget *parent) : QWidget(parent), ui(new
 
 
 
-    // Handle open/new file
+    // Error string
     QString err = QString();
-    if (open) {
-        location = QFileDialog::getOpenFileName(this, "Open tattoo mod", "./", "(*.xml)");
 
-        // Should trigger on cancel or failure
-        if (location.isEmpty() || location.isNull()) {
-            this->close();
-            return;
-        }
+    // Attempt to load xml data. Fail if read_file returns false.
+    if (!data.read_file(xml_doc, err)) {
+        Utility::error(err);
+        this->close();
+        return;
+    }
 
-        // Attempt to load xml data. Fail if read_file returns false.
-        if (!data.read_file(location, err)) {
-            Utility::error(err);
-            this->close();
-            return;
-        }
-        if (!err.isEmpty())
-            Utility::error(err);
+    // Report errors, if any.
+    if (!err.isEmpty())
+        Utility::error(err);
 
-        // Set window titles to path to help differentiate windows
-        set_titles(QFileInfo(location).fileName());
-
-        // Enable save button
-        ui->saveButton->setEnabled(true);
-
-    } else {
-        location = QString();
-
-        // Attempt to load default xml data. Fail if read_file returns false.
-        if (!data.read_file(":/res/data_files/tattoo_default.xml", err)) {
-            Utility::error(err);
-            Utility::error("Failed to open default file! Window will exit.");
-            this->close();
-            return;
-        }
-        if (!err.isEmpty())
-            Utility::error(err);
-
-        // Set window titles to help differentiate windows
+    // Set window titles to help differentiate windows, set save location, and then handle save button all depending on if this was constructed with a path or not (determines if new file or loaded file)
+    if (path.isNull() || path.isEmpty()) {
         set_titles("New");
+        location = QString();
 
         // Disable save button
         ui->saveButton->setEnabled(false);
+    } else {
+        set_titles(QFileInfo(location).fileName());
+        location = path;
+
+        // Enable save button
+        ui->saveButton->setEnabled(true);
     }
 
     // Update ui with new field data
