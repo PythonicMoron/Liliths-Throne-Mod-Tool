@@ -69,11 +69,11 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
 
     // Connections for arcane tab
     connect(ui->effectLimitSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.enchantment_limit = value;});
-    connect(ui->effectList, &QListWidget::customContextMenuRequested, [this] (const QPoint &pos) {effects_list_handler->contex_menu(pos, ui->effectLimitSpinBox->value());});
+    connect(ui->effectList, &QTableWidget::customContextMenuRequested, [this] (const QPoint &pos) {effects_list_handler->contex_menu(pos, ui->effectLimitSpinBox->value());});
     connect(effects_list_handler, &EffectListHandler::remove, [this] (int index) {data.effects.removeAt(index); effects_list_handler->update(data.effects);});
     connect(effects_list_handler, &EffectListHandler::add, [this] () {data.effects.append(DataCommon::Effect()); effects_widget->open(&data.effects.last());});
     connect(effects_widget, &EnchantmentWidget::finished, [this] () {effects_list_handler->update(data.effects);});
-    connect(ui->effectList, &QListWidget::itemDoubleClicked, [this] (QListWidgetItem* UNUSED(item)) {effects_widget->open(&data.effects[ui->effectList->currentRow()]);});
+    connect(ui->effectList, &QTableWidget::itemDoubleClicked, [this] (QTableWidgetItem* UNUSED(item)) {effects_widget->open(&data.effects[ui->effectList->currentRow()]);});
     connect(ui->spellList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {spell_list_handler->contex_menu(pos);});
 
     // Connections for visuals tab

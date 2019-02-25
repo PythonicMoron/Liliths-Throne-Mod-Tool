@@ -53,11 +53,11 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
 
     // Connections for enchantments tab
     connect(ui->enchantmentLimitInput, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.enchantment_limit = value;});
-    connect(ui->enchantmentList, &QListWidget::customContextMenuRequested, [this] (const QPoint &pos) {effects_list_handler->contex_menu(pos, ui->enchantmentLimitInput->value());});
+    connect(ui->enchantmentList, &QTableWidget::customContextMenuRequested, [this] (const QPoint &pos) {effects_list_handler->contex_menu(pos, ui->enchantmentLimitInput->value());});
     connect(effects_list_handler, &EffectListHandler::remove, [this] (int index) {data.effects.removeAt(index); effects_list_handler->update(data.effects);});
     connect(effects_list_handler, &EffectListHandler::add, [this] () {data.effects.append(DataCommon::Effect()); effect_widget->open(&data.effects.last());});
     connect(effect_widget, &EnchantmentWidget::finished, [this] () {effects_list_handler->update(data.effects);});
-    connect(ui->enchantmentList, &QListWidget::itemDoubleClicked, [this] (QListWidgetItem* UNUSED(item)) {effect_widget->open(&data.effects[ui->enchantmentList->currentRow()]);});
+    connect(ui->enchantmentList, &QTableWidget::itemDoubleClicked, [this] (QTableWidgetItem* UNUSED(item)) {effect_widget->open(&data.effects[ui->enchantmentList->currentRow()]);});
 
     // Connections for dialogue tab
     connect(ui->pluralNameEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.plural_name = text;});

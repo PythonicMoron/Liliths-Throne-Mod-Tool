@@ -1,7 +1,7 @@
 #ifndef EFFECTLISTHANDLER_H
 #define EFFECTLISTHANDLER_H
 
-#include <QListWidget>
+#include <QTableWidget>
 
 #include "common/datacommon.h"
 
@@ -12,7 +12,7 @@ class EffectListHandler : public QObject
 {
     Q_OBJECT
 public:
-    EffectListHandler(QListWidget *widget);
+    EffectListHandler(QTableWidget *widget);
     ~EffectListHandler();
 
     // Functions
@@ -28,7 +28,7 @@ signals:
     void add();
 
 private:
-    QListWidget *widget; // Pointer to QListWidget
+    QTableWidget *widget; // Pointer to QListWidget
     QMenu *menu; // Context menu object
 };
 
