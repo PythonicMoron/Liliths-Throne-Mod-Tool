@@ -138,45 +138,29 @@
             </widget>
            </item>
            <item row="6" column="1">
-            <widget class="QComboBox" name="setComboBox"/>
+            <widget class="QComboBox" name="setComboBox">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;What clothing set this is a part of. Probably won't do anything in-game as of right now.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
            </item>
-           <item row="8" column="0" colspan="2">
+           <item row="7" column="0" colspan="2">
             <widget class="QPushButton" name="tagsButton">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit item tags. WARNING: These can seriously fuck shit up. Make ABSOLUTELY sure you know what a tag is/does before adding it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="whatsThis">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;WhatsThis_Test&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Edit Tags...</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="0" colspan="2">
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
           </layout>
          </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="incompatible_slots_tab">
-        <attribute name="title">
-         <string>Incompatibility</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_12">
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="incompatible_slot_label">
            <property name="text">
             <string>Incompatible slot list</string>
            </property>
@@ -187,20 +171,8 @@
          </item>
          <item>
           <widget class="QListView" name="incompatibleSlotList">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>0</width>
-             <height>220</height>
-            </size>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::DoubleClicked</set>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slots that cannot be occupied with this item equipped.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -285,6 +257,9 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of enchantments on the item.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
@@ -397,6 +372,9 @@
              <property name="cursor" stdset="0">
               <cursorShape>IBeamCursor</cursorShape>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The description of the item.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
             </widget>
            </item>
            <item row="5" column="0" colspan="2">
@@ -433,6 +411,9 @@
              </property>
              <item row="3" column="0">
               <widget class="QPushButton" name="pColDyeButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Primary Colour Dye</string>
                </property>
@@ -453,6 +434,9 @@
              </item>
              <item row="1" column="0">
               <widget class="QPushButton" name="sColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Secondary Colour</string>
                </property>
@@ -460,6 +444,9 @@
              </item>
              <item row="4" column="0">
               <widget class="QPushButton" name="sColDyeButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Secondary Colour Dye</string>
                </property>
@@ -493,6 +480,9 @@
              </item>
              <item row="2" column="0">
               <widget class="QPushButton" name="tColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Tertiary Colour</string>
                </property>
@@ -500,6 +490,9 @@
              </item>
              <item row="0" column="0">
               <widget class="QPushButton" name="pColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Primary Colour</string>
                </property>
@@ -507,6 +500,9 @@
              </item>
              <item row="5" column="0">
               <widget class="QPushButton" name="tColDyeButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Tertiary Colour Dye</string>
                </property>
@@ -514,6 +510,9 @@
              </item>
              <item row="3" column="1">
               <widget class="QCheckBox" name="pColDyeToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for primary colour dye.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Use preset colour(s)</string>
                </property>
@@ -524,6 +523,9 @@
              </item>
              <item row="4" column="1">
               <widget class="QCheckBox" name="sColDyeToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for secondary colour dye.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Use preset colour(s)</string>
                </property>
@@ -534,6 +536,9 @@
              </item>
              <item row="5" column="1">
               <widget class="QCheckBox" name="tColDyeToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for tertiary colour dye.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Use preset colour(s)</string>
                </property>
@@ -607,6 +612,28 @@
          </property>
          <property name="text">
           <string>Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="whatsThisButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor">
+          <cursorShape>WhatsThisCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggle 'What's This?' mode. 'What's This?' mode helps clarify how to use the interface of this tool.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>?</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

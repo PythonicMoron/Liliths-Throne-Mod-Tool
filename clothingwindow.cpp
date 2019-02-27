@@ -1,6 +1,7 @@
 #include "clothingwindow.h"
 #include "ui_clothingwindow.h"
 
+#include <QWhatsThis>
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -36,6 +37,7 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
     // Connections for misc/loose items
     connect(ui->saveButton, &QPushButton::released, [this] () {save(false);});
     connect(ui->saveAsButton, &QPushButton::released, [this] () {save(true);});
+    connect(ui->whatsThisButton, &QPushButton::released, [] () {QWhatsThis::enterWhatsThisMode();});
 
     // Connections for general tab
     connect(ui->nameEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.name = text;});

@@ -40,7 +40,7 @@ private:
     QMenu *menu; // Context menu object
 
     // These are the tooltip strings. Made to be easy and convenient to edit/implement.
-    const static QString access_required_tooltip, blocked_bodyparts_tooltip, access_blocked_tooltip, concealed_slots_tooltip, displacement_type_tooltip, concealed_preset_tooltip, header_tooltip;
+    const static QString access_required_tooltip, blocked_bodyparts_tooltip, access_blocked_tooltip, concealed_slots_tooltip, displacement_type_tooltip, concealed_preset_tooltip, widget_tooltip;
 };
 
 #endif // TREEHANDLER_H

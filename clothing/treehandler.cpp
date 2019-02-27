@@ -6,7 +6,7 @@
 
 TreeHandler::TreeHandler(QTreeView *view, QList<ClothingMod::BlockedParts> &data) : QObject(view), tree(view), data(&data)
 {
-    tree->setToolTip(TreeHandler::header_tooltip);
+    tree->setToolTip(TreeHandler::widget_tooltip);
 
     // Setup delegate
     auto *delegate = new TreeComboBoxDelegate(tree);
@@ -40,7 +40,7 @@ void TreeHandler::update()
     // Iterate through data.blocked_parts array
     for (int i = 0; i < data->count(); i++) {
         // Parent object. Displays as number in array
-        QStandardItem *parent = create_item(QString::number(i), true, TreeHandler::header_tooltip);
+        QStandardItem *parent = create_item(QString::number(i), true, TreeHandler::widget_tooltip);
 
         // Create displacement type item
         QStandardItem *item = create_item("Displacement Type", true, TreeHandler::displacement_type_tooltip);
@@ -365,7 +365,7 @@ void TreeHandler::add_section()
     data->append(ClothingMod::BlockedParts());
 
     // Parent object. Displays as number in array
-    QStandardItem *parent = create_item(QString::number(tree->model()->rowCount()), true, TreeHandler::header_tooltip);
+    QStandardItem *parent = create_item(QString::number(tree->model()->rowCount()), true, TreeHandler::widget_tooltip);
 
     // Create displacement type item with default entry
     QStandardItem *item = create_item("Displacement Type", true, TreeHandler::displacement_type_tooltip);
@@ -407,10 +407,10 @@ void TreeHandler::remove_section(int row)
 
 // Tooltip strings
 const QString
-TreeHandler::access_required_tooltip = "Section for access required list. Right click to add new entries or right click a specific entry to remove it.",
-TreeHandler::blocked_bodyparts_tooltip = "Section for blocked parts list. Right click to add new entries or right click a specific entry to remove it.",
-TreeHandler::access_blocked_tooltip = "Section for access blocked list. Right click to add new entries or right click a specific entry to remove it.",
-TreeHandler::concealed_slots_tooltip = "Section for concealed slots list. Right click to add new entries or right click a specific entry to remove it. Right click parent/header item to switch to a preset.",
-TreeHandler::displacement_type_tooltip = "Section for displacement type.",
-TreeHandler::concealed_preset_tooltip = "Section for concealed preset. Right click parent/header item to switch to a list of concealed slots.",
-TreeHandler::header_tooltip = "This widget allows you to handle the displacement sections. Right click an empty spot on the tree to add a new section or on a specific section parent/header to remove it.";
+TreeHandler::access_required_tooltip = "The access required to perform this displacement type.",
+TreeHandler::blocked_bodyparts_tooltip = "The body parts that are blocked by this displacement type.",
+TreeHandler::access_blocked_tooltip = "The access that this displacement type blocks.",
+TreeHandler::concealed_slots_tooltip = "The slots that this displacement type conceals.",
+TreeHandler::displacement_type_tooltip = "If this clothing is displaced in the following way, then the 'blocked bodyparts', 'access blocked', and 'concealed preset/slots' will all be revealed.",
+TreeHandler::concealed_preset_tooltip = "The preset of slots that this displacement type conceals.",
+TreeHandler::widget_tooltip = "This widget allows you to handle the displacement list. There should be at least one 'REMOVE_OR_EQUIP' type section.";
