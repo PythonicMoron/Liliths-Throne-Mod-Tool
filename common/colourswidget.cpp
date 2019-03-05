@@ -1,6 +1,8 @@
 #include "colourswidget.h"
 #include "ui_colourswidget.h"
 
+#include <QShortcut>
+#include <QWhatsThis>
 #include <QCloseEvent>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -13,6 +15,9 @@ ColoursWidget::ColoursWidget(QWidget *parent) : QWidget(parent), ui(new Ui::Colo
     ui->setupUi(this);
     setWindowFlag(Qt::Window);
     hide();
+
+    // Shortcuts
+    new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
 
     // Initialize colour pointer
     colour_ptr = nullptr;
@@ -134,6 +139,17 @@ bool ColoursWidget::load_colours(bool force_internal)
     }
 
     return true;
+}
+
+void ColoursWidget::whats_this()
+{
+    // Change "What's This?" text based on ui state.
+    if (showing_colours)
+        ui->listWidget->setWhatsThis("I am in colour list mode.\nClick on an entry in the widget to toggle its selection state. Highlighted items are the selected items.");
+    else
+        ui->listWidget->setWhatsThis("I am in preset selection mode.\nClick on an entry in the widget to set it to the selected item. The highlighted item is the selected item.");
+
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void ColoursWidget::closeEvent(QCloseEvent *event)

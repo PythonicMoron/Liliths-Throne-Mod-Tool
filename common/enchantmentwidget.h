@@ -72,6 +72,10 @@ public:
     void reload_ui();
     static bool load_effects(bool force_internal = false);
 
+public slots:
+    // "What's This?" function
+    void whats_this();
+
 signals:
     // The below signal should be connected with an EffectListHandler object and a mod data object as follows:
     // connect(effect_widget, &EnchantmentWidget::finished, [this] () {effects_list_handler->update(data.effects);});

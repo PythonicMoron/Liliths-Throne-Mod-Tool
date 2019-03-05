@@ -1,6 +1,8 @@
 #include "tagswidget.h"
 #include "ui_tagswidget.h"
 
+#include <QShortcut>
+#include <QWhatsThis>
 #include <QCloseEvent>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -14,6 +16,9 @@ TagsWidget::TagsWidget(QStringList &tags, QWidget *parent) : QWidget(parent), ui
     setWindowFlag(Qt::Window);
     ui->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
     hide();
+
+    // Shortcuts
+    new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
 
     // Connect
     connect(ui->doneButton, &QPushButton::released, [this] () {apply();});
@@ -97,6 +102,11 @@ void TagsWidget::reload_ui()
 
     ui->listWidget->clear();
     ui->listWidget->addItems(tags);
+}
+
+void TagsWidget::whats_this()
+{
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void TagsWidget::closeEvent(QCloseEvent *event)

@@ -29,7 +29,10 @@
      <item row="0" column="1">
       <widget class="QComboBox" name="typeComboBox">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of effect. Changing this doesn't have much of an effect as it is currently dependant on the selected primary mod.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -42,6 +45,12 @@
      </item>
      <item row="1" column="1">
       <widget class="QSpinBox" name="limitSpinBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Numerical limit for selected primary/secondary mod.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="maximum">
         <number>0</number>
        </property>
@@ -55,7 +64,11 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QComboBox" name="potencyComboBox"/>
+      <widget class="QComboBox" name="potencyComboBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Potency of selected primary/secondary mod.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="primary_label">
@@ -65,7 +78,11 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QComboBox" name="primaryComboBox"/>
+      <widget class="QComboBox" name="primaryComboBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Primary mod. This drives the options in the secondary mod list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="secondary_label">
@@ -75,7 +92,11 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QComboBox" name="secondaryComboBox"/>
+      <widget class="QComboBox" name="secondaryComboBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Secondary mod. This drives the options in the potency list and the limit and timer value ranges. This list is driven by the selected primary mod. To get different options, change the primary mod.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="timer_label">
@@ -86,6 +107,12 @@
      </item>
      <item row="5" column="1">
       <widget class="QSpinBox" name="timerSpinBox">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Timer for selected primary/secondary mod.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="maximum">
         <number>0</number>
        </property>
@@ -95,6 +122,9 @@
    </item>
    <item>
     <widget class="QPushButton" name="closeButton">
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply changes, hide current window, and then show previous window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Save and close</string>
      </property>

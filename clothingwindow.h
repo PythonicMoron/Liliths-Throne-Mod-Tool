@@ -26,6 +26,10 @@ public:
     static bool load_defs(bool force_internal = false);
     void populate_ui();
 
+public slots:
+    // "What's This?" function
+    void whats_this();
+
 private:
     // This struct contains the data for the ui.
     struct UiData {

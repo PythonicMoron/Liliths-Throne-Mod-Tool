@@ -1,6 +1,8 @@
 #include "weaponwindow.h"
 #include "ui_weaponwindow.h"
 
+#include <QShortcut>
+#include <QWhatsThis>
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -17,6 +19,9 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
     setWindowFlag(Qt::Window);
     setAttribute(Qt::WA_DeleteOnClose);
     setFixedSize(WeaponWindow::size());
+
+    // Shortcuts
+    new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
 
     // Widgets and widget handlers
     colours_widget = new ColoursWidget(this);
@@ -38,6 +43,7 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
     // Connections for misc/loose items
     connect(ui->saveButton, &QPushButton::released, [this] () {save(false);});
     connect(ui->saveAsButton, &QPushButton::released, [this] () {save(true);});
+    connect(ui->whatsThisButton, &QPushButton::released, [] () {QWhatsThis::enterWhatsThisMode();});
 
     // Connections for general tab
     connect(ui->nameEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.name = text;});
@@ -305,6 +311,11 @@ void WeaponWindow::populate_ui()
 
     setup(ui->rarityComboBox, ui_data->rarity_list);
     setup(ui->varianceComboBox, ui_data->damage_variance_list);
+}
+
+void WeaponWindow::whats_this()
+{
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void WeaponWindow::save(bool as)

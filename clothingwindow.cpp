@@ -1,6 +1,7 @@
 #include "clothingwindow.h"
 #include "ui_clothingwindow.h"
 
+#include <QShortcut>
 #include <QWhatsThis>
 #include <QFileDialog>
 #include <QJsonDocument>
@@ -17,6 +18,9 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
     setWindowFlag(Qt::Window);
     setAttribute(Qt::WA_DeleteOnClose);
     setFixedSize(ClothingWindow::size());
+
+    // Shortcuts
+    new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
 
     // Widgets and widget handlers
     colours_widget = new ColoursWidget(this);
@@ -348,6 +352,11 @@ void ClothingWindow::populate_ui()
     setup(ui->genderComboBox, ui_data->gender_list);
     setup(ui->rarityComboBox, ui_data->rarity_list);
     setup(ui->setComboBox, ui_data->clothing_set_list);
+}
+
+void ClothingWindow::whats_this()
+{
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void ClothingWindow::save(bool as)

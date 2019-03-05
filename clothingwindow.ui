@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>470</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -62,6 +62,9 @@
             <widget class="QSpinBox" name="valueInput">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value (in flames) of item.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="maximum">
               <number>2147483647</number>
@@ -125,6 +128,9 @@
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I'll give you a hint. Look to the left of this box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="maximum">
               <number>100</number>
              </property>
@@ -150,7 +156,7 @@
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit item tags. WARNING: These can seriously fuck shit up. Make ABSOLUTELY sure you know what a tag is/does before adding it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="whatsThis">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;WhatsThis_Test&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the tags widget window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Edit Tags...</string>
@@ -174,6 +180,9 @@
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slots that cannot be occupied with this item equipped.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget  to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -192,6 +201,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This widget is driven by the context menu. Right click on specific items or in specific sections to get various options for that item or section.&lt;/p&gt;&lt;p&gt;Double click child items to 'edit' them.&lt;/p&gt;&lt;p&gt;The context menu will allow you to add new list entries (shown as a number) when you right click in a blank space. If you right click an existing one, it will also allow you to remove that entry.&lt;/p&gt;&lt;p&gt;Right clicking an 'Access Required', 'Blocked Bodyparts', or 'Access Blocked' section will allow you to add a new entry to it. Right clicking a specific child item will also allow you to remove it.&lt;/p&gt;&lt;p&gt;Right clicking on a 'Concealed Slots' section will allow you to add a new entry to it or switch the section to a 'Concealed Preset' section, which will discard all current slots. Right clicking a specific child item will also allow you to remove it.&lt;/p&gt;&lt;p&gt;Right clicking a 'Concealed Preset' section will allow you to switch it to a 'Concealed Slots' section.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="editTriggers">
               <set>QAbstractItemView::DoubleClicked</set>
@@ -232,6 +244,9 @@
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets maximum number of enchantments for this item. Set to -1 for default. Will not drop below current enchantment count. When set to default, custom enchantments will be disabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="minimum">
                 <number>-1</number>
                </property>
@@ -260,6 +275,9 @@
                </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of enchantments on the item.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This widget treats an entire row as a single entry.&lt;/p&gt;&lt;p&gt;If you have less entries than the above enchantment limit value, then right clicking in the widget will show a context menu from which you can add new entries.&lt;/p&gt;&lt;p&gt;Right clicking on an existing entry will give the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
@@ -346,6 +364,9 @@
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a new window for editing custom re/dis-placement lines used in game scenes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the advanced dialogue editor window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Advanced Dialogue Editor...</string>
              </property>
@@ -414,6 +435,9 @@
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Primary Colour Dye</string>
                </property>
@@ -437,6 +461,9 @@
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Secondary Colour</string>
                </property>
@@ -446,6 +473,9 @@
               <widget class="QPushButton" name="sColDyeButton">
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>Secondary Colour Dye</string>
@@ -483,6 +513,9 @@
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Tertiary Colour</string>
                </property>
@@ -493,6 +526,9 @@
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Primary Colour</string>
                </property>
@@ -502,6 +538,9 @@
               <widget class="QPushButton" name="tColDyeButton">
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>Tertiary Colour Dye</string>
@@ -597,6 +636,9 @@
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save current settings to specified XML file at specified directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will open a file dialog window where you can select or create a file to save the current mod to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Save As...</string>
          </property>
@@ -609,6 +651,9 @@
          </property>
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save file to previous save location or, if none, to/over original file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will save the current mod to either the file you opened it from or the last location you saved it to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Save</string>
@@ -627,7 +672,10 @@
           <cursorShape>WhatsThisCursor</cursorShape>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggle 'What's This?' mode. 'What's This?' mode helps clarify how to use the interface of this tool.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter 'What's This?' mode. Also done by pressing F1 on the keyboard.&lt;/p&gt;&lt;p&gt;'What's This?' mode helps clarify how to use the interface of this tool.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click this, then click something else. Magic.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>?</string>

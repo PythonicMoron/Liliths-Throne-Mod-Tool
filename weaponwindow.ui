@@ -22,6 +22,9 @@
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save mod to previous path (if any).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will save the current mod to either the file you opened it from or the last location you saved it to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Save</string>
      </property>
@@ -32,12 +35,37 @@
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save mod as specified file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will open a file dialog window where you can select or create a file to save the current mod to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Save As...</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
+   <item row="1" column="2">
+    <widget class="QPushButton" name="whatsThisButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="cursor">
+      <cursorShape>WhatsThisCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter 'What's This?' mode. Also done by pressing F1 on the keyboard.&lt;/p&gt;&lt;p&gt;'What's This?' mode helps clarify how to use the interface of this tool.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click this, then click something else. Magic.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>?</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -72,6 +100,9 @@
         <widget class="QSpinBox" name="valueSpinBox">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value (in flames) of the weapon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="maximum">
           <number>2147483647</number>
@@ -135,6 +166,9 @@
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Base damage of weapon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="maximum">
           <number>2147483647</number>
          </property>
@@ -151,6 +185,9 @@
         <widget class="QSpinBox" name="arcaneCostSpinBox">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Amount of arcane it costs to use this weapon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="maximum">
           <number>2147483647</number>
@@ -176,6 +213,9 @@
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the item tags editor. Warning: These can make things a little fucky. Use with caution.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the tags widget window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Edit item tags...</string>
          </property>
@@ -195,6 +235,9 @@
         <widget class="QListView" name="damageTypesList">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of damage types this weapon can spawn with.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::DoubleClicked</set>
@@ -361,6 +404,9 @@
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Text that is displayed for hitting. One is chosen at random.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to edit that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="editTriggers">
           <set>QAbstractItemView::DoubleClicked</set>
          </property>
@@ -389,6 +435,9 @@
         <widget class="QListView" name="missList">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Text that is displayed for missing. One is chosen at random.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to edit that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::DoubleClicked</set>
@@ -425,8 +474,17 @@
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum number of enchantments allowed. Set to -1 to disable. Disabling this will let the game choose and will DISALLOW ADDING ENCHANTMENTS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
            <property name="maximum">
             <number>100</number>
+           </property>
+           <property name="value">
+            <number>-1</number>
            </property>
           </widget>
          </item>
@@ -446,6 +504,9 @@
         <widget class="QTableWidget" name="effectList">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of enchantments weapon spawns with.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This widget treats an entire row as a single entry.&lt;/p&gt;&lt;p&gt;If you have less entries than the above enchantment limit value, then right clicking in the widget will show a context menu from which you can add new entries.&lt;/p&gt;&lt;p&gt;Right clicking on an existing entry will give the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::DoubleClicked</set>
@@ -490,6 +551,9 @@
          </property>
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spells this weapon grants the wielder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::DoubleClicked</set>
@@ -555,6 +619,9 @@
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the colour editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>Primary colour dye</string>
            </property>
@@ -584,6 +651,9 @@
           <widget class="QPushButton" name="pColButton">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the colour editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Primary colour</string>
@@ -615,6 +685,9 @@
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the colour editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>Secondary colour</string>
            </property>
@@ -624,6 +697,9 @@
           <widget class="QPushButton" name="sColDyeButton">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the colour editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Secondary colour dye</string>

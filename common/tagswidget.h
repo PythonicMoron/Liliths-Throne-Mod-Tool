@@ -23,6 +23,10 @@ public:
     void update();
     void reload_ui();
 
+public slots:
+    // "What's This?" function
+    void whats_this();
+
 protected:
     // Override closeEvent to intercept things like pressing the 'x' button.
     void closeEvent(QCloseEvent *event) override;

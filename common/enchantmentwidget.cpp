@@ -1,6 +1,8 @@
 #include "enchantmentwidget.h"
 #include "ui_enchantmentwidget.h"
 
+#include <QShortcut>
+#include <QWhatsThis>
 #include <QCloseEvent>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -14,6 +16,9 @@ EnchantmentWidget::EnchantmentWidget(Mode mode, QWidget *parent) : QWidget(paren
     ui->setupUi(this);
     setWindowFlag(Qt::Window);
     hide();
+
+    // Shortcuts
+    new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
 
     // Init pointer.
     effect_ptr = nullptr;
@@ -267,6 +272,11 @@ bool EnchantmentWidget::load_effects(bool force_internal)
     }
 
     return true;
+}
+
+void EnchantmentWidget::whats_this()
+{
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void EnchantmentWidget::closeEvent(QCloseEvent *event)

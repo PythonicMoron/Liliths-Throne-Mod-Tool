@@ -1,6 +1,8 @@
 #include "tattoowindow.h"
 #include "ui_tattoowindow.h"
 
+#include <QShortcut>
+#include <QWhatsThis>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QFileDialog>
@@ -16,6 +18,9 @@ TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWi
     setAttribute(Qt::WA_DeleteOnClose);
     setFixedSize(TattooWindow::size());
 
+    // Shortcuts
+    new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
+
     // Widgets and widget handlers
     colours_widget = new ColoursWidget(this);
     availability_handler = new ListViewHandler(ui->availabilityList, data.slot_availability, new AvailabilityComboBoxDelegate(this));
@@ -30,6 +35,7 @@ TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWi
     // Connections for misc/loose items
     connect(ui->saveButton, &QPushButton::released, [this] () {save(false);});
     connect(ui->saveAsButton, &QPushButton::released, [this] () {save(true);});
+    connect(ui->whatsThisButton, &QPushButton::released, [] () {QWhatsThis::enterWhatsThisMode();});
 
     // Connections for text tab
     connect(ui->nameEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.name = text;});
@@ -197,6 +203,11 @@ void TattooWindow::populate_ui()
 
     set_range(ui->valueSpinBox, ui_data->value_range);
     set_range(ui->effectLimitSpinBox, ui_data->enchantment_limit_range);
+}
+
+void TattooWindow::whats_this()
+{
+    QWhatsThis::enterWhatsThisMode();
 }
 
 void TattooWindow::save(bool as)
