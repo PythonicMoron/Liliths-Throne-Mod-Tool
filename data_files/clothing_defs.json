@@ -110,9 +110,9 @@
                     "ASS",
                     "ANUS",
                     "STOMACH",
+					"BACK",
                     "LEGS",
                     "FEET",
-                    "BACK",
                     "THIGHS",
                     "VAGINA",
                     "MOUND",
@@ -120,6 +120,8 @@
                     "TESTICLES",
                     "BREASTS",
                     "NIPPLES",
+					"BREASTS_CROTCH",
+					"NIPPLES_CROTCH",
                     "HAIR",
                     "MOUTH"
                 ],
@@ -131,6 +133,7 @@
                     "CONCEALED_FULL_TORSO",
                     "CONCEALED_GENITALS",
                     "CONCEALED_GROIN",
+					"CONCEALED_TAUR",
                     "CONCEALED_DRESS_FRONT_FULL",
                     "CONCEALED_UNZIPS_GROIN",
                     "CONCEALED_ANKLES_FROM_TROUSERS"

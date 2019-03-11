@@ -27,7 +27,8 @@
 				"ICE",
 				"FIRE",
 				"POISON",
-				"LUST"
+				"LUST",
+				"MISC"
 			],
 			"spells": [
 				"FIREBALL",

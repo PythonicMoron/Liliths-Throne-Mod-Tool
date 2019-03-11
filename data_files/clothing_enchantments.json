@@ -43,6 +43,14 @@
 			"primary mod": "TF_BREASTS",
 			"secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]
 		},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 91]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_REGENERATION"], "limit range": [0, 4]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 100000]},
+		{
+			"primary mod": "TF_BREASTS_CROTCH",
+			"secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]
+		},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 40]},
 		{
 			"primary mod": "TF_PENIS",
