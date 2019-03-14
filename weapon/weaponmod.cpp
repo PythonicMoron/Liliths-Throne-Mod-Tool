@@ -1,7 +1,7 @@
 #include "weaponmod.h"
 
 #include <QFile>
-#include <QDomDocument>
+#include <QTextStream>
 
 bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
 {
@@ -14,23 +14,20 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
     // Get root element from document
     QDomElement root = xml_doc.documentElement();
 
-    // This clusterfuck is volatile. Be ready for a world of pain if you change anything.
-    QDomElement child = root.firstChildElement();
-
     // Looking through children of "weapon"
-    while (!child.isNull()) {
+    for (QDomElement child = root.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
 
         if (child.tagName() == "coreAttributes") {
-            QDomElement element = child.firstChildElement();
 
             // Looking through children of "coreAttributes"
-            while (!element.isNull()) {
+            for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
 
                 if (element.tagName() == "value") {
                     bool ok;
                     this->value = element.text().toInt(&ok);
                     if (!ok)
                         error.append("Value could not be converted to integer. Will default to 0!\n");
+                    element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "melee") {
@@ -38,6 +35,7 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
                         this->melee = true;
                     else
                         this->melee = false;
+                    element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "twoHanded") {
@@ -45,13 +43,18 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
                         this->two_handed = true;
                     else
                         this->two_handed = false;
+                    element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "determiner")
+                if (element.tagName() == "determiner") {
                     this->determiner = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "name")
+                if (element.tagName() == "name") {
                     this->name = element.text();
+                    element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "namePlural") {
                     this->name_plural = element.text();
@@ -59,37 +62,55 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
                         this->plural_default = true;
                     else
                         this->plural_default = false;
+                    element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "description")
+                if (element.tagName() == "description") {
                     this->description = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "attackDescriptor")
+                if (element.tagName() == "attackDescriptor") {
                     this->attack_descriptor = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "attackTooltipDescription")
+                if (element.tagName() == "attackTooltipDescription") {
                     this->attack_tooltip = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "rarity")
+                if (element.tagName() == "rarity") {
                     this->rarity = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "equipText")
+                if (element.tagName() == "equipText") {
                     this->equip_text = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "unequipText")
+                if (element.tagName() == "unequipText") {
                     this->unequip_text = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "imageName")
+                if (element.tagName() == "imageName") {
                     this->image_name = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "imageEquippedName")
+                if (element.tagName() == "imageEquippedName") {
                     this->equipped_image_name = element.text();
+                    element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "damage") {
                     bool ok;
                     this->damage = element.text().toInt(&ok);
                     if (!ok)
                         error.append("Damage could not be converted to integer. Will default to 0!\n");
+                    element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "arcaneCost") {
@@ -97,16 +118,23 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
                     this->arcane_cost = element.text().toInt(&ok);
                     if (!ok)
                         error.append("Arcane cost could not be converted to integer. Will default to 0!\n");
+                    element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "damageVariance")
+                if (element.tagName() == "damageVariance") {
                     this->damage_variance = element.text();
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "availableDamageTypes")
+                if (element.tagName() == "availableDamageTypes") {
                     iterate_string_list(element, "damageType", this->damage_types);
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "spells")
+                if (element.tagName() == "spells") {
                     iterate_string_list(element, "spell", this->spells);
+                    element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "enchantmentLimit") {
                     QString number = element.text();
@@ -118,6 +146,7 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
                             this->enchantment_limit = -1;
                         }
                     } else this->enchantment_limit = -1;
+                    element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "effects") {
@@ -137,24 +166,33 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
                         }
                     }
                     this->effects = effect_list;
+                    element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "primaryColours")
+                if (element.tagName() == "primaryColours") {
                     get_colours(element, this->primary_colour);
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "primaryColoursDye")
+                if (element.tagName() == "primaryColoursDye") {
                     get_colours(element, this->primary_colour_dye);
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "secondaryColours")
+                if (element.tagName() == "secondaryColours") {
                     get_colours(element, this->secondary_colour);
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "secondaryColoursDye")
+                if (element.tagName() == "secondaryColoursDye") {
                     get_colours(element, this->secondary_colour_dye);
+                    element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "itemTags")
+                if (element.tagName() == "itemTags") {
                     iterate_string_list(element, "tag", this->item_tags);
-
-                element = element.nextSiblingElement();
+                    element.nextSiblingElement();
+                }
 
             } // End "coreAttributes"
         }
@@ -164,8 +202,6 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
 
         if (child.tagName() == "missDescriptions")
             iterate_string_list(child, "missText", this->miss_text);
-
-        child = child.nextSiblingElement();
 
     } // End "weapon"
 
@@ -227,6 +263,9 @@ bool WeaponMod::save_file(const QString &path, QString &error)
 
     // Set the document pointer. Needs to be done for the write functions
     document = new QDomDocument();
+
+    // Set the processing instructions. Also called the xml declaration. This is used to define output encoding.
+    document->appendChild(document->createProcessingInstruction("xml", R"(version="1.0" encoding="UTF-8" standalone="no")"));
 
     // Root nodes
     auto root = write(*document, "weapon");
@@ -303,13 +342,11 @@ bool WeaponMod::save_file(const QString &path, QString &error)
 
 
 
-    // Attempt to write to file.
-    bool state = true;
-    if (file.write(document->toByteArray()) == -1) {
-        error.append("Error occured while writing file");
-        state = false;
-    }
+    // Attempt to write to file. Has undefined behaviour on fail. We can only hope it doesn't at this point.
+    QTextStream out(&file);
+    document->save(out, 4);
+    out.flush();
     file.close();
     delete document;
-    return state;
+    return true;
 }

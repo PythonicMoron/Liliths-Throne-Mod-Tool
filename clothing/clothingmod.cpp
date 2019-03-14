@@ -1,6 +1,7 @@
 #include "clothingmod.h"
 
-#include <QtXml>
+#include <QFile>
+#include <QTextStream>
 
 // Constructors and Destructors
 
@@ -100,30 +101,31 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
     // Initialize some variables. Most are already initialized by operations below.
     this->dialogue = QList<XPlacementText>();
 
-    // This clusterfuck is volatile. Be ready for a world of pain if you change anything.
-    QDomElement child = root.firstChildElement();
-
     // Looking through children of "clothing"
-    while (!child.isNull()) {
+    for (QDomElement child = root.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
 
         if (child.tagName() == "coreAttributes") {
-            QDomElement element = child.firstChildElement();
 
             // Looking through children of "coreAttributes"
-            while (!element.isNull()) {
+            for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
 
                 if (element.tagName() == "value") {
                     bool ok;
                     this->value = element.text().toInt(&ok);
                     if (!ok)
                         error.append("Value could not be converted to integer. Will default to 0!\n");
+                    element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "determiner")
+                if (element.tagName() == "determiner") {
                     this->determiner = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "name")
+                if (element.tagName() == "name") {
                     this->name = element.text();
+                    element = element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "namePlural") {
                     this->plural_name = element.text();
@@ -131,35 +133,51 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                         this->plural_default = true;
                     else
                         this->plural_default = false;
+                    element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "description")
+                if (element.tagName() == "description") {
                     this->description = element.text();
+                    element = element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "physicalResistance") {
                     bool ok;
                     this->physical_resistance = element.text().toInt(&ok);
                     if (!ok)
                         error.append("Physical resistance could not be converted to integer. Will default to 0!\n");
+                    element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "femininity")
+                if (element.tagName() == "femininity") {
                     this->femininity = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "slot")
+                if (element.tagName() == "slot") {
                     this->slot = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "rarity")
+                if (element.tagName() == "rarity") {
                     this->rarity = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "clothingSet")
+                if (element.tagName() == "clothingSet") {
                     this->clothing_set = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "imageName")
+                if (element.tagName() == "imageName") {
                     this->image_name = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "imageEquippedName")
+                if (element.tagName() == "imageEquippedName") {
                     this->equipped_image_name = element.text();
+                    element = element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "enchantmentLimit") {
                     QString number = element.text();
@@ -171,6 +189,7 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                             this->enchantment_limit = -1;
                         }
                     } else this->enchantment_limit = -1;
+                    element = element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "effects") {
@@ -190,6 +209,7 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                         }
                     }
                     this->effects = effect_list;
+                    element = element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "blockedPartsList") {
@@ -198,22 +218,29 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                     for (int i = 0; i < list.size(); i++) {
                         if (list.at(i).isElement()) {
                             BlockedParts blocked_parts_entry;
-                            QDomElement entry = list.at(i).firstChildElement();
 
                             // Looking through children of "blockedPartsList/blockedParts"
-                            while (!entry.isNull()) {
+                            for (QDomElement entry = list.at(i).firstChildElement(); !entry.isNull(); entry = entry.nextSiblingElement()) {
 
-                                if (entry.tagName() == "displacementType")
+                                if (entry.tagName() == "displacementType") {
                                     blocked_parts_entry.displacement_type = entry.text();
+                                    entry = entry.nextSiblingElement();
+                                }
 
-                                if (entry.tagName() == "clothingAccessRequired")
+                                if (entry.tagName() == "clothingAccessRequired") {
                                     iterate_string_list(entry, "clothingAccess", blocked_parts_entry.access_required);
+                                    entry = entry.nextSiblingElement();
+                                }
 
-                                if (entry.tagName() == "blockedBodyParts")
+                                if (entry.tagName() == "blockedBodyParts") {
                                     iterate_string_list(entry, "bodyPart", blocked_parts_entry.blocked_bodyparts);
+                                    entry = entry.nextSiblingElement();
+                                }
 
-                                if (entry.tagName() == "clothingAccessBlocked")
+                                if (entry.tagName() == "clothingAccessBlocked") {
                                     iterate_string_list(entry, "clothingAccess", blocked_parts_entry.access_blocked);
+                                    entry = entry.nextSiblingElement();
+                                }
 
                                 if (entry.tagName() == "concealedSlots") {
                                     QString attr = entry.attribute("values");
@@ -224,9 +251,8 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                                         iterate_string_list(entry, "slot", concealed_parts);
                                         blocked_parts_entry.concealed_slots = QSharedPointer<BlockedParts::ConcealedSlots>(new BlockedParts::ConcealedSlots(concealed_parts));
                                     }
+                                    entry = entry.nextSiblingElement();
                                 }
-
-                                entry = entry.nextSiblingElement();
 
                             } // End "blockedPartsList/blockedParts"
 
@@ -234,33 +260,48 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                         }
                     }
                     this->blocked_parts = blocked_parts_list;
+                    element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "incompatibleSlots")
+                if (element.tagName() == "incompatibleSlots") {
                     iterate_string_list(element, "slot", this->incompatible_slots);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "primaryColours")
+                if (element.tagName() == "primaryColours") {
                     get_colours(element, this->primary_colour);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "primaryColoursDye")
+                if (element.tagName() == "primaryColoursDye") {
                     get_colours(element, this->primary_colour_dye);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "secondaryColours")
+                if (element.tagName() == "secondaryColours") {
                     get_colours(element, this->secondary_colour);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "secondaryColoursDye")
+                if (element.tagName() == "secondaryColoursDye") {
                     get_colours(element, this->secondary_colour_dye);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "tertiaryColours")
+                if (element.tagName() == "tertiaryColours") {
                     get_colours(element, this->tertiary_colour);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "tertiaryColoursDye")
+                if (element.tagName() == "tertiaryColoursDye") {
                     get_colours(element, this->tertiary_colour_dye);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "itemTags")
+                if (element.tagName() == "itemTags") {
                     iterate_string_list(element, "tag", this->item_tags);
-
-                element = element.nextSiblingElement();
+                    element = element.nextSiblingElement();
+                }
 
             } // End "coreAttributes"
         }
@@ -347,8 +388,6 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
             this->dialogue.append(xplacement);
         }
 
-        child = child.nextSiblingElement();
-
     } // End "clothing"
 
     return true;
@@ -413,6 +452,9 @@ bool ClothingMod::save_file(const QString &path, QString &error)
 
     // Set the document pointer. Needs to be done for the write functions
     document = new QDomDocument();
+
+    // Set the processing instructions. Also called the xml declaration. This is used to define output encoding.
+    document->appendChild(document->createProcessingInstruction("xml", R"(version="1.0" encoding="UTF-8" standalone="no")"));
 
     // Root nodes
     auto root = write(*document, "clothing");
@@ -517,15 +559,13 @@ bool ClothingMod::save_file(const QString &path, QString &error)
 
 
 
-    // Attempt to write to file.
-    bool state = true;
-    if (file.write(document->toByteArray()) == -1) {
-        error.append("Error occured while writing file");
-        state = false;
-    }
+    // Attempt to write to file. Has undefined behaviour on fail. We can only hope it doesn't at this point.
+    QTextStream out(&file);
+    document->save(out, 4);
+    out.flush();
     file.close();
     delete document;
-    return state;
+    return true;
 }
 
 // End Functions

@@ -1,6 +1,7 @@
 #include "tattoomod.h"
 
 #include <QFile>
+#include <QTextStream>
 
 bool TattooMod::read_file(const QDomDocument &xml_doc, QString &error)
 {
@@ -13,35 +14,38 @@ bool TattooMod::read_file(const QDomDocument &xml_doc, QString &error)
     // Get root element from document
     QDomElement root = xml_doc.documentElement();
 
-    // This clusterfuck is volatile. Be ready for a world of pain if you change anything.
-    QDomElement child = root.firstChildElement();
-
     // Looking through children of "tattoo"
-    while (!child.isNull()) {
+    for (QDomElement child = root.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
         // This loop is kind of pointless. Left here in case the tattoo mod xml format changes...
         // And because I copied this from my other read_file functions and don't want to figure out how to change it.
 
         if (child.tagName() == "coreAttributes") {
-            QDomElement element = child.firstChildElement();
 
             // Looking through children of "coreAttributes"
-            while (!element.isNull()) {
+            for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
 
                 if (element.tagName() == "value") {
                     bool ok;
                     this->value = element.text().toInt(&ok);
                     if (!ok)
                         error.append("Value could not be converted to integer. Will default to 0!\n");
+                    element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "name")
+                if (element.tagName() == "name") {
                     this->name = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "description")
+                if (element.tagName() == "description") {
                     this->description = element.text();
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "imageName")
+                if (element.tagName() == "imageName") {
                     this->image_name = element.text();
+                    element = element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "enchantmentLimit") {
                     QString number = element.text();
@@ -53,26 +57,31 @@ bool TattooMod::read_file(const QDomDocument &xml_doc, QString &error)
                             this->enchantment_limit = -1;
                         }
                     } else this->enchantment_limit = -1;
+                    element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "slotAvailability")
+                if (element.tagName() == "slotAvailability") {
                     iterate_string_list(element, "slot", this->slot_availability);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "primaryColours")
+                if (element.tagName() == "primaryColours") {
                     get_colours(element, this->primary_colour);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "secondaryColours")
+                if (element.tagName() == "secondaryColours") {
                     get_colours(element, this->secondary_colour);
+                    element = element.nextSiblingElement();
+                }
 
-                if (element.tagName() == "tertiaryColours")
+                if (element.tagName() == "tertiaryColours") {
                     get_colours(element, this->tertiary_colour);
-
-                element = element.nextSiblingElement();
+                    element = element.nextSiblingElement();
+                }
 
             } // End "coreAttributes"
         }
-
-        child = child.nextSiblingElement();
 
     } // End "tattoo"
 
@@ -109,6 +118,9 @@ bool TattooMod::save_file(const QString &path, QString &error)
     // Set the document pointer. Needs to be done for the write functions
     document = new QDomDocument();
 
+    // Set the processing instructions. Also called the xml declaration. This is used to define output encoding.
+    document->appendChild(document->createProcessingInstruction("xml", R"(version="1.0" encoding="UTF-8" standalone="no")"));
+
     // Root nodes
     auto root = write(*document, "tattoo");
     auto core = write(root, "coreAttributes");
@@ -137,13 +149,11 @@ bool TattooMod::save_file(const QString &path, QString &error)
 
 
 
-    // Attempt to write to file.
-    bool state = true;
-    if (file.write(document->toByteArray()) == -1) {
-        error.append("Error occured while writing file");
-        state = false;
-    }
+    // Attempt to write to file. Has undefined behaviour on fail. We can only hope it doesn't at this point.
+    QTextStream out(&file);
+    document->save(out, 4);
+    out.flush();
     file.close();
     delete document;
-    return state;
+    return true;
 }
