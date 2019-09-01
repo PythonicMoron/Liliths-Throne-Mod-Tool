@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     enum Mod { // These are used as array indexes. Don't break them.
-        clothing, tattoo, weapon,
+        clothing, tattoo, weapon, //outfit,
         somebody_fucked_up // Also used as a size variable
     };
 
@@ -26,7 +26,7 @@ public slots:
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 protected:
     // Override closeEvent to intercept things like pressing the 'x' button.

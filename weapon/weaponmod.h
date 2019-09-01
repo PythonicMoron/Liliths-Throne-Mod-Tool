@@ -1,6 +1,8 @@
 #ifndef WEAPONMOD_H
 #define WEAPONMOD_H
 
+#include <QSharedPointer>
+
 #include "common/datacommon.h"
 
 // This class does three things:
@@ -19,15 +21,15 @@ public:
 
     // Data
     bool melee, two_handed, plural_default;
-    QString determiner, name_plural, attack_descriptor, attack_tooltip, rarity, equip_text, unequip_text, equipped_image_name, damage_variance;
-    int damage, arcane_cost;
+    QString determiner, name_plural, attack_descriptor, attack_tooltip, rarity, equip_text, unequip_text, image_name, equipped_image_name, damage_variance;
+    int damage, arcane_cost, value, enchantment_limit;
 
     // Data lists
     QStringList damage_types, spells, item_tags, hit_text, miss_text;
     QList<Effect> effects;
 
     // Data pointers
-    QSharedPointer<Colour> primary_colour_dye, secondary_colour_dye;
+    QSharedPointer<Colour> primary_colour, secondary_colour, primary_colour_dye, secondary_colour_dye;
 };
 
 #endif // WEAPONMOD_H

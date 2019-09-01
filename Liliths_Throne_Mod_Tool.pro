@@ -49,7 +49,9 @@ SOURCES += \
     weapon/texteditdelegate.cpp \
     tattoowindow.cpp \
     tattoo/tattoomod.cpp \
-    tattoo/availabilitycomboboxdelegate.cpp
+    tattoo/availabilitycomboboxdelegate.cpp \
+    # outfitwindow.cpp \ DISABLED FOR BUILD
+    # outfit/outfitmod.cpp DISABLED FOR BUILD
 
 HEADERS += \
         mainwindow.h \
@@ -75,7 +77,9 @@ HEADERS += \
     weapon/texteditdelegate.h \
     tattoowindow.h \
     tattoo/tattoomod.h \
-    tattoo/availabilitycomboboxdelegate.h
+    tattoo/availabilitycomboboxdelegate.h \
+    # outfitwindow.h \ DISABLED FOR BUILD
+    # outfit/outfitmod.h DISABLED FOR BUILD
 
 FORMS += \
         mainwindow.ui \
@@ -85,7 +89,8 @@ FORMS += \
     common/tagswidget.ui \
     common/enchantmentwidget.ui \
     weaponwindow.ui \
-    tattoowindow.ui
+    tattoowindow.ui \
+    # outfitwindow.ui DISABLED FOR BUILD
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

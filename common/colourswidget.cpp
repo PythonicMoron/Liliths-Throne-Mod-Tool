@@ -94,7 +94,7 @@ bool ColoursWidget::load_colours(bool force_internal)
 {
     // This function loads the data from the colours json file and replaces the static ui data.
 
-    // Returns succuss state (only returns false if both internal and external files failed to load).
+    // Returns success state (only returns false if both internal and external files failed to load).
     // The force_internal parameter tells the function to ignore external files, if any, when set to true. Defaults to false.
 
     QFile file("colours.json"); // First, check for external file. Allows for overriding internal resource.
@@ -139,6 +139,18 @@ bool ColoursWidget::load_colours(bool force_internal)
     }
 
     return true;
+}
+
+QStringList ColoursWidget::possible_colours()
+{
+    // Simply return a copy of the colours list.
+    return QStringList(colours);
+}
+
+QStringList ColoursWidget::possible_presets()
+{
+    // Simply return a copy of the presets list.
+    return QStringList(presets);
 }
 
 void ColoursWidget::whats_this()

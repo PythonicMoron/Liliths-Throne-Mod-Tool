@@ -1,7 +1,6 @@
 #ifndef DATACOMMON_H
 #define DATACOMMON_H
 
-#include <QSharedPointer>
 #include <QDomElement>
 
 #include "common/colour.h"
@@ -25,11 +24,7 @@ public:
     virtual bool save_file(const QString &path, QString &error);
 
     // Common data
-    int value, enchantment_limit;
-    QString name, description, image_name;
-
-    // Common data pointers
-    QSharedPointer<Colour> primary_colour, secondary_colour;
+    QString name, description;
 
 protected:
     // These two pointers are solely used to save some typing for the 'write' and 'check_string' functions

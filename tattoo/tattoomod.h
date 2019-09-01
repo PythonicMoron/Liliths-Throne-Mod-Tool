@@ -1,6 +1,8 @@
 #ifndef TATTOOMOD_H
 #define TATTOOMOD_H
 
+#include <QSharedPointer>
+
 #include "common/datacommon.h"
 
 // This class does three things:
@@ -17,11 +19,15 @@ public:
     bool read_file(const QDomDocument &xml_doc, QString &error) override;
     bool save_file(const QString &path, QString &error) override;
 
+    // Data
+    QString image_name;
+    int value, enchantment_limit;
+
     // Data lists
     QStringList slot_availability;
 
     // Data pointers
-    QSharedPointer<Colour> tertiary_colour;
+    QSharedPointer<Colour> primary_colour, secondary_colour, tertiary_colour;
 };
 
 #endif // TATTOOMOD_H

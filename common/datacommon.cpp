@@ -1,5 +1,7 @@
 #include "datacommon.h"
 
+#include <QSharedPointer>
+
 #include "utility.h"
 
 bool DataCommon::read_file(const QDomDocument& UNUSED(xml_doc), QString& UNUSED(error))

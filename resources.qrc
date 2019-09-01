@@ -10,5 +10,9 @@
         <file>data_files/item_tags.json</file>
         <file>data_files/weapon_default.xml</file>
         <file>data_files/tattoo_default.xml</file>
+        <file>data_files/outfit_defs.json</file>
+        <file>data_files/outfit_default.xml</file>
+        <file>data_files/outfit_conditionals.json</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

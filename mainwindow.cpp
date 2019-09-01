@@ -7,6 +7,7 @@
 #include "clothingwindow.h"
 #include "weaponwindow.h"
 #include "tattoowindow.h"
+//#include "outfitwindow.h" // DISABLED FOR BUILD
 #include "utility.h"
 
 void MainWindow::openMod()
@@ -95,6 +96,11 @@ void MainWindow::openMod()
         auto *ww = new WeaponWindow(doc, location, this);
         ww->show();
     }
+    /*
+    else if (doc.documentElement().tagName() == "outfit") { // Is outfit mod?
+        // TODO
+    }
+    */
     else Utility::error("Not a valid mod file!"); // Bad. I only accept mod xml files.
 }
 
@@ -125,6 +131,13 @@ void MainWindow::newMod()
             flag = MainWindow::Mod::weapon;
             break;
         }
+        /*
+        case MainWindow::Mod::outfit: {
+            file.setFileName(":/res/data_files/outfit_default.xml");
+            flag = MainWindow::Mod::outfit;
+            break;
+        }
+        */
         case MainWindow::Mod::somebody_fucked_up:
             Utility::error("Critical problem: Somebody doesn't know what the fuck they're doing.");
             return;
@@ -202,6 +215,24 @@ void MainWindow::newMod()
             ww->show();
             break;
         }
+        /*
+        case MainWindow::Mod::outfit: {
+        // Check if window was disabled.
+            if (!enabled[MainWindow::Mod::outfit]) {
+                Utility::error("The outfit mod tool has been disabled because something went wrong.");
+                return;
+            }
+
+            // Update statuse message.
+            statusBar()->clearMessage();
+            statusBar()->showMessage("Created an outfit mod.");
+
+            // Create window object and show it.
+            auto *ow = new OutfitWindow(doc, QString(), this);
+            ow->show();
+            break;
+        }
+        */
         case MainWindow::Mod::somebody_fucked_up:
             Utility::error("Seriously?"); // It would be against everything I know to be real if this was in any way reachable.
     }
@@ -263,6 +294,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // Tattoo defs check
     if (!TattooWindow::load_defs())
         enabled[MainWindow::Mod::tattoo] = false;
+
+    // Outfit defs check
+    // TODO
 }
 
 MainWindow::~MainWindow()
@@ -301,6 +335,12 @@ MainWindow::Mod MainWindow::get_mode()
     // Weapon mod
     if (text == "Weapon mod")
         return MainWindow::Mod::weapon;
+
+    /*
+    // Outfit mod
+    if (text == "Outfit mod")
+        return MainWindow::Mod::outfit;
+    */
 
     return MainWindow::Mod::somebody_fucked_up; // Seriously.
 }

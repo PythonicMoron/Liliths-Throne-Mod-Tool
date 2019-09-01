@@ -1,6 +1,8 @@
 #ifndef CLOTHINGMOD_H
 #define CLOTHINGMOD_H
 
+#include <QSharedPointer>
+
 #include "common/datacommon.h"
 
 // This class does three things:
@@ -62,9 +64,9 @@ public:
     bool save_file(const QString &path, QString &error) override;
 
     // Data
-    int physical_resistance;
+    int physical_resistance, value, enchantment_limit;
     bool plural_default;
-    QString determiner, plural_name, femininity, slot, rarity, clothing_set, equipped_image_name;
+    QString determiner, plural_name, femininity, slot, rarity, clothing_set, image_name, equipped_image_name;
 
     // Data lists
     QStringList incompatible_slots, item_tags;
@@ -73,7 +75,7 @@ public:
     QList<XPlacementText> dialogue;
 
     // Data pointers
-    QSharedPointer<Colour> primary_colour_dye, secondary_colour_dye, tertiary_colour, tertiary_colour_dye;
+    QSharedPointer<Colour> primary_colour, primary_colour_dye, secondary_colour, secondary_colour_dye, tertiary_colour, tertiary_colour_dye;
 };
 
 #endif // CLOTHINGMOD_H

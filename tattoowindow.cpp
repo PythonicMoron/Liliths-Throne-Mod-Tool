@@ -218,7 +218,7 @@ void TattooWindow::save(bool as)
 
     // Save as...
     if (as) {
-        location = QFileDialog::getSaveFileName(this, "Save clothing mod", "./", "(*.xml)");
+        location = QFileDialog::getSaveFileName(this, "Save tattoo mod", "./", "(*.xml)");
 
         // Should trigger on cancel or failure
         if (location.isEmpty() || location.isNull()) {

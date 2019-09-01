@@ -326,7 +326,7 @@ void WeaponWindow::save(bool as)
 
     // Save as...
     if (as) {
-        location = QFileDialog::getSaveFileName(this, "Save clothing mod", "./", "(*.xml)");
+        location = QFileDialog::getSaveFileName(this, "Save weapon mod", "./", "(*.xml)");
 
         // Should trigger on cancel or failure
         if (location.isEmpty() || location.isNull()) {

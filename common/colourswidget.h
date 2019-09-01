@@ -24,6 +24,10 @@ public:
     void reload_ui();
     static bool load_colours(bool force_internal = false);
 
+    // Some other classes need the raw colour and preset data, so we must expose it.
+    static QStringList possible_colours();
+    static QStringList possible_presets();
+
 public slots:
     // "What's This?" function
     void whats_this();
