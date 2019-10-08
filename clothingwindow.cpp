@@ -8,8 +8,9 @@
 #include <QJsonArray>
 
 #include "utility.h"
-#include "clothing/treecomboboxdelegate.h"
-#include "clothing/slotcomboboxdelegate.h"
+
+extern template class RestrictedSlotListViewHandler<ClothingMod::BlockedParts>;
+extern template class RestrictedSlotListViewHandler<ClothingMod::XPlacementText>;
 
 ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent) : QWidget(parent), ui(new Ui::ClothingWindow)
 {
@@ -25,11 +26,16 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
     // Widgets and widget handlers
     colours_widget = new ColoursWidget(this);
     tags_widget = new TagsWidget(data.item_tags, this);
-    dialogue_widget = new DialogueWidget(this);
-    effect_widget = new EnchantmentWidget(EnchantmentWidget::Mode::clothing, this);
-    tree_handler = new TreeHandler(ui->accessTree, data.blocked_parts);
-    effects_list_handler = new EffectListHandler(ui->enchantmentList);
-    incompatible_slot_handler = new ListViewHandler(ui->incompatibleSlotList, data.incompatible_slots, new SlotComboBoxDelegate(this));
+    access_widget = new AccessibilityWidget(data.slot_blocked_parts, this);
+    dialogue_widget = new AdvancedDialogueWidget(data.slot_dialogue, this);
+    effects_list_handler = new EffectListHandler(AdvancedEffectWidget::Mode::clothing, ui->enchantmentList, ui->enchantmentLimitInput, data.effects);
+    equippable_slot_handler = new ListViewHandler(ui->slotList, data.equippable_slots, slot_delegate.get());
+    default_pattern_handler = new ListViewHandler(ui->patternList, data.default_patterns);
+    incompatible_slot_handler = new TableViewHandler(ui->incompatibleSlotTable, data.incompatible_slots, "Equipped Slot", "Incompatible Slot", true, new CustomComboBoxDelegate(data.equippable_slots, this), slot_delegate.get());
+    slot_tag_handler = new TableViewHandler(ui->slotTagsTable, data.slot_tags, "Equipped Slot", "Item Tag", true, new CustomComboBoxDelegate(data.equippable_slots, this), tags_delegate.get());
+    equip_image_handler = new TableViewHandler(ui->equippedImageTable, data.equipped_image_name_slot, "Equipped Slot", "File Name", false, new CustomComboBoxDelegate(data.equippable_slots, this));
+    access_slot_handler = new RestrictedSlotListViewHandler<ClothingMod::BlockedParts>(ui->accessSlotList, data.slot_blocked_parts, data.equippable_slots, access_widget);
+    dialogue_slot_handler = new RestrictedSlotListViewHandler<ClothingMod::XPlacementText>(ui->xplacementSlotList, data.slot_dialogue, data.equippable_slots, dialogue_widget);
 
     // Populate Ui
     populate_ui();
@@ -41,46 +47,43 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
     // Connections for misc/loose items
     connect(ui->saveButton, &QPushButton::released, [this] () {save(false);});
     connect(ui->saveAsButton, &QPushButton::released, [this] () {save(true);});
-    connect(ui->whatsThisButton, &QPushButton::released, [] () {QWhatsThis::enterWhatsThisMode();});
+    connect(ui->whatsThisButton, &QPushButton::released, this, &ClothingWindow::whats_this);
 
     // Connections for general tab
     connect(ui->nameEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.name = text;});
     connect(ui->valueInput, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.value = value;});
-    connect(ui->slotComboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged), [this] (const QString &text) {data.slot = text;});
     connect(ui->genderComboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged), [this] (const QString &text) {data.femininity = text;});
     connect(ui->rarityComboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged), [this] (const QString &text) {data.rarity = text;});
-    connect(ui->resistanceInput, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.physical_resistance = value;});
+    connect(ui->resistanceInput, QOverload<double>::of(&QDoubleSpinBox::valueChanged), [this] (double value) {data.physical_resistance = value;});
     connect(ui->setComboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged), [this] (const QString &text) {data.clothing_set = text;});
     connect(ui->tagsButton, &QPushButton::released, [this] () {tags_widget->open();});
-    connect(ui->incompatibleSlotList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {incompatible_slot_handler->contex_menu(pos);});
 
     // Connections for accessibility tab
-    connect(ui->accessTree, &QTreeView::customContextMenuRequested, [this] (const QPoint &pos) {tree_handler->contex_menu(pos);});
+    // TODO Unfuck widget first
 
     // Connections for enchantments tab
     connect(ui->enchantmentLimitInput, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.enchantment_limit = value;});
-    connect(ui->enchantmentList, &QTableWidget::customContextMenuRequested, [this] (const QPoint &pos) {effects_list_handler->contex_menu(pos, ui->enchantmentLimitInput->value());});
-    connect(effects_list_handler, &EffectListHandler::remove, [this] (int index) {data.effects.removeAt(index); effects_list_handler->update(data.effects);});
-    connect(effects_list_handler, &EffectListHandler::add, [this] () {data.effects.append(DataCommon::Effect()); effect_widget->open(&data.effects.last());});
-    connect(effect_widget, &EnchantmentWidget::finished, [this] () {effects_list_handler->update(data.effects);});
-    connect(ui->enchantmentList, &QTableWidget::itemDoubleClicked, [this] (QTableWidgetItem* UNUSED(item)) {effect_widget->open(&data.effects[ui->enchantmentList->currentRow()]);});
 
     // Connections for dialogue tab
     connect(ui->pluralNameEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.plural_name = text;});
     connect(ui->pluralToggle, &QCheckBox::stateChanged, [this] () {data.plural_default = ui->pluralToggle->isChecked();});
     connect(ui->determinerEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.determiner = text;});
     connect(ui->descriptionEdit, &QPlainTextEdit::textChanged, [this] () {data.description = ui->descriptionEdit->toPlainText();});
-    connect(ui->advancedDialogueButton, &QPushButton::released, [this] () {dialogue_widget->open(data.dialogue);});
+    connect(ui->authorTagEdit, &QPlainTextEdit::textChanged, [this] () {data.author_tag = ui->authorTagEdit->toPlainText();});
 
-    // Connections for colour tab
+    // Connections for visuals tab
     connect(ui->pColButton, &QPushButton::released, [this]() {colours_widget->open(data.primary_colour.get(), ui->pColToggle->isChecked());});
     connect(ui->pColDyeButton, &QPushButton::released, [this] () {colours_widget->open(data.primary_colour_dye.get(), ui->pColDyeToggle->isChecked());});
     connect(ui->sColButton, &QPushButton::released, [this] () {colours_widget->open(data.secondary_colour.get(), ui->sColToggle->isChecked());});
     connect(ui->sColDyeButton, &QPushButton::released, [this] () {colours_widget->open(data.secondary_colour_dye.get(), ui->sColDyeToggle->isChecked());});
     connect(ui->tColButton, &QPushButton::released, [this] () {colours_widget->open(data.tertiary_colour.get(), ui->tColToggle->isChecked());});
     connect(ui->tColDyeButton, &QPushButton::released, [this] () {colours_widget->open(data.tertiary_colour_dye.get(), ui->tColDyeToggle->isChecked());});
+    connect(ui->pat_pColButton, &QPushButton::released, [this]() {colours_widget->open(data.pattern_primary_colour.get(), ui->pat_pColToggle->isChecked());});
+    connect(ui->pat_sColButton, &QPushButton::released, [this] () {colours_widget->open(data.pattern_secondary_colour.get(), ui->pat_sColToggle->isChecked());});
+    connect(ui->pat_tColButton, &QPushButton::released, [this] () {colours_widget->open(data.pattern_tertiary_colour.get(), ui->pat_tColToggle->isChecked());});
     connect(ui->imageEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.image_name = text;});
-    connect(ui->equippedImageEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.equipped_image_name = text;});
+    connect(ui->patternChanceInput, QOverload<double>::of(&QDoubleSpinBox::valueChanged), [this] (double value) {data.pattern_chance = value;});
+    connect(ui->patternNameDerivedToggle, &QCheckBox::stateChanged, [this] (int state) {data.pattern_name_derived = (state == Qt::Checked);});
 
     // End ui connections
 
@@ -102,13 +105,13 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
 
     // Set window titles to help differentiate windows, set save location, and then handle save button all depending on if this was constructed with a path or not (determines if new file or loaded file)
     if (path.isNull() || path.isEmpty()) {
-        set_titles("New");
+        setWindowTitle("New");
         location = QString();
 
         // Disable save button
         ui->saveButton->setEnabled(false);
     } else {
-        set_titles(QFileInfo(location).fileName());
+        setWindowTitle(QFileInfo(location).fileName());
         location = path;
 
         // Enable save button
@@ -122,9 +125,14 @@ ClothingWindow::ClothingWindow(const QDomDocument &xml_doc, const QString &path,
 ClothingWindow::~ClothingWindow()
 {
     // Handlers
-    delete tree_handler;
     delete effects_list_handler;
     delete incompatible_slot_handler;
+    delete equippable_slot_handler;
+    delete default_pattern_handler;
+    delete slot_tag_handler;
+    delete equip_image_handler;
+    delete access_slot_handler;
+    delete dialogue_slot_handler;
 
     // Ui
     delete ui;
@@ -132,8 +140,8 @@ ClothingWindow::~ClothingWindow()
     // Child widgets
     delete colours_widget;
     delete tags_widget;
+    delete access_widget;
     delete dialogue_widget;
-    delete effect_widget;
 }
 
 bool ClothingWindow::load_defs(bool force_internal)
@@ -295,9 +303,10 @@ bool ClothingWindow::load_defs(bool force_internal)
     ui_data = temp_ui_data;
 
     // Setup delegates
-    SlotComboBoxDelegate::setup(ui_data->slot_list);
-    DialogueWidget::setup(ui_data->displacement_types);
-    TreeComboBoxDelegate::setup(ui_data->displacement_types, ui_data->access_slots, ui_data->blocked_bodyparts, ui_data->slot_list, ui_data->concealed_presets);
+    slot_delegate->setup(ui_data->slot_list);
+    tags_delegate->setup(*TagsWidget::get_tags());
+    AdvancedDialogueWidget::setup(ui_data->displacement_types);
+    AccessibilityWidget::setup(ui_data->displacement_types, ui_data->access_slots, ui_data->blocked_bodyparts, ui_data->slot_list, ui_data->concealed_presets);
 
     // Done
     return true;
@@ -311,27 +320,42 @@ void ClothingWindow::populate_ui()
 
     // Reset child widgets
     tags_widget->reload_ui();
-    effect_widget->reload_ui();
-    dialogue_widget->reload_ui();
     colours_widget->reload_ui();
+    effects_list_handler->reload_editor_ui();
 
     // Setup spin box ranges.
 
-    // Nice lambda do do some checking for each range pair
-    auto set_range = [] (QSpinBox *spin_box, const QPair<int,int> &pair) {
+    // Not so nice lambda do do some checking for each range pair
+    auto set_range = [] (QAbstractSpinBox *spin_box, const QPair<int,int> &pair) {
         int min, max;
 
+        // I... I don't want to talk about it...
+        QSpinBox *spin_box_int = qobject_cast<QSpinBox*>(spin_box);
+        QDoubleSpinBox *spin_box_double = qobject_cast<QDoubleSpinBox*>(spin_box);
+
+        // Min
         if (pair.first == -1)
-            min = spin_box->minimum();
+            if (spin_box_int) {
+                min = spin_box_int->minimum();
+            } else
+                min = static_cast<int>(spin_box_double->minimum());
         else
             min = pair.first;
 
+        // Max
         if (pair.second == -1)
-            max = spin_box->maximum();
+            if (spin_box_int) {
+                max = spin_box_int->maximum();
+            } else
+                max = static_cast<int>(spin_box_double->maximum());
         else
             max = pair.second;
 
-        spin_box->setRange(min, max);
+        // Set
+        if (spin_box_int) {
+            spin_box_int->setRange(min, max);
+        } else
+            spin_box_double->setRange(min, max);
     };
 
     set_range(ui->valueInput, ui_data->value_range);
@@ -348,7 +372,6 @@ void ClothingWindow::populate_ui()
         combo_box->blockSignals(false);
     };
 
-    setup(ui->slotComboBox, ui_data->slot_list);
     setup(ui->genderComboBox, ui_data->gender_list);
     setup(ui->rarityComboBox, ui_data->rarity_list);
     setup(ui->setComboBox, ui_data->clothing_set_list);
@@ -367,11 +390,16 @@ void ClothingWindow::save(bool as)
 
     // Save as...
     if (as) {
+        QString last = QString();
+        if (!location.isNull())
+            last = location;
         location = QFileDialog::getSaveFileName(this, "Save clothing mod", "./", "(*.xml)");
 
         // Should trigger on cancel or failure
         if (location.isEmpty() || location.isNull()) {
             Utility::error("Failed to save file!");
+            if (!last.isEmpty())
+                location = last;
             return;
         }
 
@@ -382,7 +410,7 @@ void ClothingWindow::save(bool as)
         if (!data.save_file(location, err))
             Utility::error(err);
         else
-            set_titles(QFileInfo(location).fileName());
+            setWindowTitle(QFileInfo(location).fileName());
 
     // Save
     } else {
@@ -393,17 +421,6 @@ void ClothingWindow::save(bool as)
     }
 }
 
-void ClothingWindow::set_titles(const QString &title)
-{
-    // You can figure this one out on your own.
-
-    setWindowTitle(title);
-    colours_widget->setWindowTitle(title);
-    tags_widget->setWindowTitle(title);
-    dialogue_widget->setWindowTitle(title);
-    effect_widget->setWindowTitle(title);
-}
-
 void ClothingWindow::update_ui()
 {
     // This goes through the ClothingMod object (named 'data') and applies all its data to the ui fields.
@@ -412,12 +429,17 @@ void ClothingWindow::update_ui()
     ui->valueInput->setValue(data.value); // Value
     ui->resistanceInput->setValue(data.physical_resistance); // Physical resistance
     ui->enchantmentLimitInput->setValue(data.enchantment_limit); // Enchantment limit
+    ui->patternChanceInput->setValue(data.pattern_chance); // Pattern spawn chance
 
 
     // Update check boxes
     if (data.plural_default) // Plural by default toggle
         ui->pluralToggle->setCheckState(Qt::CheckState::Checked);
     else ui->pluralToggle->setCheckState(Qt::CheckState::Unchecked);
+
+    if (data.pattern_name_derived) // Pattern colour name derived toggle
+        ui->patternNameDerivedToggle->setCheckState(Qt::CheckState::Checked);
+    else ui->patternNameDerivedToggle->setCheckState(Qt::CheckState::Unchecked);
 
     // Quick lambda for setting the colour preset checkboxes
     const auto update_colour_toggle = [] (Colour *colour, QCheckBox *toggle) {
@@ -435,30 +457,39 @@ void ClothingWindow::update_ui()
     update_colour_toggle(data.tertiary_colour.get(), ui->tColToggle); // Tertiary colour preset
     update_colour_toggle(data.tertiary_colour_dye.get(), ui->tColDyeToggle); // Tertiary colour dye preset
 
+    update_colour_toggle(data.pattern_primary_colour.get(), ui->pat_pColToggle); // Pattern primary colour preset
+    update_colour_toggle(data.pattern_secondary_colour.get(), ui->pat_sColToggle); // Pattern secondary colour preset
+    update_colour_toggle(data.pattern_tertiary_colour.get(), ui->pat_tColToggle); // Pattern tertiary colour preset
+
 
     // Update combo box selections
-    ui->slotComboBox->setCurrentIndex(ui->slotComboBox->findText(data.slot));
-    ui->genderComboBox->setCurrentIndex(ui->genderComboBox->findText(data.femininity));
-    ui->rarityComboBox->setCurrentIndex(ui->rarityComboBox->findText(data.rarity));
-    ui->setComboBox->setCurrentIndex(ui->setComboBox->findText(data.clothing_set));
+    ui->genderComboBox->setCurrentIndex(ui->genderComboBox->findText(data.femininity)); // Femininity
+    ui->rarityComboBox->setCurrentIndex(ui->rarityComboBox->findText(data.rarity)); // Rarity
+    ui->setComboBox->setCurrentIndex(ui->setComboBox->findText(data.clothing_set)); // Clothing set
+
 
     // Update line edit text
-    ui->nameEdit->setText(data.name);
-    ui->pluralNameEdit->setText(data.plural_name);
-    ui->determinerEdit->setText(data.determiner);
-    ui->imageEdit->setText(data.image_name);
-    ui->equippedImageEdit->setText(data.equipped_image_name);
+    ui->nameEdit->setText(data.name); // Name
+    ui->pluralNameEdit->setText(data.plural_name); // Name plural
+    ui->determinerEdit->setText(data.determiner); // Determiner
+    ui->imageEdit->setText(data.image_name); // Image file
 
 
     // Update plain text edit
-    ui->descriptionEdit->setPlainText(data.description);
+    ui->descriptionEdit->setPlainText(data.description); // Description
+    ui->authorTagEdit->setPlainText(data.author_tag); // Author tag
 
 
     // Misc updates
-    tags_widget->update();
-    tree_handler->update();
-    effects_list_handler->update(data.effects);
-    incompatible_slot_handler->update();
+    tags_widget->update(); // Item tags
+    effects_list_handler->update(); // Effects
+    equippable_slot_handler->update(); // Slots
+    incompatible_slot_handler->update(); // Incompatible slots
+    slot_tag_handler->update(); // Slot specific item tags
+    access_slot_handler->update(); // Accessibility slots
+    dialogue_slot_handler->update(); // Dialogue
+    equip_image_handler->update(); // Equipped image slots
+    default_pattern_handler->update(); // Default patterns
 }
 
 ClothingWindow::UiData::UiData()
@@ -477,3 +508,5 @@ ClothingWindow::UiData::UiData()
 }
 
 QSharedPointer<ClothingWindow::UiData> ClothingWindow::ui_data = QSharedPointer<ClothingWindow::UiData>();
+QSharedPointer<CustomComboBoxDelegate> ClothingWindow::slot_delegate = QSharedPointer<CustomComboBoxDelegate>(new CustomComboBoxDelegate());
+QSharedPointer<CustomComboBoxDelegate> ClothingWindow::tags_delegate = QSharedPointer<CustomComboBoxDelegate>(new CustomComboBoxDelegate());

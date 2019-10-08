@@ -8,8 +8,6 @@
 #include <QJsonArray>
 
 #include "utility.h"
-#include "weapon/damagecomboboxdelegate.h"
-#include "weapon/spellcomboboxdelegate.h"
 #include "weapon/texteditdelegate.h"
 
 WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent) : QWidget(parent), ui(new Ui::WeaponWindow)
@@ -26,10 +24,9 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
     // Widgets and widget handlers
     colours_widget = new ColoursWidget(this);
     tags_widget = new TagsWidget(data.item_tags, this);
-    effects_widget = new EnchantmentWidget(EnchantmentWidget::Mode::weapon, this);
-    effects_list_handler = new EffectListHandler(ui->effectList);
-    damage_type_list_handler = new ListViewHandler(ui->damageTypesList, data.damage_types, new DamageComboBoxDelegate(this));
-    spell_list_handler = new ListViewHandler(ui->spellList, data.spells, new SpellComboBoxDelegate(this));
+    effects_list_handler = new EffectListHandler(AdvancedEffectWidget::Mode::weapon, ui->effectList, ui->effectLimitSpinBox, data.effects);
+    damage_type_list_handler = new ListViewHandler(ui->damageTypesList, data.damage_types, damage_delegate.get());
+    spell_list_handler = new ListViewHandler(ui->spellList, data.spells, spell_delegate.get());
     hit_text_list_handler = new ListViewHandler(ui->hitList, data.hit_text, new TextEditDelegate(this));
     miss_text_list_handler = new ListViewHandler(ui->missList, data.miss_text, new TextEditDelegate(this));
 
@@ -54,7 +51,6 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
     connect(ui->damageSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.damage = value;});
     connect(ui->arcaneCostSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.arcane_cost = value;});
     connect(ui->varianceComboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged), [this] (const QString &text) {data.damage_variance = text;});
-    connect(ui->damageTypesList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {damage_type_list_handler->contex_menu(pos);});
     connect(ui->tagsButton, &QPushButton::released, [this] () {tags_widget->open();});
 
     // Connections for text tab
@@ -62,6 +58,7 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
     connect(ui->pluralCheckBox, &QCheckBox::stateChanged, [this] () {data.plural_default = ui->pluralCheckBox->isChecked();});
     connect(ui->determinerEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.determiner = text;});
     connect(ui->descriptionEdit, &QPlainTextEdit::textChanged, [this] () {data.description = ui->descriptionEdit->toPlainText();});
+    connect(ui->authorTagEdit, &QPlainTextEdit::textChanged, [this] () {data.author_tag = ui->authorTagEdit->toPlainText();});
 
     // Connections for advanced text tab
     connect(ui->descriptorEdit, &QLineEdit::textChanged, [this] (const QString &text) {data.attack_descriptor = text;});
@@ -70,17 +67,10 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
     connect(ui->unequipTextEdit, &QPlainTextEdit::textChanged, [this] () {data.unequip_text = ui->unequipTextEdit->toPlainText();});
 
     // Connections for hit/miss text tab
-    connect(ui->hitList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {hit_text_list_handler->contex_menu(pos);});
-    connect(ui->missList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {miss_text_list_handler->contex_menu(pos);});
+    // None
 
     // Connections for arcane tab
     connect(ui->effectLimitSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [this] (int value) {data.enchantment_limit = value;});
-    connect(ui->effectList, &QTableWidget::customContextMenuRequested, [this] (const QPoint &pos) {effects_list_handler->contex_menu(pos, ui->effectLimitSpinBox->value());});
-    connect(effects_list_handler, &EffectListHandler::remove, [this] (int index) {data.effects.removeAt(index); effects_list_handler->update(data.effects);});
-    connect(effects_list_handler, &EffectListHandler::add, [this] () {data.effects.append(DataCommon::Effect()); effects_widget->open(&data.effects.last());});
-    connect(effects_widget, &EnchantmentWidget::finished, [this] () {effects_list_handler->update(data.effects);});
-    connect(ui->effectList, &QTableWidget::itemDoubleClicked, [this] (QTableWidgetItem* UNUSED(item)) {effects_widget->open(&data.effects[ui->effectList->currentRow()]);});
-    connect(ui->spellList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {spell_list_handler->contex_menu(pos);});
 
     // Connections for visuals tab
     connect(ui->pColButton, &QPushButton::released, [this]() {colours_widget->open(data.primary_colour.get(), ui->pColPresetCheckBox->isChecked());});
@@ -110,13 +100,13 @@ WeaponWindow::WeaponWindow(const QDomDocument &xml_doc, const QString &path, QWi
 
     // Set window titles to help differentiate windows, set save location, and then handle save button all depending on if this was constructed with a path or not (determines if new file or loaded file)
     if (path.isNull() || path.isEmpty()) {
-        set_titles("New");
+        setWindowTitle("New");
         location = QString();
 
         // Disable save button
         ui->saveButton->setEnabled(false);
     } else {
-        set_titles(QFileInfo(location).fileName());
+        setWindowTitle(QFileInfo(location).fileName());
         location = path;
 
         // Enable save button
@@ -140,7 +130,6 @@ WeaponWindow::~WeaponWindow()
     delete ui;
 
     // Child widgets
-    delete effects_widget;
     delete tags_widget;
     delete colours_widget;
 }
@@ -217,6 +206,19 @@ bool WeaponWindow::load_defs(bool force_internal)
     //temp_ui_data->rarity_list.sort(); // Rarity list is already sorted in file so no need to sort. Left line here in case I change my mind.
 
 
+    // Get clothing set entries.
+    if (!defs["weapon_data"]["field_data"]["clothing_set"].isArray())
+        return fail("External file failed clothing set data check! File will be ignored.");
+
+    for (QJsonValue item : defs["weapon_data"]["field_data"]["clothing_set"].toArray())
+        if(!item.isString())
+            Utility::error("Bad clothing set data. Entry will be skipped.");
+        else
+            temp_ui_data->clothing_set_list.append(item.toString());
+    temp_ui_data->clothing_set_list.sort();
+    temp_ui_data->clothing_set_list.insert(0, "NULL");
+
+
     // Get damage variance entries.
     if (!defs["weapon_data"]["field_data"]["damage_variance"].isArray())
         return fail("External file failed damage variance data check! File will be ignored.");
@@ -257,8 +259,8 @@ bool WeaponWindow::load_defs(bool force_internal)
     ui_data = temp_ui_data;
 
     // Setup delegates
-    DamageComboBoxDelegate::setup(ui_data->damage_types_list);
-    SpellComboBoxDelegate::setup(ui_data->spells_list);
+    damage_delegate->setup(ui_data->damage_types_list);
+    spell_delegate->setup(ui_data->spells_list);
 
     // Done
     return true;
@@ -272,7 +274,7 @@ void WeaponWindow::populate_ui()
 
     // Reset child widgets
     tags_widget->reload_ui();
-    effects_widget->reload_ui();
+    effects_list_handler->reload_editor_ui();
     colours_widget->reload_ui();
 
     // Setup spin box ranges.
@@ -310,6 +312,7 @@ void WeaponWindow::populate_ui()
     };
 
     setup(ui->rarityComboBox, ui_data->rarity_list);
+    setup(ui->weaponSetComboBox, ui_data->clothing_set_list);
     setup(ui->varianceComboBox, ui_data->damage_variance_list);
 }
 
@@ -326,11 +329,16 @@ void WeaponWindow::save(bool as)
 
     // Save as...
     if (as) {
+        QString last = QString();
+        if (!location.isNull())
+            last = location;
         location = QFileDialog::getSaveFileName(this, "Save weapon mod", "./", "(*.xml)");
 
         // Should trigger on cancel or failure
         if (location.isEmpty() || location.isNull()) {
             Utility::error("Failed to save file!");
+            if (!last.isEmpty())
+                location = last;
             return;
         }
 
@@ -341,7 +349,7 @@ void WeaponWindow::save(bool as)
         if (!data.save_file(location, err))
             Utility::error(err);
         else
-            set_titles(QFileInfo(location).fileName());
+            setWindowTitle(QFileInfo(location).fileName());
 
     // Save
     } else {
@@ -352,19 +360,9 @@ void WeaponWindow::save(bool as)
     }
 }
 
-void WeaponWindow::set_titles(const QString &title)
-{
-    // You can figure this one out on your own.
-
-    setWindowTitle(title);
-    colours_widget->setWindowTitle(title);
-    tags_widget->setWindowTitle(title);
-    effects_widget->setWindowTitle(title);
-}
-
 void WeaponWindow::update_ui()
 {
-    // This goes through the TattooMod object (named 'data') and applies all its data to the ui fields.
+    // This goes through the WeaponMod object (named 'data') and applies all its data to the ui fields.
 
     // Update spin boxes
     ui->valueSpinBox->setValue(data.value);
@@ -401,6 +399,7 @@ void WeaponWindow::update_ui()
 
     // Update combo boxes
     ui->rarityComboBox->setCurrentIndex(ui->rarityComboBox->findText(data.rarity));
+    ui->weaponSetComboBox->setCurrentIndex(ui->weaponSetComboBox->findText(data.weapon_set));
     ui->varianceComboBox->setCurrentIndex(ui->varianceComboBox->findText(data.damage_variance));
 
 
@@ -415,6 +414,7 @@ void WeaponWindow::update_ui()
 
     // Update plain text edits
     ui->descriptionEdit->setPlainText(data.description);
+    ui->authorTagEdit->setPlainText(data.author_tag);
     ui->tooltipTextEdit->setPlainText(data.attack_tooltip);
     ui->equipTextEdit->setPlainText(data.equip_text);
     ui->unequipTextEdit->setPlainText(data.unequip_text);
@@ -422,7 +422,7 @@ void WeaponWindow::update_ui()
 
     // Misc updates
     tags_widget->update();
-    effects_list_handler->update(data.effects);
+    effects_list_handler->update();
     damage_type_list_handler->update();
     spell_list_handler->update();
     hit_text_list_handler->update();
@@ -436,9 +436,12 @@ WeaponWindow::UiData::UiData()
     arcane_cost_range = QPair<int,int>(-1,-1);
     enchantment_limit_range = QPair<int,int>(-1,-1);
     rarity_list = QStringList();
+    clothing_set_list = QStringList();
     damage_variance_list = QStringList();
     damage_types_list = QStringList();
     spells_list = QStringList();
 }
 
 QSharedPointer<WeaponWindow::UiData> WeaponWindow::ui_data = QSharedPointer<WeaponWindow::UiData>();
+QSharedPointer<CustomComboBoxDelegate> WeaponWindow::damage_delegate = QSharedPointer<CustomComboBoxDelegate>(new CustomComboBoxDelegate());
+QSharedPointer<CustomComboBoxDelegate> WeaponWindow::spell_delegate = QSharedPointer<CustomComboBoxDelegate>(new CustomComboBoxDelegate());

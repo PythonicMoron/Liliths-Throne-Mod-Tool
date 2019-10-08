@@ -14,5 +14,4 @@
         <file>data_files/outfit_default.xml</file>
         <file>data_files/outfit_conditionals.json</file>
     </qresource>
-    <qresource prefix="/"/>
 </RCC>

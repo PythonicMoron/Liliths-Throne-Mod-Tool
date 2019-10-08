@@ -8,7 +8,6 @@
 #include <QFileDialog>
 
 #include "utility.h"
-#include "tattoo/availabilitycomboboxdelegate.h"
 
 TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWidget *parent) : QWidget(parent), ui(new Ui::TattooWindow)
 {
@@ -23,7 +22,7 @@ TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWi
 
     // Widgets and widget handlers
     colours_widget = new ColoursWidget(this);
-    availability_handler = new ListViewHandler(ui->availabilityList, data.slot_availability, new AvailabilityComboBoxDelegate(this));
+    availability_handler = new ListViewHandler(ui->availabilityList, data.slot_availability, slot_delegate.get());
 
     // Populate Ui
     populate_ui();
@@ -48,7 +47,6 @@ TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWi
     connect(ui->pColButton, &QPushButton::released, [this]() {colours_widget->open(data.primary_colour.get(), ui->pColCheckBox->isChecked());});
     connect(ui->sColButton, &QPushButton::released, [this]() {colours_widget->open(data.secondary_colour.get(), ui->sColCheckBox->isChecked());});
     connect(ui->tColButton, &QPushButton::released, [this]() {colours_widget->open(data.tertiary_colour.get(), ui->tColCheckBox->isChecked());});
-    connect(ui->availabilityList, &QListView::customContextMenuRequested, [this] (const QPoint &pos) {availability_handler->contex_menu(pos);});
 
     // End ui connections.
 
@@ -70,13 +68,13 @@ TattooWindow::TattooWindow(const QDomDocument &xml_doc, const QString &path, QWi
 
     // Set window titles to help differentiate windows, set save location, and then handle save button all depending on if this was constructed with a path or not (determines if new file or loaded file)
     if (path.isNull() || path.isEmpty()) {
-        set_titles("New");
+        setWindowTitle("New");
         location = QString();
 
         // Disable save button
         ui->saveButton->setEnabled(false);
     } else {
-        set_titles(QFileInfo(location).fileName());
+        setWindowTitle(QFileInfo(location).fileName());
         location = path;
 
         // Enable save button
@@ -167,7 +165,7 @@ bool TattooWindow::load_defs(bool force_internal)
     ui_data = temp_ui_data;
 
     // Setup delegates
-    AvailabilityComboBoxDelegate::setup(ui_data->inventory_slots);
+    slot_delegate->setup(ui_data->inventory_slots);
 
     // Done
     return true;
@@ -218,11 +216,16 @@ void TattooWindow::save(bool as)
 
     // Save as...
     if (as) {
+        QString last = QString();
+        if (!location.isNull())
+            last = location;
         location = QFileDialog::getSaveFileName(this, "Save tattoo mod", "./", "(*.xml)");
 
         // Should trigger on cancel or failure
         if (location.isEmpty() || location.isNull()) {
             Utility::error("Failed to save file!");
+            if (!last.isEmpty())
+                location = last;
             return;
         }
 
@@ -233,7 +236,7 @@ void TattooWindow::save(bool as)
         if (!data.save_file(location, err))
             Utility::error(err);
         else
-            set_titles(QFileInfo(location).fileName());
+            setWindowTitle(QFileInfo(location).fileName());
 
     // Save
     } else {
@@ -242,14 +245,6 @@ void TattooWindow::save(bool as)
             if (!data.save_file(location, err))
                 Utility::error(err);
     }
-}
-
-void TattooWindow::set_titles(const QString &title)
-{
-    // You can figure this one out on your own.
-
-    setWindowTitle(title);
-    colours_widget->setWindowTitle(title);
 }
 
 void TattooWindow::update_ui()
@@ -294,3 +289,4 @@ TattooWindow::UiData::UiData()
 }
 
 QSharedPointer<TattooWindow::UiData> TattooWindow::ui_data = QSharedPointer<TattooWindow::UiData>();
+QSharedPointer<CustomComboBoxDelegate> TattooWindow::slot_delegate = QSharedPointer<CustomComboBoxDelegate>(new CustomComboBoxDelegate());

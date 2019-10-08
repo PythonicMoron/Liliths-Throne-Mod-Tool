@@ -16,6 +16,26 @@
 				"QUEST",
 				"JINXED"
 			],
+			"clothing_set": [
+                "ENFORCER",
+				"SLUTTY_ENFORCER",
+                "MAID",
+                "BUTLER",
+                "WITCH",
+                "SCIENTIST",
+                "MILK_MAID",
+                "BDSM",
+                "CATTLE",
+                "GEISHA",
+                "RONIN",
+                "WEAPON_DAISHO",
+                "JOLNIR",
+                "SUN",
+                "SNOWFLAKE",
+                "RAINBOW",
+                "DARK_SIREN",
+                "LYSSIETH_GUARD"
+            ],
 			"damage_variance": [
 				"NONE",
 				"LOW",
@@ -23,10 +43,12 @@
 				"HIGH"
 			],
 			"damage_types": [
+				"HEALTH",
 				"PHYSICAL",
 				"ICE",
 				"FIRE",
 				"POISON",
+				"UNARMED",
 				"LUST",
 				"MISC"
 			],
@@ -57,7 +79,9 @@
 				"ELEMENTAL_ARCANE",
 				"WITCH_SEAL",
 				"WITCH_CHARM",
-				"DARK_SIREN_SIRENS_CALL"
+				"DARK_SIREN_SIRENS_CALL",
+				"LIGHTNING_SPHERE_DISCHARGE",
+				"LIGHTNING_SPHERE_OVERCHARGE"
 			]
 		}
 	}

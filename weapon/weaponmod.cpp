@@ -22,6 +22,11 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
             // Looking through children of "coreAttributes"
             for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
 
+                if (element.tagName() == "authorTag") {
+                    this->author_tag = element.text();
+                    element.nextSiblingElement();
+                }
+
                 if (element.tagName() == "value") {
                     bool ok;
                     this->value = element.text().toInt(&ok);
@@ -82,6 +87,11 @@ bool WeaponMod::read_file(const QDomDocument &xml_doc, QString &error)
 
                 if (element.tagName() == "rarity") {
                     this->rarity = element.text();
+                    element.nextSiblingElement();
+                }
+
+                if (element.tagName() == "weaponSet") {
+                    this->weapon_set = element.text();
                     element.nextSiblingElement();
                 }
 
@@ -272,6 +282,7 @@ bool WeaponMod::save_file(const QString &path, QString &error)
     auto core = write(root, "coreAttributes");
 
     // Core attributes
+    write(core, "authorTag", this->author_tag, true);
     write(core, "value", QString::number(this->value));
     write(core, "melee", bool_string(this->melee));
     write(core, "twoHanded", bool_string(this->two_handed));
@@ -285,6 +296,7 @@ bool WeaponMod::save_file(const QString &path, QString &error)
     write(core, "attackDescriptor", this->attack_descriptor);
     write(core, "attackTooltipDescription", this->attack_tooltip);
     write(core, "rarity", this->rarity);
+    write(core, "weaponSet", this->weapon_set);
     write(core, "equipText", this->equip_text, true);
     write(core, "unequipText", this->unequip_text, true);
     write(core, "imageName", this->image_name);

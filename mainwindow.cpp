@@ -265,7 +265,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     enabled = QVector<bool>(MainWindow::Mod::somebody_fucked_up, true); // Creates a vector with a size equal to the count of values in MainWindow::Mod.
 
     // Enchantment widget check
-    if (!EnchantmentWidget::load_effects())
+    if (!AdvancedEffectWidget::load_effects())
         err.append("Failed to load enchantment data!\n");
 
     // Tags widget check

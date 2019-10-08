@@ -3,27 +3,23 @@
 
 #include <QListView>
 
+#include "baseviewhandler.h"
+
 // This is a generic logic class that handles a QStringList via QListView and utilizes custom delegates.
 
-class ListViewHandler
+class ListViewHandler : BaseViewHandler<QStringList>
 {
 public:
-    ListViewHandler(QListView *view, QStringList &list, QAbstractItemDelegate *delegate);
-    virtual ~ListViewHandler();
+    ListViewHandler(QListView *object, QStringList &list, QAbstractItemDelegate *delegate = nullptr);
 
     // Functions
-    virtual void update();
-    virtual void contex_menu(const QPoint &pos);
+    void update() override;
 
 protected:
-    QListView *view; // The QListView we display data on.
-    QStringList *list; // The data we are in charge of displaying and editing.
-    QMenu *menu; // The context menu object.
-
     // Functions
-    void modify_data(const QModelIndex &index);
-    void remove_item(const QModelIndex &index);
-    void add_item();
+    void modify_data(const QModelIndex &index) override;
+    void remove_item(const QModelIndex &index) override;
+    void add_item() override;
 };
 
 #endif // LISTVIEWHANDLER_H

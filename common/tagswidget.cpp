@@ -20,7 +20,8 @@ TagsWidget::TagsWidget(QStringList &tags, QWidget *parent) : QWidget(parent), ui
     // Shortcuts
     new QShortcut(QKeySequence("F1"), this, SLOT(whats_this()));
 
-    // Connect
+    // Connections
+    connect(parent->window(), &QWidget::windowTitleChanged, [this] (const QString &title) {setWindowTitle(title);});
     connect(ui->doneButton, &QPushButton::released, [this] () {apply();});
 }
 
@@ -67,6 +68,13 @@ bool TagsWidget::load_tags(bool force_internal)
     tags.sort();
 
     return true;
+}
+
+const QStringList* TagsWidget::get_tags()
+{
+    // Need to allow access to tags list for other widgets.
+
+    return &tags;
 }
 
 void TagsWidget::open()

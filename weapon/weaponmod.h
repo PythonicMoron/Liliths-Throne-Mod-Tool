@@ -21,7 +21,7 @@ public:
 
     // Data
     bool melee, two_handed, plural_default;
-    QString determiner, name_plural, attack_descriptor, attack_tooltip, rarity, equip_text, unequip_text, image_name, equipped_image_name, damage_variance;
+    QString author_tag, determiner, name_plural, attack_descriptor, attack_tooltip, rarity, weapon_set, equip_text, unequip_text, image_name, equipped_image_name, damage_variance;
     int damage, arcane_cost, value, enchantment_limit;
 
     // Data lists

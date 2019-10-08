@@ -22,7 +22,8 @@ ColoursWidget::ColoursWidget(QWidget *parent) : QWidget(parent), ui(new Ui::Colo
     // Initialize colour pointer
     colour_ptr = nullptr;
 
-    // Connect
+    // Connections
+    connect(parent->window(), &QWidget::windowTitleChanged, [this] (const QString &title) {setWindowTitle(title);});
     connect(ui->doneButton, &QPushButton::released, [this]() {apply();});
 }
 

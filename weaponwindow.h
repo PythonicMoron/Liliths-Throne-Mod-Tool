@@ -5,10 +5,10 @@
 
 #include "weapon/weaponmod.h"
 #include "common/tagswidget.h"
-#include "common/enchantmentwidget.h"
 #include "common/effectlisthandler.h"
 #include "common/colourswidget.h"
 #include "common/listviewhandler.h"
+#include "common/customcomboboxdelegate.h"
 
 // The main class for the weapon widget. Handles the primary functions of the weapon mod window.
 
@@ -35,16 +35,18 @@ private:
     struct UiData {
         UiData();
         QPair<int,int> value_range, damage_range, arcane_cost_range, enchantment_limit_range;
-        QStringList rarity_list, damage_variance_list, damage_types_list, spells_list;
+        QStringList rarity_list, clothing_set_list, damage_variance_list, damage_types_list, spells_list;
     };
 
-    Ui::WeaponWindow *ui;// Ui
+    Ui::WeaponWindow *ui; // Ui
     static QSharedPointer<UiData> ui_data; // Pointer to UiData.
 
     // Child widgets
     TagsWidget *tags_widget;
-    EnchantmentWidget *effects_widget;
     ColoursWidget *colours_widget;
+
+    // Static delegates
+    static QSharedPointer<CustomComboBoxDelegate> damage_delegate, spell_delegate;
 
     // Widget handlers
     EffectListHandler *effects_list_handler;
@@ -55,7 +57,6 @@ private:
 
     // Functions
     void save(bool as);
-    void set_titles(const QString &title);
     void update_ui();
 };
 

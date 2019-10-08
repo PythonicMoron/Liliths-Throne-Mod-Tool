@@ -6,6 +6,7 @@
 #include "tattoo/tattoomod.h"
 #include "common/colourswidget.h"
 #include "common/listviewhandler.h"
+#include "common/customcomboboxdelegate.h"
 
 // The main class for the tattoo widget. Handles the primary functions of the tattoo mod window.
 
@@ -38,6 +39,7 @@ private:
     Ui::TattooWindow *ui; // Ui
     static QSharedPointer<UiData> ui_data; // Pointer to UiData.
 
+    static QSharedPointer<CustomComboBoxDelegate> slot_delegate;
     ColoursWidget *colours_widget; // Child widget
     ListViewHandler *availability_handler; // Widget handler
 
@@ -46,7 +48,6 @@ private:
 
     // Functions
     void save(bool as);
-    void set_titles(const QString &title);
     void update_ui();
 };
 

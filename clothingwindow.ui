@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>555</height>
+    <width>600</width>
+    <height>770</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -75,95 +75,88 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="slot_label">
-             <property name="text">
-              <string>Slot</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="slotComboBox">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equipment slot the item goes into.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
             <widget class="QLabel" name="gender_label">
              <property name="text">
               <string>Femininity</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="2" column="1">
             <widget class="QComboBox" name="genderComboBox">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether the item is feminine, masculine, or other.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="rarity_label">
              <property name="text">
               <string>Rarity</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QComboBox" name="rarityComboBox">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Changes item rarity. Other than icon outline, I'm not really sure what this does.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="resistance_label">
              <property name="text">
               <string>Physical Resistance</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
-            <widget class="QSpinBox" name="resistanceInput">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I'll give you a hint. Look to the left of this box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="whatsThis">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
+           <item row="5" column="0">
             <widget class="QLabel" name="set_label">
              <property name="text">
               <string>Clothing Set</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
+           <item row="5" column="1">
             <widget class="QComboBox" name="setComboBox">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;What clothing set this is a part of. Probably won't do anything in-game as of right now.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="0" colspan="2">
-            <widget class="QPushButton" name="tagsButton">
+           <item row="4" column="1">
+            <widget class="QDoubleSpinBox" name="resistanceInput">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit item tags. WARNING: These can seriously fuck shit up. Make ABSOLUTELY sure you know what a tag is/does before adding it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I'll give you a hint. Look to the left of this box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="whatsThis">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the tags widget window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value must be an integer. Value will not exceed a set min/max range.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="text">
-              <string>Edit Tags...</string>
+             <property name="decimals">
+              <number>1</number>
              </property>
             </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="equippable_slots_label">
+           <property name="text">
+            <string>Equippable slots</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="slotList">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slots that the item can be equipped in/on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="incompatible_slot_label">
@@ -176,13 +169,49 @@
           </widget>
          </item>
          <item>
-          <widget class="QListView" name="incompatibleSlotList">
+          <widget class="QTableView" name="incompatibleSlotTable">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slots that cannot be occupied with this item equipped.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slots that cannot be occupied with this item equipped into a specified slot.&lt;/p&gt;&lt;p&gt;Note that these entries are restricted to the list of equippable slots.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="whatsThis">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget  to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Tags</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <item>
+          <widget class="QPushButton" name="tagsButton">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens an editor for default item tags. These item tags are applied regardless of equipped slot.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the tags widget window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Edit Default Tags...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTableView" name="slotTagsTable">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slot-specific tags. These only apply in-game when the item is equipped to specified slot.&lt;/p&gt;&lt;p&gt;Note that these entries are restricted to the list of equippable slots on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an item in the widget to 'edit' that item.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <attribute name="horizontalHeaderMinimumSectionSize">
+            <number>250</number>
+           </attribute>
           </widget>
          </item>
         </layout>
@@ -195,24 +224,15 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
-            <widget class="QTreeView" name="accessTree">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+            <widget class="QListView" name="accessSlotList">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slots with accessibility rules.&lt;/p&gt;&lt;p&gt;Note that these entries are restricted to the list of equippable slots on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="whatsThis">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This widget is driven by the context menu. Right click on specific items or in specific sections to get various options for that item or section.&lt;/p&gt;&lt;p&gt;Double click child items to 'edit' them.&lt;/p&gt;&lt;p&gt;The context menu will allow you to add new list entries (shown as a number) when you right click in a blank space. If you right click an existing one, it will also allow you to remove that entry.&lt;/p&gt;&lt;p&gt;Right clicking an 'Access Required', 'Blocked Bodyparts', or 'Access Blocked' section will allow you to add a new entry to it. Right clicking a specific child item will also allow you to remove it.&lt;/p&gt;&lt;p&gt;Right clicking on a 'Concealed Slots' section will allow you to add a new entry to it or switch the section to a 'Concealed Preset' section, which will discard all current slots. Right clicking a specific child item will also allow you to remove it.&lt;/p&gt;&lt;p&gt;Right clicking a 'Concealed Preset' section will allow you to switch it to a 'Concealed Slots' section.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove or edit it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="editTriggers">
-              <set>QAbstractItemView::DoubleClicked</set>
-             </property>
-             <property name="showDropIndicator" stdset="0">
-              <bool>false</bool>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
+              <set>QAbstractItemView::NoEditTriggers</set>
              </property>
             </widget>
            </item>
@@ -277,7 +297,7 @@
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of enchantments on the item.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This widget treats an entire row as a single entry.&lt;/p&gt;&lt;p&gt;If you have less entries than the above enchantment limit value, then right clicking in the widget will show a context menu from which you can add new entries.&lt;/p&gt;&lt;p&gt;Right clicking on an existing entry will give the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This widget treats an entire row as a single entry.&lt;/p&gt;&lt;p&gt;Double click on an entry to 'edit' it. This will open an editor window.&lt;/p&gt;&lt;p&gt;If you have less entries than the above enchantment limit value, then right clicking in the widget will show a context menu from which you can add new entries.&lt;/p&gt;&lt;p&gt;Right clicking on an existing entry will give the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
@@ -359,19 +379,6 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="0" colspan="2">
-            <widget class="QPushButton" name="advancedDialogueButton">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a new window for editing custom re/dis-placement lines used in game scenes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="whatsThis">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the advanced dialogue editor window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="text">
-              <string>Advanced Dialogue Editor...</string>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="0" colspan="2">
             <widget class="QLabel" name="description_label">
              <property name="text">
@@ -399,19 +406,52 @@
             </widget>
            </item>
            <item row="5" column="0" colspan="2">
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <widget class="QLabel" name="author_tag_label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
+             <property name="text">
+              <string>Author tag</string>
              </property>
-            </spacer>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2">
+            <widget class="QPlainTextEdit" name="authorTagEdit">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A little in-game note that credits the author. The game will auto-generate one if left blank.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="xplacement_label">
+           <property name="text">
+            <string>Dis/Re-placement Dialogue Slots</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="xplacementSlotList">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slot-specific dialogue.&lt;/p&gt;&lt;p&gt;Note that these entries are restricted to the list of equippable slots on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to 'edit' that entry. This will open an editor window.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry. Note that this option will not appear if there are no more equippable slots available.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -420,6 +460,9 @@
          <string>Visuals</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_11">
+         <property name="spacing">
+          <number>2</number>
+         </property>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="spacing">
@@ -430,32 +473,6 @@
              <property name="verticalSpacing">
               <number>2</number>
              </property>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="pColDyeButton">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Primary Colour Dye</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QCheckBox" name="tColToggle">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for tertiary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Use preset colour(s)</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QPushButton" name="sColButton">
                <property name="toolTip">
@@ -466,84 +483,6 @@
                </property>
                <property name="text">
                 <string>Secondary Colour</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QPushButton" name="sColDyeButton">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Secondary Colour Dye</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QCheckBox" name="sColToggle">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for secondary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Use preset colour(s)</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QCheckBox" name="pColToggle">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for primary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Use preset colour(s)</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="tColButton">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Tertiary Colour</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="pColButton">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Primary Colour</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
-              <widget class="QPushButton" name="tColDyeButton">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string>Tertiary Colour Dye</string>
                </property>
               </widget>
              </item>
@@ -573,10 +512,192 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="1">
+              <widget class="QCheckBox" name="sColToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for secondary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use preset colour(s)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
              <item row="5" column="1">
               <widget class="QCheckBox" name="tColDyeToggle">
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for tertiary colour dye.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use preset colour(s)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="pColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Primary Colour</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="pColDyeButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Primary Colour Dye</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="tColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Tertiary Colour</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QPushButton" name="tColDyeButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Tertiary Colour Dye</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QPushButton" name="sColDyeButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Secondary Colour Dye</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QCheckBox" name="tColToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for tertiary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use preset colour(s)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QCheckBox" name="pColToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for primary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use preset colour(s)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QPushButton" name="pat_pColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Pattern Primary Colour</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QPushButton" name="pat_sColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Pattern Secondary Colour</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QPushButton" name="pat_tColButton">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a colour picker widget for the displayed colour category.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clicking this will hide the current window and open the colour picker widget window.&lt;/p&gt;&lt;p&gt;The mode the colour picker opens in (either single preset or colour multi-select mode) depends on the check box to the right.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Pattern Tertiary Colour</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QCheckBox" name="pat_pColToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for pattern primary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use preset colour(s)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QCheckBox" name="pat_sColToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for pattern secondary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use preset colour(s)</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QCheckBox" name="pat_tColToggle">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Whether or not to use a preset color list for pattern tertiary colour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>Use preset colour(s)</string>
@@ -600,27 +721,102 @@
              <item row="0" column="1">
               <widget class="QLineEdit" name="imageEdit">
                <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of image file to use. Make sure to include the '.svg' extension. THIS FILE MUST BE IN THE SAME DIRECTORY AS THE XML FILE.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="equipped_image_label">
-               <property name="text">
-                <string>Equipped Image File</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="equippedImageEdit">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of image file to use while equipped. Make sure to include the '.svg' extension. THIS FILE MUST BE IN THE SAME DIRECTORY AS THE XML FILE.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of image file to use by default. Make sure to include the '.svg' extension. THIS FILE MUST BE IN THE SAME DIRECTORY AS THE XML FILE.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
             </layout>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QTableView" name="equippedImageTable">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of slot-specific equipped image files. These images only show when the item is equipped to the specified slot. Make sure to include the '.svg' extension. THESE FILES MUST BE IN THE SAME DIRECTORY AS THE XML FILE.&lt;/p&gt;&lt;p&gt;Note: The slots field is restricted by the list of equippable slots on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an item in the widget to 'edit' that item. Note that the editor will not allow duplicate entries in the equippable slots column.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderMinimumSectionSize">
+            <number>250</number>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="pattern_label">
+           <property name="text">
+            <string>Default Patterns</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <layout class="QFormLayout" name="formLayout_5">
+             <item row="0" column="0">
+              <widget class="QLabel" name="pattern_chance_label">
+               <property name="text">
+                <string>Spawn Chance (in %)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="patternChanceInput">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chance of this item spawning with a pattern.&lt;/p&gt;&lt;p&gt;Note that the editor already converts percentages down! To have a 50% chance, do not enter '0.5'! Enter '50'.&lt;/p&gt;&lt;p&gt;Precision is limited to 2 decimal places. Any extra will be truncated.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click up and down arrows to increase or decrease value. You can also manually type in a value. Value will not exceed the range of 0-100.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="decimals">
+                <number>2</number>
+               </property>
+               <property name="maximum">
+                <double>100.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="patternNameDerivedToggle">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Is the item colour derived from the colour of the camo? This decides whether the game uses the primary colour or the pattern primary colour when deciding what to call the item.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Pattern colour name derived from camo?</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QListView" name="patternList">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of patterns this item can spawn with.&lt;/p&gt;&lt;p&gt;You will need to use the name of the svg file for the pattern you want (excluding the extension). You can easily find these in the 'res/patterns' folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click on an entry in the widget to 'edit' that entry.&lt;/p&gt;&lt;p&gt;Right click anywhere on widget to show a context menu with the option to create a new entry.&lt;/p&gt;&lt;p&gt;Right click on a specific entry in the widget to show a context menu with the option to remove it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

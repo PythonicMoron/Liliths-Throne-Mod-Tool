@@ -101,7 +101,8 @@ DataCommon::~DataCommon() = default;
 
 DataCommon::Effect::Effect()
 {
-    effect_type = QString();
+    //effect_type = QString();
+    effect_type = "CLOTHING"; // Fixed for now since other enchantments are not possible yet.
     potency = QString();
     primary_modifier = QString();
     secondary_modifier = QString();

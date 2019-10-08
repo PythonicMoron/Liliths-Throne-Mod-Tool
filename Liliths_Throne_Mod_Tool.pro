@@ -25,69 +25,70 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 CONFIG += c++11
 
 SOURCES += \
+    clothing/accessibilitywidget.cpp \
+    clothing/advanceddialoguewidget.cpp \
+    clothing/restrictedsloteditorbase.cpp \
+    clothing/restrictedslotlistviewhandler.cpp \
+    clothing/tableviewhandler.cpp \
+    common/advancedeffectwidget.cpp \
+    common/baseviewhandler.cpp \
+    common/customcomboboxdelegate.cpp \
         main.cpp \
         mainwindow.cpp \
     clothingwindow.cpp \
     clothing/clothingmod.cpp \
-    clothing/treehandler.cpp \
-    clothing/dialoguewidget.cpp \
     common/colour.cpp \
     common/colourswidget.cpp \
     common/tagswidget.cpp \
     common/datacommon.cpp \
-    common/enchantmentwidget.cpp \
     common/effectlisthandler.cpp \
-    clothing/treecomboboxdelegate.cpp \
+    notimplementedexception.cpp \
     weaponwindow.cpp \
     weapon/weaponmod.cpp \
     utility.cpp \
-    weapon/damagecomboboxdelegate.cpp \
-    common/basecomboboxdelegate.cpp \
-    clothing/slotcomboboxdelegate.cpp \
     common/listviewhandler.cpp \
-    weapon/spellcomboboxdelegate.cpp \
     weapon/texteditdelegate.cpp \
     tattoowindow.cpp \
     tattoo/tattoomod.cpp \
-    tattoo/availabilitycomboboxdelegate.cpp \
     # outfitwindow.cpp \ DISABLED FOR BUILD
     # outfit/outfitmod.cpp DISABLED FOR BUILD
 
 HEADERS += \
+    clothing/accessibilitywidget.h \
+    clothing/advanceddialoguewidget.h \
+    clothing/restrictedsloteditorbase.h \
+    clothing/restrictedslotlistviewhandler.h \
+    clothing/tableviewhandler.h \
+    common/advancedeffectwidget.h \
+    common/baseviewhandler.h \
+    common/customcomboboxdelegate.h \
         mainwindow.h \
     clothingwindow.h \
     clothing/clothingmod.h \
-    clothing/treehandler.h \
-    clothing/dialoguewidget.h \
     common/colour.h \
     common/colourswidget.h \
     common/tagswidget.h \
     common/datacommon.h \
-    common/enchantmentwidget.h \
     common/effectlisthandler.h \
-    clothing/treecomboboxdelegate.h \
+    notimplementedexception.h \
     weaponwindow.h \
     weapon/weaponmod.h \
     utility.h \
-    weapon/damagecomboboxdelegate.h \
-    common/basecomboboxdelegate.h \
-    clothing/slotcomboboxdelegate.h \
     common/listviewhandler.h \
-    weapon/spellcomboboxdelegate.h \
     weapon/texteditdelegate.h \
     tattoowindow.h \
     tattoo/tattoomod.h \
-    tattoo/availabilitycomboboxdelegate.h \
     # outfitwindow.h \ DISABLED FOR BUILD
     # outfit/outfitmod.h DISABLED FOR BUILD
 
 FORMS += \
+    clothing/accessibilitywidget.ui \
+    clothing/advanceddialoguewidget.ui \
+    common/advancedeffectwidget.ui \
         mainwindow.ui \
     clothingwindow.ui \
-    clothing/dialoguewidget.ui \
     common/colourswidget.ui \
     common/tagswidget.ui \
-    common/enchantmentwidget.ui \
     weaponwindow.ui \
     tattoowindow.ui \
     # outfitwindow.ui DISABLED FOR BUILD

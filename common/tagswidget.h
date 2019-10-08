@@ -19,6 +19,7 @@ public:
 
     // Functions
     static bool load_tags(bool force_internal = false);
+    static const QStringList* get_tags();
     void open();
     void update();
     void reload_ui();

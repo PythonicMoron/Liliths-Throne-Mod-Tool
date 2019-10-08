@@ -35,6 +35,17 @@ ClothingMod::BlockedParts::BlockedParts()
     concealed_slots = QSharedPointer<ClothingMod::BlockedParts::ConcealedSlots>(new ClothingMod::BlockedParts::ConcealedSlots());
 }
 
+ClothingMod::BlockedParts::BlockedParts(const ClothingMod::BlockedParts &other)
+{
+    // The copy constructor must be explicitly defined because we want a copy of the data the pointers point to, not a copy of the pointer to the same data.
+
+    displacement_type = other.displacement_type;
+    access_required = other.access_required;
+    blocked_bodyparts = other.blocked_bodyparts;
+    access_blocked = other.access_blocked;
+    concealed_slots = QSharedPointer<ClothingMod::BlockedParts::ConcealedSlots>(new ClothingMod::BlockedParts::ConcealedSlots(*other.concealed_slots.get()));
+}
+
 // End Constructors and Destructors
 
 
@@ -95,11 +106,16 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
     // This is nightmare fuel.
     // A simple mistake here can either cause fatal problems during runtime or trickle all the way down into the xml save and possibly cause trouble outside of this tool.
 
+    // Old format dialogue warning vars
+    bool old_dialogue = false, new_dialogue = false, dialogue_slot_warning = false, dialogue_slot_failure = false;
+    const QStringList old_strings = {"playerSelf", "playerNPC", "playerNPCRough", "NPCSelf", "NPCPlayer", "NPCPlayerRough", "NPCOtherNPC", "NPCOtherNPCRough"}, new_strings = {"self", "other", "otherRough"};
+
     // Get root element from document
     QDomElement root = xml_doc.documentElement();
 
     // Initialize some variables. Most are already initialized by operations below.
-    this->dialogue = QList<XPlacementText>();
+    this->slot_dialogue = QMap<QString, QList<XPlacementText>>();
+    this->slot_blocked_parts = QMap<QString, QList<BlockedParts>>();
 
     // Looking through children of "clothing"
     for (QDomElement child = root.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
@@ -108,6 +124,11 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
 
             // Looking through children of "coreAttributes"
             for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+
+                if (element.tagName() == "authorTag") {
+                    this->author_tag = element.text();
+                    element = element.nextSiblingElement();
+                }
 
                 if (element.tagName() == "value") {
                     bool ok;
@@ -143,7 +164,7 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
 
                 if (element.tagName() == "physicalResistance") {
                     bool ok;
-                    this->physical_resistance = element.text().toInt(&ok);
+                    this->physical_resistance = element.text().toDouble(&ok);
                     if (!ok)
                         error.append("Physical resistance could not be converted to integer. Will default to 0!\n");
                     element = element.nextSiblingElement();
@@ -154,8 +175,12 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                     element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "slot") {
-                    this->slot = element.text();
+                if (element.tagName() == "slot") { // Old format catch
+                    // We don't show a warning about the old style here because it has no significant effect.
+                    this->equippable_slots = QStringList(element.text());
+                    element = element.nextSiblingElement();
+                } else if (element.tagName() == "equipSlots") {
+                    iterate_string_list(element, "slot", this->equippable_slots);
                     element = element.nextSiblingElement();
                 }
 
@@ -175,8 +200,22 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                 }
 
                 if (element.tagName() == "imageEquippedName") {
-                    this->equipped_image_name = element.text();
-                    element = element.nextSiblingElement();
+                    QList<QPair<QString, QString>> list = QList<QPair<QString, QString>>();
+                    bool message_shown = false;
+                    while (element.tagName() == "imageEquippedName") { // There can be multiple elements with this name. Hold the outer loop until we go through all of them.
+                        QString slot = element.attribute("slot");
+                        if (slot.isEmpty() && !element.text().isEmpty()) // Old style catch
+                            if (!this->equippable_slots.isEmpty()) { // Make sure we have a slot
+                                list.append(QPair<QString, QString>(element.text(), this->equippable_slots.first()));
+                                if (!message_shown)
+                                    error.append("Old equipped image field updated to new format and set to the first available slot.\n");
+                            } else // Fuck
+                                error.append("No initial slot set! Cannot convert old style equipped image. Will be null!\n");
+                        else if (!element.text().isEmpty())
+                            list.append(QPair<QString, QString>(element.text(), slot));
+                        element = element.nextSiblingElement();
+                    }
+                    this->equipped_image_name_slot = list;
                 }
 
                 if (element.tagName() == "enchantmentLimit") {
@@ -213,59 +252,93 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                 }
 
                 if (element.tagName() == "blockedPartsList") {
-                    QList<BlockedParts> blocked_parts_list = QList<BlockedParts>();
-                    QDomNodeList list = element.elementsByTagName("blockedParts");
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.at(i).isElement()) {
-                            BlockedParts blocked_parts_entry;
+                    bool message_shown = false;
+                    while (element.tagName() == "blockedPartsList") { // There can be multiple elements with this name. Hold the outer loop until we go through all of them.
+                        QString slot = element.attribute("slot");
+                        QList<BlockedParts> blocked_parts_list = QList<BlockedParts>();
+                        QDomNodeList list = element.elementsByTagName("blockedParts");
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.at(i).isElement()) {
+                                BlockedParts blocked_parts_entry;
 
-                            // Looking through children of "blockedPartsList/blockedParts"
-                            for (QDomElement entry = list.at(i).firstChildElement(); !entry.isNull(); entry = entry.nextSiblingElement()) {
+                                // Looking through children of "blockedPartsList/blockedParts"
+                                for (QDomElement entry = list.at(i).firstChildElement(); !entry.isNull(); entry = entry.nextSiblingElement()) {
 
-                                if (entry.tagName() == "displacementType") {
-                                    blocked_parts_entry.displacement_type = entry.text();
-                                    entry = entry.nextSiblingElement();
-                                }
-
-                                if (entry.tagName() == "clothingAccessRequired") {
-                                    iterate_string_list(entry, "clothingAccess", blocked_parts_entry.access_required);
-                                    entry = entry.nextSiblingElement();
-                                }
-
-                                if (entry.tagName() == "blockedBodyParts") {
-                                    iterate_string_list(entry, "bodyPart", blocked_parts_entry.blocked_bodyparts);
-                                    entry = entry.nextSiblingElement();
-                                }
-
-                                if (entry.tagName() == "clothingAccessBlocked") {
-                                    iterate_string_list(entry, "clothingAccess", blocked_parts_entry.access_blocked);
-                                    entry = entry.nextSiblingElement();
-                                }
-
-                                if (entry.tagName() == "concealedSlots") {
-                                    QString attr = entry.attribute("values");
-                                    if (!attr.isEmpty()) { // Preset
-                                        blocked_parts_entry.concealed_slots = QSharedPointer<BlockedParts::ConcealedSlots>(new BlockedParts::ConcealedSlots(attr));
-                                    } else { // List
-                                        QStringList concealed_parts = QStringList();
-                                        iterate_string_list(entry, "slot", concealed_parts);
-                                        blocked_parts_entry.concealed_slots = QSharedPointer<BlockedParts::ConcealedSlots>(new BlockedParts::ConcealedSlots(concealed_parts));
+                                    if (entry.tagName() == "displacementType") {
+                                        blocked_parts_entry.displacement_type = entry.text();
+                                        entry = entry.nextSiblingElement();
                                     }
-                                    entry = entry.nextSiblingElement();
-                                }
 
-                            } // End "blockedPartsList/blockedParts"
+                                    if (entry.tagName() == "clothingAccessRequired") {
+                                        iterate_string_list(entry, "clothingAccess", blocked_parts_entry.access_required);
+                                        entry = entry.nextSiblingElement();
+                                    }
 
-                            blocked_parts_list.append(blocked_parts_entry);
+                                    if (entry.tagName() == "blockedBodyParts") {
+                                        iterate_string_list(entry, "bodyPart", blocked_parts_entry.blocked_bodyparts);
+                                        entry = entry.nextSiblingElement();
+                                    }
+
+                                    if (entry.tagName() == "clothingAccessBlocked") {
+                                        iterate_string_list(entry, "clothingAccess", blocked_parts_entry.access_blocked);
+                                        entry = entry.nextSiblingElement();
+                                    }
+
+                                    if (entry.tagName() == "concealedSlots") {
+                                        QString attr = entry.attribute("values");
+                                        if (!attr.isEmpty()) { // Preset
+                                            blocked_parts_entry.concealed_slots = QSharedPointer<BlockedParts::ConcealedSlots>(new BlockedParts::ConcealedSlots(attr));
+                                        } else { // List
+                                            QStringList concealed_parts = QStringList();
+                                            iterate_string_list(entry, "slot", concealed_parts);
+                                            blocked_parts_entry.concealed_slots = QSharedPointer<BlockedParts::ConcealedSlots>(new BlockedParts::ConcealedSlots(concealed_parts));
+                                        }
+                                        entry = entry.nextSiblingElement();
+                                    }
+
+                                } // End "blockedPartsList/blockedParts"
+
+                                blocked_parts_list.append(blocked_parts_entry);
+                            }
                         }
+                        if (slot.isEmpty()) // Old style catch
+                            if (!this->equippable_slots.isEmpty()) { // Must have at least one slot
+                                append_map_list<BlockedParts>(this->slot_blocked_parts, this->equippable_slots.first(), blocked_parts_list);
+                                if (!message_shown)
+                                    error.append("Old blocked parts fields updated to new format and set to the first available slot.\n");
+                            } else // Oh shit
+                                error.append("No initial slot set! Cannot convert old style blocked parts list. Will be null!\n");
+                        else
+                            append_map_list<BlockedParts>(this->slot_blocked_parts, slot, blocked_parts_list);
+                        element = element.nextSiblingElement();
                     }
-                    this->blocked_parts = blocked_parts_list;
-                    element = element.nextSiblingElement();
                 }
 
                 if (element.tagName() == "incompatibleSlots") {
-                    iterate_string_list(element, "slot", this->incompatible_slots);
-                    element = element.nextSiblingElement();
+                    QList<QPair<QString, QString>> list = QList<QPair<QString, QString>>();
+                    bool message_shown = false;
+                    while (element.tagName() == "incompatibleSlots") { // There can be multiple elements with this name. Hold the outer loop until we go through all of them.
+                        QString slot = element.attribute("slot");
+                        if (slot.isEmpty()) // Old style catch
+                            if (!this->equippable_slots.isEmpty()) { // Make sure we have a slot
+                                QStringList string_list = QStringList();
+                                iterate_string_list(element, "slot", string_list);
+                                for (const QString &str : string_list)
+                                    list.append(QPair<QString, QString>(str, this->equippable_slots.first()));
+                                if (!message_shown)
+                                    error.append("Old incompatible slot entry updated to new format and set to the first available slot.\n");
+                            } else // Fuck
+                                error.append("No initial slot set! Cannot convert old style incompatible slots. Will be null!\n");
+                        else { // Has slot defined
+                            QStringList string_list = QStringList();
+                            iterate_string_list(element, "slot", string_list);
+                            for (const QString &str : string_list)
+                                if (!str.isEmpty())
+                                    list.append(QPair<QString, QString>(str, slot));
+                        }
+                        element = element.nextSiblingElement();
+                    }
+                    this->incompatible_slots = list;
                 }
 
                 if (element.tagName() == "primaryColours") {
@@ -298,9 +371,48 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                     element = element.nextSiblingElement();
                 }
 
-                if (element.tagName() == "itemTags") {
-                    iterate_string_list(element, "tag", this->item_tags);
+                if (element.tagName() == "defaultPatterns") {
+                    this->pattern_chance = element.attribute("patternChance", "0.0").toDouble() * 100;
+                    if (element.attribute("colourNameDerivedFromPattern").toLower() == "true")
+                        this->pattern_name_derived = true;
+                    else
+                        this->pattern_name_derived = false;
+                    iterate_string_list(element, "pattern", this->default_patterns);
                     element = element.nextSiblingElement();
+                }
+
+                if (element.tagName() == "patternPrimaryColours") {
+                    get_colours(element, this->pattern_primary_colour);
+                    element = element.nextSiblingElement();
+                }
+
+                if (element.tagName() == "patternSecondaryColours") {
+                    get_colours(element, this->pattern_secondary_colour);
+                    element = element.nextSiblingElement();
+                }
+
+                if (element.tagName() == "patternTertiaryColours") {
+                    get_colours(element, this->pattern_tertiary_colour);
+                    element = element.nextSiblingElement();
+                }
+
+                if (element.tagName() == "itemTags") {
+                    QList<QPair<QString, QString>> list = QList<QPair<QString, QString>>();
+                    while (element.tagName() == "itemTags") { // There can be multiple elements with this name. Hold the outer loop until we go through all of them.
+                        QString slot = element.attribute("slot");
+                        if (slot.isEmpty()) // Regular tags
+                            iterate_string_list(element, "tag", this->item_tags);
+                        else { // Slot tags
+                            QStringList tags;
+                            iterate_string_list(element, "tag", tags);
+                            for (const QString &tag : tags) {
+                                if (!tag.isEmpty())
+                                    list.append(QPair<QString, QString>(tag, slot));
+                            }
+                        }
+                        element = element.nextSiblingElement();
+                    }
+                    this->slot_tags = list;
                 }
 
             } // End "coreAttributes"
@@ -310,85 +422,112 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
             XPlacementText xplacement;
             xplacement.flag = XPlacementText::Flag::displacement;
             xplacement.type = child.attribute("type");
+            QString slot = child.attribute("slot");
 
             QDomElement element = child.firstChildElement();
 
+            // This check is here because I don't want to compare strings on every loop cycle.
+            if (!old_dialogue && !new_dialogue) { // We need to determine whether or not a warning must be displayed
+                if (old_strings.contains(element.text())) {
+                    old_dialogue = true; // Old format, set var and show warning
+                    error.append("Old dialogue format detected. Please note that the following fields will be ignored:\n\t<playerSelf>, <playerNPC>, <playerNPCRough>, <NPCPlayer>, <NPCPlayerRough>\n");
+                    error.append("The <NPCSelf>, <NPCOtherNPC>, and <NPCOtherNPCRough> fields will be changed to <self>, <other>, and <otherRough> respectively.\n");
+                } else if (new_strings.contains(element.text()))
+                    new_dialogue = true; // New format, set var and forget this ever happened
+            }
+
             // Looking through "displacementText"
             while (!element.isNull()) {
+                // This section includes old format catches
 
-                if (element.tagName() == "playerSelf")
-                    xplacement.player_self = element.text();
+                if (element.tagName() == "self" || element.tagName() == "NPCSelf")
+                    xplacement.self = element.text();
 
-                if (element.tagName() == "playerNPC")
-                    xplacement.player_npc = element.text();
+                if (element.tagName() == "other" || element.tagName() == "NPCOtherNPC")
+                    xplacement.other = element.text();
 
-                if (element.tagName() == "playerNPCRough")
-                    xplacement.player_npc_rough = element.text();
-
-                if (element.tagName() == "NPCSelf")
-                    xplacement.npc_self = element.text();
-
-                if (element.tagName() == "NPCPlayer")
-                    xplacement.npc_player = element.text();
-
-                if (element.tagName() == "NPCPlayerRough")
-                    xplacement.npc_player_rough = element.text();
-
-                if (element.tagName() == "NPCOtherNPC")
-                    xplacement.npc_other_npc = element.text();
-
-                if (element.tagName() == "NPCOtherNPCRough")
-                    xplacement.npc_other_npc_rough = element.text();
+                if (element.tagName() == "otherRough" || element.tagName() == "NPCOtherNPCRough")
+                    xplacement.other_rough = element.text();
 
                 element = element.nextSiblingElement();
 
             } // End "displacementText"
 
-            this->dialogue.append(xplacement);
+            if (slot.isEmpty()) { // Old format catch
+                if (!this->equippable_slots.isEmpty()) { // Need to have a slot to assign
+                    if (!dialogue_slot_warning) { // Show the missing slot warning if not already shown
+                        dialogue_slot_warning = true;
+                        error.append("No slot defined for dialogue! All sections without a slot defined will be set to the first available slot.\n");
+                    }
+                    append_map_list<XPlacementText>(this->slot_dialogue, this->equippable_slots.first(), xplacement);
+                } else if (!dialogue_slot_failure) { // Shot the missing slot warning if not already shown
+                    dialogue_slot_failure = true;
+                    error.append("No initial slot set! Could not set slot for dialogue. Dialogue will be null!\n");
+                }
+            } else
+                append_map_list<XPlacementText>(this->slot_dialogue, slot, xplacement);
         }
 
         if (child.tagName() == "replacementText") {
             XPlacementText xplacement;
             xplacement.flag = XPlacementText::Flag::replacement;
             xplacement.type = child.attribute("type");
+            QString slot = child.attribute("slot");
 
             QDomElement element = child.firstChildElement();
 
+            // This check is here because I don't want to compare strings on every loop cycle.
+            if (!old_dialogue && !new_dialogue) { // We need to determine whether or not a warning must be displayed
+                if (old_strings.contains(element.text())) {
+                    old_dialogue = true; // Old format, set var and show warning
+                    error.append("Old dialogue fields detected. Please note that the following fields will be ignored:\n\t<playerSelf>, <playerNPC>, <playerNPCRough>, <NPCPlayer>, <NPCPlayerRough>\n");
+                    error.append("The <NPCSelf>, <NPCOtherNPC>, and <NPCOtherNPCRough> fields will be changed to <self>, <other>, and <otherRough> respectively.\n");
+                } else if (new_strings.contains(element.text()))
+                    new_dialogue = true; // New format, set var and forget this ever happened
+            }
+
             // Looking through "replacementText"
             while (!element.isNull()) {
+                // This section includes old format catches
 
-                if (element.tagName() == "playerSelf")
-                    xplacement.player_self = element.text();
+                if (element.tagName() == "self" || element.tagName() == "NPCSelf")
+                    xplacement.self = element.text();
 
-                if (element.tagName() == "playerNPC")
-                    xplacement.player_npc = element.text();
+                if (element.tagName() == "other" || element.tagName() == "NPCOtherNPC")
+                    xplacement.other = element.text();
 
-                if (element.tagName() == "playerNPCRough")
-                    xplacement.player_npc_rough = element.text();
-
-                if (element.tagName() == "NPCSelf")
-                    xplacement.npc_self = element.text();
-
-                if (element.tagName() == "NPCPlayer")
-                    xplacement.npc_player = element.text();
-
-                if (element.tagName() == "NPCPlayerRough")
-                    xplacement.npc_player_rough = element.text();
-
-                if (element.tagName() == "NPCOtherNPC")
-                    xplacement.npc_other_npc = element.text();
-
-                if (element.tagName() == "NPCOtherNPCRough")
-                    xplacement.npc_other_npc_rough = element.text();
+                if (element.tagName() == "otherRough" || element.tagName() == "NPCOtherNPCRough")
+                    xplacement.other_rough = element.text();
 
                 element = element.nextSiblingElement();
 
             } // End "replacementText"
 
-            this->dialogue.append(xplacement);
+            if (slot.isEmpty()) { // Old format catch
+                if (!this->equippable_slots.isEmpty()) { // Need to have a slot to assign
+                    if (!dialogue_slot_warning) { // Show the missing slot warning if not already shown
+                        dialogue_slot_warning = true;
+                        error.append("No slot defined for dialogue! All sections without a slot defined will be set to the first available slot.\n");
+                    }
+                    append_map_list<XPlacementText>(this->slot_dialogue, this->equippable_slots.first(), xplacement);
+                } else if (!dialogue_slot_failure) { // Shot the missing slot warning if not already shown
+                    dialogue_slot_failure = true;
+                    error.append("No initial slot set! Could not set slot for dialogue. Dialogue will be null!\n");
+                }
+            } else
+                append_map_list<XPlacementText>(this->slot_dialogue, slot, xplacement);
         }
 
     } // End "clothing"
+
+    // Last minute checks for null values
+    QString blank = "NULL"; // I have no fucking clue why this has to be here. Don't remove it. That pisses the compiler off.
+    if (this->pattern_primary_colour.isNull())
+        this->pattern_primary_colour = QSharedPointer<Colour>(new Colour(blank));
+    if (this->pattern_secondary_colour.isNull())
+        this->pattern_secondary_colour = QSharedPointer<Colour>(new Colour(blank));
+    if (this->pattern_tertiary_colour.isNull())
+        this->pattern_tertiary_colour = QSharedPointer<Colour>(new Colour(blank));
 
     return true;
 }
@@ -396,12 +535,29 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
 bool ClothingMod::save_file(const QString &path, QString &error)
 {
     // Does the polar opposite of above.
-    // Note: I used a lot of 'this->' for readability. Helps get an idea of scope since a lot of different scopes are used here.
+    // Note: I used a lot of 'this->' for readability. Helps get an idea of scope since a lot of different scopes are used here. A lot of shit gets allocated in this scope.
 
     // First, we must validate the data.
 
     // This sets the error string pointer.
     this->error = &error;
+
+    // String list check lambda
+    auto check_string_list = [this] (const QStringList &list, const QString &field, bool can_be_empty = true) {
+        if (list.isEmpty()) { // Is the list empty?
+            if (can_be_empty) // Is it allowed to be empty?
+                return; // No need to continue evaluating this if we already know it's empty.
+            else { // Uh-oh
+                this->error->append(field + " list must contain at least one value!");
+            }
+        }
+        for (int i = 0; i < list.length(); i++) { // Start actual data validation
+            if (list.at(i).isNull() || list.at(i).isEmpty() || list.at(i) == "NULL") {
+                QString num = QString::number(i + 1); // Normal people don't start counting from 0. Fucking weird, I know.
+                this->error->append(field + " list entry " + num + " can not be empty!\n");
+            }
+        }
+    };
 
     // Default widget stuff
     check_string(this->name, "Name");
@@ -410,12 +566,16 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     check_string(this->description, "Description");
     check_string(this->image_name, "Image name");
     check_string(this->femininity, "Femininity");
-    check_string(this->slot, "Slot");
     check_string(this->rarity, "Rarity");
+    check_string_list(this->equippable_slots, "Slots", false);
+    check_string_list(this->default_patterns, "Default patterns");
+
+    // TODO verify slot_tags, equipped_image_name_slot, incompatible_slots
 
     // Default widget blocked parts
-    for (const ClothingMod::BlockedParts &obj : this->blocked_parts)
-        check_string(obj.displacement_type, "Blocked parts list -> Displacement type");
+    for (const QString &key : this->slot_blocked_parts.keys())
+        for (const ClothingMod::BlockedParts &obj : this->slot_blocked_parts[key])
+            check_string(obj.displacement_type, "Blocked parts list [" + key + "] -> Displacement type");
 
     // Enchantment widget stuff
     for (const DataCommon::Effect &obj : this->effects) {
@@ -426,16 +586,12 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     }
 
     // Dialogue editor stuff
-    for (const ClothingMod::XPlacementText &obj : this->dialogue) {
-        check_string(obj.type, "Dialogue -> Type");
-        check_string(obj.player_self, "Dialogue -> Player to self");
-        check_string(obj.player_npc, "Dialogue -> Player to NPC");
-        check_string(obj.player_npc_rough, "Dialogue -> Player to NPC rough");
-        check_string(obj.npc_self, "Dialogue -> NPC to self");
-        check_string(obj.npc_player, "Dialogue -> NPC to player");
-        check_string(obj.npc_player_rough, "Dialogue -> NPC to player rough");
-        check_string(obj.npc_other_npc, "Dialogue -> NPC to NPC");
-        check_string(obj.npc_other_npc_rough, "Dialogue -> NPC to NPC rough");
+    for (const QString &key : this->slot_dialogue.keys()) {
+        for (const ClothingMod::XPlacementText &obj : this->slot_dialogue[key]) {
+            check_string(obj.self, "Dialogue [" + key + "] -> Self");
+            check_string(obj.other, "Dialogue [" + key + "] -> Other");
+            check_string(obj.other_rough, "Dialogue [" + key + "] -> Other Rough");
+        }
     }
 
     // If we got an error, then something was invalid and we need to stop.
@@ -443,6 +599,25 @@ bool ClothingMod::save_file(const QString &path, QString &error)
         return false;
 
     // Done validating data. All empty or null fields from here on out will be omitted or set as a none flag
+
+    // We need to turn the 'QList<QPair<QString, QString>>' objects into a 'QMap<QString, X>' object for easy writing.
+
+    QMap<QString, QList<QString>> mapped_item_tags, mapped_incompatible_slots;
+    QMap<QString, QString> mapped_equipped_images; // Only defines a single object. No list needed.
+
+    // Item tags
+    for (const QPair<QString, QString> &pair : this->slot_tags)
+        append_map_list<QString>(mapped_item_tags, pair.second, pair.first);
+
+    // Equipped images
+    for (const QPair<QString, QString> &pair : this->equipped_image_name_slot)
+        mapped_equipped_images.insert(pair.second, pair.first);
+
+    // Incompatible slots
+    for (const QPair<QString, QString> &pair : this->incompatible_slots)
+        append_map_list<QString>(mapped_incompatible_slots, pair.second, pair.first);
+
+    // Conversions done. Let's get on with writing this thing.
 
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
@@ -461,6 +636,7 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     auto core = write(root, "coreAttributes");
 
     // Core attributes
+    write(core, "authorTag", this->author_tag, true);
     write(core, "value", QString::number(this->value));
     write(core, "determiner", this->determiner, true);
     write(core, "name", this->name, true);
@@ -471,11 +647,20 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     write(core, "description", this->description, true);
     write(core, "physicalResistance", QString::number(this->physical_resistance));
     write(core, "femininity", this->femininity);
-    write(core, "slot", this->slot);
+
+    auto equip_slots_node = write(core, "equipSlots");
+    for (const QString &slot : this->equippable_slots)
+        write(equip_slots_node, "slot", slot);
+
     write(core, "rarity", this->rarity);
     write(core, "clothingSet", this->clothing_set);
     write(core, "imageName", this->image_name);
-    write(core, "imageEquippedName", this->equipped_image_name);
+
+    for (const QString &slot : this->equippable_slots)
+        if (mapped_equipped_images.contains(slot))
+            write(core, "imageEquippedName", mapped_equipped_images[slot]).setAttribute("slot", slot);
+        else
+            write(core, "imageEquippedName").setAttribute("slot", slot);
 
     if (this->enchantment_limit < 0)
         write(core, "enchantmentLimit");
@@ -495,35 +680,47 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     }
 
     // Blocked parts list
-    auto blocked_parts_node = write(core, "blockedPartsList");
-    for (const ClothingMod::BlockedParts &parts : this->blocked_parts) {
-        auto node = write(blocked_parts_node, "blockedParts");
-        write(node, "displacementType", parts.displacement_type);
+    if (this->slot_blocked_parts.isEmpty())
+        write(core, "blockedPartsList");
+    else
+        for (const QString &key : this->slot_blocked_parts.keys()) {
+            auto blocked_parts_node = write(core, "blockedPartsList");
+            blocked_parts_node.setAttribute("slot", key);
+            for (const ClothingMod::BlockedParts &parts : this->slot_blocked_parts[key]) {
 
-        auto access_req = write(node, "clothingAccessRequired");
-        for (const QString &req : parts.access_required)
-            write(access_req, "clothingAccess", req);
+                auto node = write(blocked_parts_node, "blockedParts");
+                write(node, "displacementType", parts.displacement_type);
 
-        auto blocked = write(node, "blockedBodyParts");
-        for (const QString &part : parts.blocked_bodyparts)
-            write(blocked, "bodyPart", part);
+                auto access_req = write(node, "clothingAccessRequired");
+                for (const QString &req : parts.access_required)
+                    write(access_req, "clothingAccess", req);
 
-        auto access_block = write(node, "clothingAccessBlocked");
-        for (const QString &block : parts.access_blocked)
-            write(access_block, "clothingAccess", block);
+                auto blocked = write(node, "blockedBodyParts");
+                for (const QString &part : parts.blocked_bodyparts)
+                    write(blocked, "bodyPart", part);
 
-        auto concealed = write(node, "concealedSlots");
-        if (parts.concealed_slots->getType() == ClothingMod::BlockedParts::ConcealedSlots::Type::list)
-            for (const QString &concealed_slot : parts.concealed_slots->getSlots())
-                write(concealed, "slot", concealed_slot);
-        else
-            concealed.setAttribute("values", parts.concealed_slots->getPreset());
-    }
+                auto access_block = write(node, "clothingAccessBlocked");
+                for (const QString &block : parts.access_blocked)
+                    write(access_block, "clothingAccess", block);
+
+                auto concealed = write(node, "concealedSlots");
+                if (parts.concealed_slots->getType() == ClothingMod::BlockedParts::ConcealedSlots::Type::list)
+                    for (const QString &concealed_slot : parts.concealed_slots->getSlots())
+                        write(concealed, "slot", concealed_slot);
+                else
+                    concealed.setAttribute("values", parts.concealed_slots->getPreset());
+            }
+        }
 
     // Incompatible slots
-    auto incompatible = write(core, "incompatibleSlots");
-    for (const QString &islot : this->incompatible_slots)
-        write(incompatible, "slot", islot);
+    for (const QString &slot : this->equippable_slots)
+        if (mapped_incompatible_slots.contains(slot)) {
+            auto node = write(core, "incompatibleSlots");
+            node.setAttribute("slot", slot);
+            for (const QString &value : mapped_incompatible_slots[slot])
+                write(node, "slot", value);
+        } else
+            write(core, "incompatibleSlots").setAttribute("slot", slot);
 
     // Colours
     write_colour(core, "primaryColours", this->primary_colour.get());
@@ -533,28 +730,60 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     write_colour(core, "tertiaryColours", this->tertiary_colour.get());
     write_colour(core, "tertiaryColoursDye", this->tertiary_colour_dye.get());
 
+    // Patterns
+    auto pattern_node = write(core, "defaultPatterns");
+    if (this->pattern_chance < 0.01) // It seems pointless to have a spawn chance of less than 1/1000th
+        pattern_node.setAttribute("patternChance", QString::number(0));
+    else {
+        // There exists some stupid logic where the program will save INCREDIBLY small numbers if you don't truncate the number first. This is my fix
+        double number = static_cast<int>(this->pattern_chance * 100) * 0.0001;
+        pattern_node.setAttribute("patternChance", QString::number(number));
+    }
+    pattern_node.setAttribute("colourNameDerivedFromPattern", bool_string(this->pattern_name_derived));
+    for (const QString &entry : this->default_patterns)
+        write(pattern_node, "pattern", entry);
+
+    // Pattern colours
+    write_colour(core, "patternPrimaryColours", this->pattern_primary_colour.get());
+    write_colour(core, "patternSecondaryColours", this->pattern_secondary_colour.get());
+    write_colour(core, "patternTertiaryColours", this->pattern_tertiary_colour.get());
+
     // Item tags
     auto tags = write(core, "itemTags");
     for (const QString &tag : this->item_tags)
         write(tags, "tag", tag);
 
-    // Dialogue
-    for (ClothingMod::XPlacementText &text : this->dialogue) {
-        QDomElement xplacement;
-        if (text.flag == ClothingMod::XPlacementText::Flag::replacement)
-            xplacement = write(root, "replacementText");
-        else
-            xplacement = write(root, "displacementText");
+    // Slot item tags
+    for (const QString &slot : this->equippable_slots)
+        if (mapped_item_tags.contains(slot)) {
+            auto node = write(core, "itemTags");
+            node.setAttribute("slot", slot);
+            for (const QString &value : mapped_item_tags[slot])
+                write(node, "tag", value);
+        } else
+            write(core, "itemTags").setAttribute("slot", slot);
 
-        xplacement.setAttribute("type", text.type);
-        write(xplacement, "playerSelf", text.player_self, true);
-        write(xplacement, "playerNPC", text.player_npc, true);
-        write(xplacement, "playerNPCRough", text.player_npc_rough, true);
-        write(xplacement, "NPCSelf", text.npc_self, true);
-        write(xplacement, "NPCPlayer", text.npc_player, true);
-        write(xplacement, "NPCPlayerRough", text.npc_player_rough, true);
-        write(xplacement, "NPCOtherNPC", text.npc_other_npc, true);
-        write(xplacement, "NPCOtherNPCRough", text.npc_other_npc_rough, true);
+    // Dialogue
+    for (const QString &slot : this->equippable_slots) {
+        if (this->slot_dialogue.contains(slot)) {
+            for (const XPlacementText &text : this->slot_dialogue[slot]) {
+                // Setup element
+                QDomElement xplacement;
+                if (text.flag == ClothingMod::XPlacementText::Flag::replacement)
+                    xplacement = write(root, "replacementText");
+                else
+                    xplacement = write(root, "displacementText");
+
+                // Attributes
+                xplacement.setAttribute("slot", slot);
+                xplacement.setAttribute("type", text.type);
+
+                // Text
+                write(xplacement, "self", text.self, true);
+                write(xplacement, "other", text.other, true);
+                write(xplacement, "otherRough", text.other_rough, true);
+            }
+        }
     }
 
 
@@ -568,4 +797,22 @@ bool ClothingMod::save_file(const QString &path, QString &error)
     return true;
 }
 
+template<class T>
+void ClothingMod::append_map_list(QMap<QString, QList<T>> &map, const QString &key, const T &value)
+{
+    if (map.contains(key)) // Item exists, append it to existing item.
+        map[key].append(value);
+    else // Item doesn't exist. Make it exist.
+        map.insert(key, QList<T>() << value);
+}
+
 // End Functions
+
+template<class T>
+void ClothingMod::append_map_list(QMap<QString, QList<T> > &map, const QString &key, const QList<T> &value)
+{
+    if (map.contains(key)) // Item exists, append it to existing item.
+        map[key].append(value);
+    else // Item doesn't exist. Make it exist.
+        map.insert(key, value);
+}

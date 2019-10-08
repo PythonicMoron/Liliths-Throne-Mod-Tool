@@ -149,7 +149,7 @@
          <item row="1" column="1">
           <widget class="QLineEdit" name="imageNameEdit">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the image file the tattoo uses. Don't forget the '.svg' extension!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the image file the tattoo uses. Don't forget the '.svg' extension! File must exist in the same directory as the XML!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -250,6 +250,16 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="available_slot_label">
+         <property name="text">
+          <string>Available slots</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QListView" name="availabilityList">

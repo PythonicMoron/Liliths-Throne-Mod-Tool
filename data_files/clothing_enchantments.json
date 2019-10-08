@@ -10,10 +10,10 @@
 		{
 			"primary mod": "CLOTHING_ATTRIBUTE",
 			"secondary options": 
-				["FERTILITY", "VIRILITY", "DAMAGE_UNARMED", "DAMAGE_MELEE_WEAPON", "DAMAGE_RANGED_WEAPON", "DAMAGE_PHYSICAL", "DAMAGE_LUST", "DAMAGE_FIRE", "DAMAGE_ICE", "DAMAGE_POISON", "DAMAGE_SPELLS", "RESISTANCE_FIRE", "RESISTANCE_ICE", "RESISTANCE_LUST", "RESISTANCE_PHYSICAL", "RESISTANCE_POISON", "SPELL_COST_MODIFIER", "CRITICAL_CHANCE", "CRITICAL_DAMAGE"]
+				["FERTILITY", "VIRILITY", "DAMAGE_UNARMED", "DAMAGE_MELEE_WEAPON", "DAMAGE_RANGED_WEAPON", "DAMAGE_PHYSICAL", "DAMAGE_LUST", "DAMAGE_FIRE", "DAMAGE_ICE", "DAMAGE_POISON", "DAMAGE_SPELLS", "RESISTANCE_FIRE", "RESISTANCE_ICE", "RESISTANCE_LUST", "RESISTANCE_PHYSICAL", "RESISTANCE_POISON", "SPELL_COST_MODIFIER", "CRITICAL_DAMAGE"]
 		},
-		{"primary mod": "CLOTHING_SEALING", "secondary options": ["ARCANE_BOOST"], "potency options": ["MAJOR_DRAIN", "DRAIN", "MINOR_DRAIN", "MINOR_BOOST"]},
-		{"primary mod": "CLOTHING_ENSLAVEMENT", "secondary options": ["ARCANE_BOOST"], "potency options": ["MINOR_BOOST"]},
+		{"primary mod": "CLOTHING_SPECIAL", "secondary options": ["CLOTHING_SEALING"], "potency options": ["MAJOR_DRAIN", "DRAIN", "MINOR_DRAIN", "MINOR_BOOST"]},
+		{"primary mod": "CLOTHING_SPECIAL", "secondary options": ["CLOTHING_ENSLAVEMENT"], "potency options": ["MINOR_BOOST"]},
 		{
 			"primary mod": "TF_MOD_FETISH_BODY_PART",
 			"secondary options":
@@ -26,43 +26,51 @@
 		},
 		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 4]},
 		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]},
+		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{"primary mod": "TF_CORE", "secondary options": ["TF_MOD_SIZE"], "limit range": [122, 366]},
 		{"primary mod": "TF_CORE", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_SIZE_TERTIARY", "TF_MOD_FEMININITY"], "limit range": [0, 100]},
-		{"primary mod": "TF_HAIR", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 140]},
+		{"primary mod": "TF_CORE", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
+		{"primary mod": "TF_HAIR", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 350]},
 		{
 			"primary mod": "TF_ASS",
 			"secondary options": ["TF_MOD_SIZE", "TF_MOD_SIZE_SECONDARY", "TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_WETNESS"],
 			"limit range": [0, 7]
 		},
 		{"primary mod": "TF_ASS", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]},
+		{"primary mod": "TF_ASS", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 91]},
-		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_REGENERATION"], "limit range": [0, 4]},
+		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 4]},
 		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
 		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 100000]},
+		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 500000]},
 		{
 			"primary mod": "TF_BREASTS",
 			"secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]
 		},
 		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 91]},
-		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_REGENERATION"], "limit range": [0, 4]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 4]},
 		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
 		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 100000]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 500000]},
 		{
 			"primary mod": "TF_BREASTS_CROTCH",
 			"secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]
 		},
-		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 40]},
+		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 100]},
 		{
 			"primary mod": "TF_PENIS",
 			"secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"],
 			"limit range": [0, 7]
 		},
+		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_SIZE_TERTIARY"], "limit range": [0, 4]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 10000]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_CUM_EXPULSION"], "limit range": [0, 100]},
-		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 4]},
+		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 500000]},
+		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]},
-		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 50]},
+		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 125]},
 		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 4]},
+		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{
 			"primary mod": "TF_VAGINA",
 			"secondary options":

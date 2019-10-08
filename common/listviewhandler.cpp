@@ -3,20 +3,11 @@
 #include <QMenu>
 #include <QStandardItemModel>
 
-ListViewHandler::ListViewHandler(QListView *view, QStringList &list, QAbstractItemDelegate *delegate) : view(view), list(&list)
+ListViewHandler::ListViewHandler(QListView *object, QStringList &list, QAbstractItemDelegate *delegate) : BaseViewHandler(object, list)
 {
     // Setup view
-    view->setItemDelegate(delegate);
-    view->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    // Create menu object
-    menu = new QMenu();
-}
-ListViewHandler::~ListViewHandler()
-{
-    // We don't own the list or the data we have pointers to. Please refrain from destroying what is not yours.
-
-    delete menu;
+    if (delegate != nullptr)
+        view->setItemDelegate(delegate);
 }
 
 void ListViewHandler::update()
@@ -32,7 +23,7 @@ void ListViewHandler::update()
     QObject::connect(model, &QStandardItemModel::itemChanged, [this] (QStandardItem *item) {modify_data(item->index());});
 
     // Populate model
-    for (const QString &str : *list) {
+    for (const QString &str : *data) {
         model->appendRow(new QStandardItem(str));
     }
 
@@ -40,50 +31,22 @@ void ListViewHandler::update()
     view->setModel(model);
 }
 
-void ListViewHandler::contex_menu(const QPoint &pos)
-{
-    // Displays the context menu.
-
-    // Empty the menu.
-    menu->clear();
-
-    // Obtain item index using a dark ritual.
-    QModelIndex index = view->indexAt(pos);
-
-    // If a valid index is selected, add a remove action
-    if (index.isValid()) {
-        auto *rem_action = new QAction("Remove entry");
-        QObject::connect(rem_action, &QAction::triggered, [this, index] () {remove_item(index);});
-        menu->addAction(rem_action);
-    }
-
-    // Add an add action
-    auto add_action = new QAction("Add entry");
-    QObject::connect(add_action, &QAction::triggered, [this] () {add_item();});
-    menu->addAction(add_action);
-
-    // Show menu
-    menu->popup(view->viewport()->mapToGlobal(pos));
-}
-
 void ListViewHandler::modify_data(const QModelIndex &index)
 {
     // Modify data
 
-    if (!index.isValid())
-        return;
-    (*list)[index.row()] = index.data().toString();
+    if (index.isValid())
+        (*data)[index.row()] = index.data().toString();
 }
 
 void ListViewHandler::remove_item(const QModelIndex &index)
 {
     // Remove data at index
 
-    if (!index.isValid())
-        return;
-
-    view->model()->removeRow(index.row()); // From model
-    list->removeAt(index.row()); // From list
+    if (index.isValid()) {
+        view->model()->removeRow(index.row()); // From model
+        data->removeAt(index.row()); // From list
+    }
 }
 
 void ListViewHandler::add_item()
@@ -91,5 +54,5 @@ void ListViewHandler::add_item()
     // Add new data
 
     qobject_cast<QStandardItemModel*>(view->model())->appendRow(new QStandardItem("NULL")); // To model
-    list->append(QString()); // To list
+    data->append(QString()); // To list
 }

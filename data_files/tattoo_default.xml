@@ -1,15 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <tattoo>
- <coreAttributes>
-  <value>2</value>
-  <name><![CDATA[Crude Dick]]></name>
-  <description><![CDATA[A crudely drawn dick.]]></description>
-  <imageName>image.svg</imageName>
-  <enchantmentLimit>0</enchantmentLimit>
-  <slotAvailability>
-   <slot>HEAD</slot>
-  </slotAvailability>
-  <primaryColours values="ALL"/>
-  <secondaryColours values="ALL"/>
-  <tertiaryColours values="ALL"/>
- </coreAttributes>
+    <coreAttributes>
+        <value>2</value>
+        <name><![CDATA[Crude Dick]]></name>
+        <description><![CDATA[A crudely drawn dick.]]></description>
+        <imageName>image.svg</imageName>
+        <enchantmentLimit>0</enchantmentLimit>
+        <slotAvailability>
+            <slot>HEAD</slot>
+        </slotAvailability>
+        <primaryColours values="ALL"/>
+        <secondaryColours values="ALL"/>
+        <tertiaryColours values="ALL"/>
+    </coreAttributes>
 </tattoo>

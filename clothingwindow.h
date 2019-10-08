@@ -1,13 +1,15 @@
 #ifndef CLOTHINGWINDOW_H
 #define CLOTHINGWINDOW_H
 
-#include "clothing/treehandler.h"
-#include "clothing/dialoguewidget.h"
+#include "clothing/tableviewhandler.h"
+#include "clothing/restrictedslotlistviewhandler.h"
+#include "clothing/accessibilitywidget.h"
+#include "clothing/advanceddialoguewidget.h"
 #include "common/listviewhandler.h"
 #include "common/tagswidget.h"
 #include "common/colourswidget.h"
 #include "common/effectlisthandler.h"
-#include "common/enchantmentwidget.h"
+#include "common/customcomboboxdelegate.h"
 
 // The main class for the clothing widget. Handles the primary functions of the clothing mod window.
 
@@ -44,20 +46,24 @@ private:
     // Child widgets
     ColoursWidget *colours_widget;
     TagsWidget *tags_widget;
-    DialogueWidget *dialogue_widget;
-    EnchantmentWidget *effect_widget;
+    AccessibilityWidget *access_widget;
+    AdvancedDialogueWidget *dialogue_widget;
+
+    // Static delegates
+    static QSharedPointer<CustomComboBoxDelegate> slot_delegate, tags_delegate;
 
     // Widget handlers
-    TreeHandler *tree_handler;
     EffectListHandler *effects_list_handler;
-    ListViewHandler *incompatible_slot_handler;
+    ListViewHandler *equippable_slot_handler, *default_pattern_handler;
+    TableViewHandler *incompatible_slot_handler, *slot_tag_handler, *equip_image_handler;
+    RestrictedSlotListViewHandler<ClothingMod::BlockedParts> *access_slot_handler;
+    RestrictedSlotListViewHandler<ClothingMod::XPlacementText> *dialogue_slot_handler;
 
     ClothingMod data; // Actual mod data
     QString location; // Active file path
 
     // Functions
     void save(bool as);
-    void set_titles(const QString &title);
     void update_ui();
 };
 
