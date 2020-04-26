@@ -3,7 +3,14 @@
         "ranges": {
             "value": [0, 2147483647],
             "physical_resistance": [0, 100],
-            "enchantment_limit": [-1, 100]
+            "enchantment_limit": [-1, 100],
+			"penetration_length": [0, 100],
+			"penetration_girth": [0, 4],
+			"orifice_depth": [0, 166],
+			"orifice_capacity": [0, 25],
+			"orifice_elasticity": [0, 7],
+			"orifice_plasticity": [0, 7],
+			"orifice_wetness": [0, 7]
         },
         "field_data": {
             "slot": [
@@ -139,7 +146,27 @@
                     "CONCEALED_UNZIPS_GROIN",
                     "CONCEALED_ANKLES_FROM_TROUSERS"
                 ]
-            }
+			},
+			"toy_data": {
+				"penetration_modifiers": [
+					"SHEATHED",
+					"RIBBED",
+					"TENTACLED",
+					"KNOTTED",
+					"TAPERED",
+					"BLUNT",
+					"FLARED",
+					"BARBED",
+					"VEINY",
+					"PREHENSILE"
+				],
+				"orifice_modifiers": [
+					"PUFFY",
+					"RIBBED",
+					"TENTACLED",
+					"MUSCLE_CONTROL"
+				]
+			}
         }
     }
 }

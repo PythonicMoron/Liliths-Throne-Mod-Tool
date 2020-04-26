@@ -58,6 +58,20 @@ public:
         // Please don't type essays into the editor.
     };
 
+    struct InsertableToyAttributes { // Stores attributes of a dildo/plug
+        bool enabled; // Whether or not this is enabled and should be saved
+        int length, girth; // Self expanatory
+        QStringList modifiers; // List of modifiers for the toy
+        InsertableToyAttributes(); // Default constructor
+    };
+
+    struct PenetrableToyAttributes { // Stores attributes of a penetrable toy
+        bool enabled; // Whether or not this is enabled and should be saved
+        int depth, capacity, elasticity, plasticity, wetness; // Self expanatory
+        QStringList modifiers; // List of modifiers for the toy
+        PenetrableToyAttributes(); // Default constructor
+    };
+
     // The rest of the class is easily understood.
 
     // Functions
@@ -81,6 +95,10 @@ public:
 
     // Data pointers
     QSharedPointer<Colour> primary_colour, primary_colour_dye, secondary_colour, secondary_colour_dye, tertiary_colour, tertiary_colour_dye, pattern_primary_colour, pattern_secondary_colour, pattern_tertiary_colour;
+
+    // Data objects
+    InsertableToyAttributes dildoSelf, dildoOther;
+    PenetrableToyAttributes holeSelf, holeOther;
 
 private:
     template<class T> // I would have made this an in function lambda since it isn't used anywhere else but C++11 doesn't allow templated lambdas. I think that's C++14.

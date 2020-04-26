@@ -46,6 +46,27 @@ ClothingMod::BlockedParts::BlockedParts(const ClothingMod::BlockedParts &other)
     concealed_slots = QSharedPointer<ClothingMod::BlockedParts::ConcealedSlots>(new ClothingMod::BlockedParts::ConcealedSlots(*other.concealed_slots.get()));
 }
 
+ClothingMod::InsertableToyAttributes::InsertableToyAttributes()
+{
+    enabled = false;
+    length = 0;
+    girth = 0;
+    modifiers = QStringList();
+}
+
+ClothingMod::PenetrableToyAttributes::PenetrableToyAttributes()
+{
+    enabled = false;
+    depth = 0;
+    capacity = 0;
+    elasticity = 0;
+    plasticity = 0;
+    wetness = 0;
+    modifiers = QStringList();
+}
+
+
+
 // End Constructors and Destructors
 
 
@@ -412,10 +433,180 @@ bool ClothingMod::read_file(const QDomDocument &xml_doc, QString &error)
                         }
                         element = element.nextSiblingElement();
                     }
+
+                    // Quick check for old sex toy flags
+                    for (QPair<QString, QString> slot_tag : list)
+                        if (slot_tag.second.toUpper().contains("DILDO")) {
+                            error.append("Old 'DILDO' tag detected! This item has to manually be converted to the new toy attribute system! Use the 'Sex Toy' tab.\n");
+                            break;
+                        }
+
                     this->slot_tags = list;
                 }
 
             } // End "coreAttributes"
+        }
+
+        if (child.tagName() == "sexAttributesSelf") {
+            // Looking through "sexAttributesSelf"
+            for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+
+                // Looking through "penetration"
+                if (element.tagName() == "penetration") {
+                    for (QDomElement innerChild = element.firstChildElement(); !innerChild.isNull(); innerChild = innerChild.nextSiblingElement()) {
+                        if (!this->dildoSelf.enabled) this->dildoSelf.enabled = true; // So we know that it is valid later
+
+                        if (innerChild.tagName() == "length") {
+                            bool ok;
+                            this->dildoSelf.length = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self insertable toy length could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "girth") {
+                            bool ok;
+                            this->dildoSelf.girth = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self insertable toy girth could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "modifiers")
+                            iterate_string_list(innerChild, "mod", this->dildoSelf.modifiers);
+                    }
+                }
+
+                if (element.tagName() == "orifice") {
+                    for (QDomElement innerChild = element.firstChildElement(); !innerChild.isNull(); innerChild = innerChild.nextSiblingElement()) {
+                        if (!this->holeSelf.enabled) this->holeSelf.enabled = true; // So we know that it is valid later
+
+                        if (innerChild.tagName() == "depth") {
+                            bool ok;
+                            this->holeSelf.depth = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self penetrable toy depth could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "capacity") {
+                            bool ok;
+                            this->holeSelf.capacity = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self penetrable toy capacity could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "elasticity") {
+                            bool ok;
+                            this->holeSelf.elasticity = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self penetrable toy elasticity could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "plasticity") {
+                            bool ok;
+                            this->holeSelf.plasticity = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self penetrable toy plasticity could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "wetness") {
+                            bool ok;
+                            this->holeSelf.wetness = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Self penetrable toy wetness could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "modifiers")
+                            iterate_string_list(innerChild, "mod", this->holeSelf.modifiers);
+                    }
+                }
+            }
+        }
+
+        if (child.tagName() == "sexAttributesOther") {
+            // Looking through "sexAttributesSelf"
+            for (QDomElement element = child.firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+
+                // Looking through "penetration"
+                if (element.tagName() == "penetration") {
+                    for (QDomElement innerChild = element.firstChildElement(); !innerChild.isNull(); innerChild = innerChild.nextSiblingElement()) {
+                        if (!this->dildoOther.enabled) this->dildoOther.enabled = true; // So we know that it is valid later
+
+                        if (innerChild.tagName() == "length") {
+                            bool ok;
+                            this->dildoOther.length = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other insertable toy length could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "girth") {
+                            bool ok;
+                            this->dildoOther.girth = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other insertable toy girth could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "modifiers")
+                            iterate_string_list(innerChild, "mod", this->dildoOther.modifiers);
+                    }
+                }
+
+                if (element.tagName() == "orifice") {
+                    for (QDomElement innerChild = element.firstChildElement(); !innerChild.isNull(); innerChild = innerChild.nextSiblingElement()) {
+                        if (!this->holeOther.enabled) this->holeOther.enabled = true; // So we know that it is valid later
+
+                        if (innerChild.tagName() == "depth") {
+                            bool ok;
+                            this->holeOther.depth = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other penetrable toy depth could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "capacity") {
+                            bool ok;
+                            this->holeOther.capacity = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other penetrable toy capacity could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "elasticity") {
+                            bool ok;
+                            this->holeOther.elasticity = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other penetrable toy elasticity could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "plasticity") {
+                            bool ok;
+                            this->holeOther.plasticity = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other penetrable toy plasticity could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "wetness") {
+                            bool ok;
+                            this->holeOther.wetness = innerChild.text().toInt(&ok);
+                            if (!ok)
+                                error.append("Other penetrable toy wetness could not be converted to integer. Will default to 0!\n");
+                            innerChild = innerChild.nextSiblingElement();
+                        }
+
+                        if (innerChild.tagName() == "modifiers")
+                            iterate_string_list(innerChild, "mod", this->holeOther.modifiers);
+                    }
+                }
+            }
         }
 
         if (child.tagName() == "displacementText") {
@@ -762,6 +953,62 @@ bool ClothingMod::save_file(const QString &path, QString &error)
                 write(node, "tag", value);
         } else
             write(core, "itemTags").setAttribute("slot", slot);
+
+    // Self toy attributes
+    if (this->dildoSelf.enabled || this->holeSelf.enabled) {
+        auto node = write(root, "sexAttributesSelf");
+
+        // Penetration toy
+        if (this->dildoSelf.enabled) {
+            auto toy = write(node, "penetration");
+            write(toy, "length", QString::number(this->dildoSelf.length));
+            write(toy, "girth", QString::number(this->dildoSelf.girth));
+            auto mods = write(toy, "modifiers");
+            for (QString mod : this->dildoSelf.modifiers)
+                write(mods, "mod", mod);
+        }
+
+        // Orifice toy
+        if (this->holeSelf.enabled) {
+            auto toy = write(node, "orifice");
+            write(toy, "depth", QString::number(this->holeSelf.depth));
+            write(toy, "capacity", QString::number(this->holeSelf.capacity));
+            write(toy, "elasticity", QString::number(this->holeSelf.elasticity));
+            write(toy, "plasticity", QString::number(this->holeSelf.plasticity));
+            write(toy, "wetness", QString::number(this->holeSelf.wetness));
+            auto mods = write(toy, "modifiers");
+            for (QString mod : this->holeSelf.modifiers)
+                write(mods, "mod", mod);
+        }
+    }
+
+    // Other toy attributes
+    if (this->dildoOther.enabled || this->holeOther.enabled) {
+        auto node = write(root, "sexAttributesOther");
+
+        // Penetration toy
+        if (this->dildoOther.enabled) {
+            auto toy = write(node, "penetration");
+            write(toy, "length", QString::number(this->dildoOther.length));
+            write(toy, "girth", QString::number(this->dildoOther.girth));
+            auto mods = write(toy, "modifiers");
+            for (QString mod : this->dildoOther.modifiers)
+                write(mods, "mod", mod);
+        }
+
+        // Orifice toy
+        if (this->holeOther.enabled) {
+            auto toy = write(node, "orifice");
+            write(toy, "depth", QString::number(this->holeOther.depth));
+            write(toy, "capacity", QString::number(this->holeOther.capacity));
+            write(toy, "elasticity", QString::number(this->holeOther.elasticity));
+            write(toy, "plasticity", QString::number(this->holeOther.plasticity));
+            write(toy, "wetness", QString::number(this->holeOther.wetness));
+            auto mods = write(toy, "modifiers");
+            for (QString mod : this->holeOther.modifiers)
+                write(mods, "mod", mod);
+        }
+    }
 
     // Dialogue
     for (const QString &slot : this->equippable_slots) {

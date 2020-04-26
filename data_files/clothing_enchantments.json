@@ -22,10 +22,13 @@
 		{
 			"primary mod": "TF_MOD_FETISH_BEHAVIOUR",
 			"secondary options":
-				["TF_MOD_FETISH_DOMINANT", "TF_MOD_FETISH_SUBMISSIVE", "TF_MOD_FETISH_CUM_STUD", "TF_MOD_FETISH_CUM_ADDICT", "TF_MOD_FETISH_DEFLOWERING", "TF_MOD_FETISH_PURE_VIRGIN", "TF_MOD_FETISH_IMPREGNATION", "TF_MOD_FETISH_PREGNANCY", "TF_MOD_FETISH_TRANSFORMATION_GIVING", "TF_MOD_FETISH_TRANSFORMATION_RECEIVING", "TF_MOD_FETISH_SADIST", "TF_MOD_FETISH_MASOCHIST", "TF_MOD_FETISH_NON_CON_DOM", "TF_MOD_FETISH_NON_CON_SUB", "TF_MOD_FETISH_DENIAL", "TF_MOD_FETISH_DENIAL_SELF", "TF_MOD_FETISH_VOYEURIST", "TF_MOD_FETISH_EXHIBITIONIST", "TF_MOD_FETISH_BIMBO", "TF_MOD_FETISH_CROSS_DRESSER", "TF_MOD_FETISH_MASTURBATION", "TF_MOD_FETISH_INCEST", "TF_MOD_FETISH_KINK_GIVING", "TF_MOD_FETISH_KINK_RECEIVING"]
+				["TF_MOD_FETISH_DOMINANT", "TF_MOD_FETISH_SUBMISSIVE", "TF_MOD_FETISH_CUM_STUD", "TF_MOD_FETISH_CUM_ADDICT", "TF_MOD_FETISH_DEFLOWERING", "TF_MOD_FETISH_PURE_VIRGIN", "TF_MOD_FETISH_IMPREGNATION", "TF_MOD_FETISH_PREGNANCY", "TF_MOD_FETISH_TRANSFORMATION_GIVING", "TF_MOD_FETISH_TRANSFORMATION_RECEIVING", "TF_MOD_FETISH_SADIST", "TF_MOD_FETISH_MASOCHIST", "TF_MOD_FETISH_NON_CON_DOM", "TF_MOD_FETISH_NON_CON_SUB", "TF_MOD_FETISH_DENIAL", "TF_MOD_FETISH_DENIAL_SELF", "TF_MOD_FETISH_VOYEURIST", "TF_MOD_FETISH_EXHIBITIONIST", "TF_MOD_FETISH_BIMBO", "TF_MOD_FETISH_CROSS_DRESSER", "TF_MOD_FETISH_MASTURBATION", "TF_MOD_FETISH_INCEST", "TF_MOD_FETISH_KINK_GIVING", "TF_MOD_FETISH_KINK_RECEIVING", "TF_MOD_FETISH_SIZE_QUEEN"]
 		},
 		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 4]},
-		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]},
+		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 60]},
+		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_CAPACITY"], "limit range": [0, 25]},
+		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_DEPTH", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_WETNESS"], "limit range": [0, 7]},
+		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED", "TF_MOD_TONGUE_RIBBED", "TF_MOD_TONGUE_TENTACLED", "TF_MOD_TONGUE_BIFURCATED"]},
 		{"primary mod": "TF_FACE", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{"primary mod": "TF_CORE", "secondary options": ["TF_MOD_SIZE"], "limit range": [122, 366]},
 		{"primary mod": "TF_CORE", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_SIZE_TERTIARY", "TF_MOD_FEMININITY"], "limit range": [0, 100]},
@@ -33,14 +36,15 @@
 		{"primary mod": "TF_HAIR", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 350]},
 		{
 			"primary mod": "TF_ASS",
-			"secondary options": ["TF_MOD_SIZE", "TF_MOD_SIZE_SECONDARY", "TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_WETNESS"],
+			"secondary options": ["TF_MOD_SIZE", "TF_MOD_SIZE_SECONDARY", "TF_MOD_DEPTH", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_WETNESS", "TF_MOD_BODY_HAIR"],
 			"limit range": [0, 7]
 		},
+		{"primary mod": "TF_ASS", "secondary options": ["TF_MOD_CAPACITY"], "limit range": [0, 25]},
 		{"primary mod": "TF_ASS", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]},
-		{"primary mod": "TF_ASS", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 91]},
-		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 4]},
-		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
+		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_SIZE_TERTIARY"], "limit range": [0, 4]},
+		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_CAPACITY"], "limit range": [0, 25]},
+		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_DEPTH", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
 		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 100000]},
 		{"primary mod": "TF_BREASTS", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 500000]},
 		{
@@ -48,8 +52,9 @@
 			"secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]
 		},
 		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 91]},
-		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 4]},
-		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_SIZE_TERTIARY"], "limit range": [0, 4]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_CAPACITY"], "limit range": [0, 25]},
+		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_DEPTH", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"], "limit range": [0, 7]},
 		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 100000]},
 		{"primary mod": "TF_BREASTS_CROTCH", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 500000]},
 		{
@@ -59,22 +64,22 @@
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 100]},
 		{
 			"primary mod": "TF_PENIS",
-			"secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY"],
+			"secondary options": ["TF_MOD_SIZE_SECONDARY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_DEPTH", "TF_MOD_BODY_HAIR"],
 			"limit range": [0, 7]
 		},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_SIZE_TERTIARY"], "limit range": [0, 4]},
+		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_CAPACITY"], "limit range": [0, 25]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_WETNESS"], "limit range": [0, 10000]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_CUM_EXPULSION"], "limit range": [0, 100]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_REGENERATION"], "limit range": [0, 500000]},
-		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
 		{"primary mod": "TF_PENIS", "secondary options": ["TF_MOD_ORIFICE_PUFFY", "TF_MOD_ORIFICE_RIBBED", "TF_MOD_ORIFICE_MUSCLED", "TF_MOD_ORIFICE_TENTACLED"]},
 		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_SIZE"], "limit range": [0, 125]},
 		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_SIZE_SECONDARY"], "limit range": [0, 4]},
-		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_BODY_HAIR"], "limit range": [0, 7]},
+		{"primary mod": "TF_VAGINA", "secondary options": ["TF_MOD_CAPACITY", "TF_MOD_CAPACITY_2"], "limit range": [0, 25]},
 		{
 			"primary mod": "TF_VAGINA",
 			"secondary options":
-				["TF_MOD_CAPACITY", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_WETNESS", "TF_MOD_CAPACITY_2", "TF_MOD_ELASTICITY_2", "TF_MOD_PLASTICITY_2"],
+				["TF_MOD_DEPTH", "TF_MOD_ELASTICITY", "TF_MOD_PLASTICITY", "TF_MOD_WETNESS", "TF_MOD_BODY_HAIR", "TF_MOD_DEPTH_2", "TF_MOD_ELASTICITY_2", "TF_MOD_PLASTICITY_2"],
 			"limit range": [0, 7]
 		},
 		{
